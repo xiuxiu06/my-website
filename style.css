@@ -266,7 +266,7 @@ section{
 }
 
 #contact{
-  background-color: var(--second-background);
+  background-color: transparent;
 }
 
 form{
@@ -471,7 +471,7 @@ footer{
   color: white;
   margin-top: 2em;
   padding: 2em;
-  background: transparent;
+  background: var(--second-background);
   border: 2px solid #f4feff;
   border-radius: 1em;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);

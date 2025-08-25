@@ -224,7 +224,7 @@ function drawShootingStar() {
     function animate() {
         ctx.beginPath();
         ctx.moveTo(x, y);
-        ctx.lineTo(x - progress, y - progress);
+        ctx.lineTo(x + progress, y + progress);
         ctx.strokeStyle = "white";
         ctx.lineWidth = 2;
         ctx.stroke();
