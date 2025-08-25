@@ -174,3 +174,68 @@ document.querySelectorAll("button, a").forEach((element) => {
         cursor.style.backgroundColor = "rgba(255, 255, 255, 0.8)";
     });
 });
+
+// Stars and shooting stars animation
+const canvas = document.getElementById("stars-background");
+const ctx = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+const stars = [];
+const numStars = 100;
+
+for (let i = 0; i < numStars; i++) {
+    stars.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        radius: Math.random() * 2,
+        dx: Math.random() * 0.5 - 0.25,
+        dy: Math.random() * 0.5 - 0.25,
+    });
+}
+
+function drawStars() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    stars.forEach((star) => {
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+        ctx.fillStyle = "white";
+        ctx.fill();
+        star.x += star.dx;
+        star.y += star.dy;
+
+        if (star.x < 0 || star.x > canvas.width) star.dx *= -1;
+        if (star.y < 0 || star.y > canvas.height) star.dy *= -1;
+    });
+    requestAnimationFrame(drawStars);
+}
+
+drawStars();
+
+function drawShootingStar() {
+    const x = Math.random() * canvas.width;
+    const y = Math.random() * canvas.height;
+    const length = Math.random() * 100 + 50;
+    const speed = Math.random() * 5 + 2;
+
+    let progress = 0;
+
+    function animate() {
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        ctx.lineTo(x - progress, y - progress);
+        ctx.strokeStyle = "white";
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        progress += speed;
+        if (progress < length) {
+            requestAnimationFrame(animate);
+        }
+    }
+
+    animate();
+}
+
+setInterval(drawShootingStar, 3000);
