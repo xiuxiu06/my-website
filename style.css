@@ -15,6 +15,7 @@
 body {
   min-height: 100vh;
   background: var(--background);
+  cursor: none;
 }
 
 nav{
@@ -73,6 +74,7 @@ nav ul a:hover{
 .btn:hover{
   background-color: rgb(255, 255, 255);
   color: var(--background);
+  cursor: none;
 }
 
 span{
@@ -243,7 +245,6 @@ section{
   padding: 2em;
   gap:2em;
   color: white;
-  cursor: pointer;
   transition: 0.3s ease-in-out;
 }
 
@@ -351,7 +352,6 @@ footer{
 
 .col-right .social-icons a{
   transition: 0.2s ease-in-out;
-  cursor: pointer;
   text-decoration: none;
 }
 
@@ -362,7 +362,6 @@ footer{
   color: transparent;
   font-size: 2em;
   transition: 0.2s ease-in-out;
-  cursor: pointer;
 }
 
 
@@ -504,13 +503,45 @@ footer{
     color: linear-gradient(45deg, #6fecff, #ffddfd, #ff9dfa);
     border: 1px solid #ccc;
     border-radius: 5px;
-    cursor: pointer;
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .tech-btn:hover {
     background-color: #007bff; /* Change to your desired hover background color */
     color: #fff; /* Change to your desired hover text color */
+}
+
+/* Custom cursor styles */
+.custom-cursor {
+    position: fixed;
+    width: 20px;
+    height: 20px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 10000;
+    transform: translate(-50%, -50%);
+    transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+/* Hover effect for buttons and links */
+button:hover ~ .custom-cursor,
+a:hover ~ .custom-cursor {
+    width: 30px;
+    height: 30px;
+    background-color: rgba(0, 123, 255, 0.8);
+}
+
+/* Prevent pointer cursor for hyperlinks on hover */
+a:hover {
+    cursor: none;
+}
+
+/* Adjust custom cursor effect for hyperlinks */
+a:hover ~ .custom-cursor {
+    width: 30px;
+    height: 30px;
+    background-color: rgba(0, 123, 255, 0.8);
 }
 
 @media (max-width: 968px){

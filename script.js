@@ -153,3 +153,24 @@ contactButton.addEventListener("click", (e) => {
         behavior: "smooth"
     });
 });
+
+// Custom cursor implementation
+const cursor = document.createElement("div");
+cursor.classList.add("custom-cursor");
+document.body.appendChild(cursor);
+
+document.addEventListener("mousemove", (e) => {
+    cursor.style.left = `${e.clientX}px`;
+    cursor.style.top = `${e.clientY}px`;
+});
+
+document.querySelectorAll("button, a").forEach((element) => {
+    element.addEventListener("mouseenter", () => {
+        cursor.style.transform = "scale(1.5)";
+        cursor.style.backgroundColor = "rgba(0, 123, 255, 0.8)";
+    });
+    element.addEventListener("mouseleave", () => {
+        cursor.style.transform = "scale(1)";
+        cursor.style.backgroundColor = "rgba(255, 255, 255, 0.8)";
+    });
+});
