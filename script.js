@@ -72,6 +72,50 @@ document.addEventListener('DOMContentLoaded', () => {
     tag.addEventListener('click', activate); tag.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activate(); } });
   });
 
+  $$('.tech-card').forEach(card => {
+    const inner = card.querySelector('.tech-card-inner');
+    if (!inner) return;
+    
+    card.addEventListener('mouseenter', () => {
+      gsap.to(inner, {
+        rotationY: 180,
+        duration: 0.6,
+        ease: 'power2.out'
+      });
+    });
+    
+    card.addEventListener('mouseleave', () => {
+      gsap.to(inner, {
+        rotationY: 0,
+        duration: 0.3,
+        ease: 'power2.out'
+      });
+    });
+    
+    card.setAttribute('role', 'button');
+    card.setAttribute('tabindex', '0');
+    card.addEventListener('click', () => {
+      const isFlipped = gsap.getProperty(inner, 'rotationY') !== 0;
+      gsap.to(inner, {
+        rotationY: isFlipped ? 0 : 180,
+        duration: 0.3,
+        ease: 'back.out(1.2)'
+      });
+    });
+    
+    card.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        const isFlipped = gsap.getProperty(inner, 'rotationY') !== 0;
+        gsap.to(inner, {
+          rotationY: isFlipped ? 0 : 180,
+          duration: 0.6,
+          ease: 'back.out(1.2)'
+        });
+      }
+    });
+  });
+
   const runningBanner = $('#running-banner');
   if (runningBanner) {
     const l1 = runningBanner.querySelector('.line1');
@@ -152,7 +196,7 @@ document.addEventListener('DOMContentLoaded', () => {
     gsap.ticker.add(tick);
 
     const onMouseMove = (e) => { cursorWrap.style.display = ''; mouseX = e.clientX; mouseY = e.clientY; };
-    const hoverSelector = ['a', 'button', 'input', 'textarea', '.nav-btn', '.tech-tag', '.repo-btn', '.demo-btn', '.menu-toggle'].join(',');
+    const hoverSelector = ['a', 'button', 'input', 'textarea', '.nav-btn', '.tech-tag', '.tech-card', '.repo-btn', '.demo-btn', '.menu-toggle'].join(',');
     const onOver = (e) => { if (e.target.closest && e.target.closest(hoverSelector)) cursorWrap.classList.add('hover'); };
     const onOut = (e) => { if (e.target.closest && e.target.closest(hoverSelector)) cursorWrap.classList.remove('hover'); };
     const onMouseDown = (e) => {
@@ -241,12 +285,14 @@ const handleCellClick = (e, i) => {
 
 const handlePointerMove = (e = { clientX: -pull_distance * 2, clientY: -pull_distance * 2 }) => {
   if (clicked) return;
-  // Ensure positions are available (useful after client-side navigation or layout shifts)
   if (!cells || !cells.length) return;
-  if (!cells[0].center_position) updateCellPositions();
+  if (!cells[0] || !cells[0].center_position) {
+    updateCellPositions();
+  }
 
   const { clientX: pointer_x, clientY: pointer_y } = e || { clientX: -pull_distance * 2, clientY: -pull_distance * 2 };
   cells.forEach((cell) => {
+    if (!cell.center_position) return;
     const diff_x = pointer_x - cell.center_position.x;
     const diff_y = pointer_y - cell.center_position.y;
     const distance = Math.sqrt(diff_x * diff_x + diff_y * diff_y);
@@ -275,6 +321,12 @@ const init = () => {
     return;
   }
 
+  const contact = document.querySelector('.contact');
+  if (!contact) {
+    console.warn('[physics-grid] No .contact element found.');
+    return;
+  }
+
   updateCellPositions();
   window.addEventListener('load', () => { updateCellPositions(); setTimeout(updateCellPositions, 300); });
   window.addEventListener('resize', updateCellPositions);
@@ -283,10 +335,18 @@ const init = () => {
 
   cells.forEach((cell, i) => cell.addEventListener('pointerup', (e) => handleCellClick(e, i)));
 
-  const contact = document.querySelector('.contact');
+  const contactObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        updateCellPositions();
+        setTimeout(updateCellPositions, 100);
+      }
+    });
+  }, { threshold: 0.1 });
+  contactObserver.observe(contact);
   if (contact) {
     contact.addEventListener('pointerup', (e) => {
-      const interactive = e.target.closest && e.target.closest('a, button, input, textarea, select, label, .nav-btn, .tech-tag, .repo-btn, .demo-btn');
+      const interactive = e.target.closest && e.target.closest('a, button, input, textarea, select, label, .nav-btn, .tech-tag, .tech-card, .repo-btn, .demo-btn');
       if (interactive) return;
 
       const px = e.clientX;
