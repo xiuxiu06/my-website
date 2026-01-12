@@ -267,230 +267,309 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Physics grid initialization - wait for ScrollTrigger to complete setup
   const initPhysicsGrid = () => {
-    const grid = document.querySelector('.grid');
-    const rows = grid ? [...grid.querySelectorAll('.row')] : [...document.querySelectorAll('.row')];
-    const cells = grid ? [...grid.querySelectorAll('.cell')] : [...document.querySelectorAll('.cell')];
-
-  let clicked = false;
-  let reset_all = false;
-
-  const pull_distance = 120;
-  let interactionEnabled = false;
-
-  const updateCellPositions = () => {
-    cells.forEach((cell) => {
-      const rect = cell.getBoundingClientRect();
-      cell.center_position = {
-        x: (rect.left + rect.right) / 2,
-        y: (rect.top + rect.bottom) / 2,
-      };
-    });
-    interactionEnabled = true; // Enable interaction after first successful position update
-  };
-
-  const handleCellClick = (e, i) => {
-    if (clicked) return;
-    clicked = true;
-
-    gsap.to('.cell', {
-      duration: 1.6,
-      physics2D: {
-        velocity: 'random(400, 1000)',
-        angle: 'random(250, 290)',
-        gravity: 2000
-      },
-      stagger: {
-        grid: [rows.length, rows[0].children.length],
-        from: i,
-        amount: 0.3
-      },
-      onComplete: function () { this.timeScale(-1.3); },
-      onReverseComplete: () => { clicked = false; reset_all = true; handlePointerMove(); },
-    });
-  };
-
-  const handlePointerMove = (e = { clientX: -pull_distance * 2, clientY: -pull_distance * 2 }) => {
-    if (clicked) return;
-    if (!cells || !cells.length) return;
-    if (!interactionEnabled) return; // Don't process until positions are calculated
-    if (!cells[0] || !cells[0].center_position) {
-      updateCellPositions();
+    const gridContainer = document.querySelector('.grid');
+    if (!gridContainer) {
+      console.warn('[physics-grid] No .grid container found.');
       return;
     }
 
-    const { clientX: pointer_x, clientY: pointer_y } = e || { clientX: -pull_distance * 2, clientY: -pull_distance * 2 };
-    cells.forEach((cell) => {
-      if (!cell.center_position) return;
-      const diff_x = pointer_x - cell.center_position.x;
-      const diff_y = pointer_y - cell.center_position.y;
-      const distance = Math.sqrt(diff_x * diff_x + diff_y * diff_y);
+    // Function to generate grid cells based on viewport size
+    const generateGrid = () => {
+      const contact = document.querySelector('.contact');
+      if (!contact) return;
 
-      if (distance < pull_distance) {
-        const percent = 1 - Math.min(distance / pull_distance, 1);
-        const strength = 0.95;
-        cell.pulled = true;
-        gsap.to(cell, { duration: 0.18, x: diff_x * percent * strength, y: diff_y * percent * strength, ease: 'power2.out' });
-      } else {
-        if (!cell.pulled) return;
-        cell.pulled = false;
-        gsap.to(cell, { duration: 1, x: 0, y: 0, ease: "elastic.out(1, 0.3)" });
+      // Clear existing cells
+      gridContainer.innerHTML = '';
+
+      // Get computed grid properties
+      const gridStyles = window.getComputedStyle(gridContainer);
+      const columnSize = parseInt(gridStyles.gridAutoRows) || 80;
+      const gap = parseInt(gridStyles.gap) || 12;
+      const padding = parseInt(gridStyles.padding) || 20;
+
+      // Calculate how many cells we need
+      const containerWidth = contact.offsetWidth - (padding * 2);
+      const containerHeight = contact.offsetHeight - (padding * 2);
+      
+      const cols = Math.floor((containerWidth + gap) / (columnSize + gap));
+      const rows = Math.floor((containerHeight + gap) / (columnSize + gap));
+      
+      const totalCells = cols * rows;
+
+      // Generate cells
+      for (let i = 0; i < totalCells; i++) {
+        const cell = document.createElement('div');
+        cell.className = 'cell';
+        const x = i % cols;
+        const y = Math.floor(i / cols);
+        cell.setAttribute('data-x', x);
+        cell.setAttribute('data-y', y);
+        gridContainer.appendChild(cell);
       }
-    });
 
-    if (reset_all) {
-      reset_all = false;
-      gsap.to(cells, { duration: 1, x: 0, y: 0, ease: "elastic.out(1, 0.3)" });
-    }
-  };
+      return gridContainer.querySelectorAll('.cell');
+    };
 
-  const init = () => {
+    // Generate initial grid
+    const cells = generateGrid();
     if (!cells || cells.length === 0) {
-      console.warn('[physics-grid] No .cell elements found. Grid interaction disabled.');
+      console.warn('[physics-grid] No cells generated.');
       return;
     }
 
-    const contact = document.querySelector('.contact');
-    if (!contact) {
-      console.warn('[physics-grid] No .contact element found.');
-      return;
-    }
+    const rows = []; // Not used in new implementation but kept for compatibility
+    let cellsArray = Array.from(cells);
 
-    // Attach event listeners immediately
-    window.addEventListener('pointermove', handlePointerMove);
-    document.body.addEventListener('pointerleave', () => handlePointerMove({ clientX: -pull_distance * 2, clientY: -pull_distance * 2 }));
-    window.addEventListener('resize', () => {
-      interactionEnabled = false; // Disable briefly during resize
-      updateCellPositions();
-    });
+    let clicked = false;
+    let reset_all = false;
 
-    cells.forEach((cell, i) => cell.addEventListener('pointerup', (e) => handleCellClick(e, i)));
+    const pull_distance = 120;
+    let interactionEnabled = false;
 
-    // Use IntersectionObserver to calculate positions when contact section is visible
-    const contactObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          // Contact section is visible - calculate positions now
-          updateCellPositions();
-          setTimeout(updateCellPositions, 50);
-          setTimeout(updateCellPositions, 150);
+    const updateCellPositions = () => {
+      if (!cellsArray || cellsArray.length === 0) return;
+      let allValid = true;
+      cellsArray.forEach((cell) => {
+        const rect = cell.getBoundingClientRect();
+        // Check if element is actually rendered
+        if (rect.width === 0 || rect.height === 0) {
+          allValid = false;
+          return;
+        }
+        cell.center_position = {
+          x: (rect.left + rect.right) / 2,
+          y: (rect.top + rect.bottom) / 2,
+        };
+      });
+      if (allValid) {
+        interactionEnabled = true; // Enable interaction only when all positions are valid
+      }
+    };
+
+    const handleCellClick = (e, i) => {
+      if (clicked) return;
+      clicked = true;
+
+      gsap.to('.cell', {
+        duration: 1.6,
+        physics2D: {
+          velocity: 'random(400, 1000)',
+          angle: 'random(250, 290)',
+          gravity: 2000
+        },
+        stagger: {
+          amount: 0.3,
+          from: i
+        },
+        onComplete: function () { this.timeScale(-1.3); },
+        onReverseComplete: () => { clicked = false; reset_all = true; handlePointerMove(); },
+      });
+    };
+
+    const handlePointerMove = (e = { clientX: -pull_distance * 2, clientY: -pull_distance * 2 }) => {
+      if (clicked) return;
+      if (!cellsArray || !cellsArray.length) return;
+      if (!interactionEnabled) return; // Don't process until positions are calculated
+      if (!cellsArray[0] || !cellsArray[0].center_position) {
+        updateCellPositions();
+        return;
+      }
+
+      const { clientX: pointer_x, clientY: pointer_y } = e || { clientX: -pull_distance * 2, clientY: -pull_distance * 2 };
+      cellsArray.forEach((cell) => {
+        if (!cell.center_position) return;
+        const diff_x = pointer_x - cell.center_position.x;
+        const diff_y = pointer_y - cell.center_position.y;
+        const distance = Math.sqrt(diff_x * diff_x + diff_y * diff_y);
+
+        if (distance < pull_distance) {
+          const percent = 1 - Math.min(distance / pull_distance, 1);
+          const strength = 0.95;
+          cell.pulled = true;
+          gsap.to(cell, { duration: 0.18, x: diff_x * percent * strength, y: diff_y * percent * strength, ease: 'power2.out' });
+        } else {
+          if (!cell.pulled) return;
+          cell.pulled = false;
+          gsap.to(cell, { duration: 1, x: 0, y: 0, ease: "elastic.out(1, 0.3)" });
         }
       });
-    }, { threshold: 0.01 }); // Trigger as soon as any part is visible
-    contactObserver.observe(contact);
-    
-    // Also calculate positions on scroll to ensure they're always accurate
-    let scrollTimeout;
-    const onScroll = () => {
-      if (scrollTimeout) clearTimeout(scrollTimeout);
-      scrollTimeout = setTimeout(() => {
-        const rect = contact.getBoundingClientRect();
-        if (rect.top < window.innerHeight && rect.bottom > 0) {
-          updateCellPositions();
-        }
-      }, 50);
+
+      if (reset_all) {
+        reset_all = false;
+        gsap.to(cellsArray, { duration: 1, x: 0, y: 0, ease: "elastic.out(1, 0.3)" });
+      }
     };
-    window.addEventListener('scroll', onScroll, { passive: true });
-    if (smoother) {
-      // If using ScrollSmoother, also hook into its scroll events
-      smoother.scrollTrigger?.addEventListener?.('refresh', updateCellPositions);
-    }
-    if (contact) {
-      contact.addEventListener('pointerup', (e) => {
-        const interactive = e.target.closest && e.target.closest('a, button, input, textarea, select, label, .nav-btn, .tech-card, .repo-btn, .demo-btn');
-        if (interactive) return;
 
-        const px = e.clientX;
-        const py = e.clientY;
-        let bestIndex = -1;
-        let bestDist = Infinity;
-        cells.forEach((cell, i) => {
-          if (!cell.center_position) return;
-          const dx = px - cell.center_position.x;
-          const dy = py - cell.center_position.y;
-          const d = Math.hypot(dx, dy);
-          if (d < bestDist) { bestDist = d; bestIndex = i; }
-        });
+    const init = () => {
+      if (!cellsArray || cellsArray.length === 0) {
+        console.warn('[physics-grid] No .cell elements found. Grid interaction disabled.');
+        return;
+      }
 
-        if (bestIndex >= 0) handleCellClick(e, bestIndex);
+      const contact = document.querySelector('.contact');
+      if (!contact) {
+        console.warn('[physics-grid] No .contact element found.');
+        return;
+      }
+
+      // Attach event listeners immediately
+      window.addEventListener('pointermove', handlePointerMove);
+      document.body.addEventListener('pointerleave', () => handlePointerMove({ clientX: -pull_distance * 2, clientY: -pull_distance * 2 }));
+      
+      // Regenerate grid on resize with debounce
+      let resizeTimeout;
+      window.addEventListener('resize', () => {
+        if (resizeTimeout) clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+          interactionEnabled = false;
+          const newCells = generateGrid();
+          if (newCells && newCells.length > 0) {
+            cellsArray = Array.from(newCells);
+            updateCellPositions();
+            // Reattach click handlers to new cells
+            cellsArray.forEach((cell, i) => cell.addEventListener('pointerup', (e) => handleCellClick(e, i)));
+          }
+        }, 150);
       });
-    }
 
-    // Add a subtle 'Click anywhere' prompt and a cursor tooltip to invite interaction
-    const clickPrompt = document.createElement('div');
-    clickPrompt.className = 'click-prompt';
-    clickPrompt.textContent = "Click anywhere";
-    document.querySelector('.contact').appendChild(clickPrompt);
+      cellsArray.forEach((cell, i) => cell.addEventListener('pointerup', (e) => handleCellClick(e, i)));
 
-    const cursorPrompt = document.createElement('div');
-    cursorPrompt.className = 'cursor-prompt';
-    cursorPrompt.textContent = 'Click';
-    document.body.appendChild(cursorPrompt);
-
-    let promptShown = false;
-    const showPromptOnce = () => {
-      if (promptShown) return; promptShown = true;
-      clickPrompt.classList.add('visible');
-      setTimeout(() => clickPrompt.classList.remove('visible'), 4000);
-    };
-
-    let cursorTimer = null;
-    const showCursorPrompt = (x, y) => {
-      gsap.set(cursorPrompt, { x, y });
-      cursorPrompt.classList.add('visible');
-      if (cursorTimer) clearTimeout(cursorTimer);
-      cursorTimer = setTimeout(() => cursorPrompt.classList.remove('visible'), 900);
-    };
-
-    const isCoarse = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
-
-    if (isCoarse) {
-      // On touch devices, show the click prompt when the contact section scrolls into view
-      const io = new IntersectionObserver((entries, obs) => {
+      // Use IntersectionObserver to calculate positions when contact section is visible
+      const contactObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
-            showPromptOnce();
-            obs.disconnect();
+            // Contact section is visible - calculate positions now
+            updateCellPositions();
+            setTimeout(updateCellPositions, 50);
+            setTimeout(updateCellPositions, 150);
           }
         });
-      }, { threshold: 0.12 });
-      io.observe(contact);
-    } else {
-      // Fine pointer devices: show prompt on hover and show a small cursor tooltip
-      contact.addEventListener('pointerenter', (e) => { showPromptOnce(); showCursorPrompt(e.clientX, e.clientY); });
-      contact.addEventListener('pointermove', (e) => { if (cursorPrompt.classList.contains('visible')) gsap.set(cursorPrompt, { x: e.clientX, y: e.clientY }); });
-    }
+      }, { threshold: 0.01 }); // Trigger as soon as any part is visible
+      contactObserver.observe(contact);
+      
+      // Also calculate positions on scroll to ensure they're always accurate
+      let scrollTimeout;
+      const onScroll = () => {
+        if (scrollTimeout) clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(() => {
+          const rect = contact.getBoundingClientRect();
+          if (rect.top < window.innerHeight && rect.bottom > 0) {
+            updateCellPositions();
+          }
+        }, 50);
+      };
+      window.addEventListener('scroll', onScroll, { passive: true });
+      if (smoother) {
+        // If using ScrollSmoother, also hook into its scroll events
+        smoother.scrollTrigger?.addEventListener?.('refresh', updateCellPositions);
+      }
+      if (contact) {
+        contact.addEventListener('pointerup', (e) => {
+          const interactive = e.target.closest && e.target.closest('a, button, input, textarea, select, label, .nav-btn, .tech-card, .repo-btn, .demo-btn');
+          if (interactive) return;
 
-    // Hide prompts on first click so they don't get in the way
-    const hideAllPrompts = () => { clickPrompt.classList.remove('visible'); cursorPrompt.classList.remove('visible'); };
-    contact.addEventListener('pointerup', () => { hideAllPrompts(); });
-    
-    // Initial position calculation attempts
-    updateCellPositions();
-    setTimeout(updateCellPositions, 100);
-    setTimeout(updateCellPositions, 300);
-    window.addEventListener('load', () => {
-      updateCellPositions();
-      setTimeout(updateCellPositions, 200);
-    });
-    
-    // refresh positions when ScrollTrigger refreshes (covers smoothers and other layout changes)
-    if (window.ScrollTrigger && typeof ScrollTrigger.addEventListener === 'function') {
-      ScrollTrigger.addEventListener('refresh', updateCellPositions);
-    } else if (window.ScrollTrigger && ScrollTrigger.refresh) {
-      // fallback: call once after a short delay in case ScrollTrigger isn't ready yet
-      setTimeout(() => { try { ScrollTrigger.refresh(); } catch (e) {} }, 250);
-    }
-  };
+          const px = e.clientX;
+          const py = e.clientY;
+          let bestIndex = -1;
+          let bestDist = Infinity;
+          cellsArray.forEach((cell, i) => {
+            if (!cell.center_position) return;
+            const dx = px - cell.center_position.x;
+            const dy = py - cell.center_position.y;
+            const d = Math.hypot(dx, dy);
+            if (d < bestDist) { bestDist = d; bestIndex = i; }
+          });
 
-  init();
+          if (bestIndex >= 0) handleCellClick(e, bestIndex);
+        });
+      }
+
+      // Add a subtle 'Click anywhere' prompt and a cursor tooltip to invite interaction
+      const clickPrompt = document.createElement('div');
+      clickPrompt.className = 'click-prompt';
+      clickPrompt.textContent = "Click anywhere";
+      document.querySelector('.contact').appendChild(clickPrompt);
+
+      const cursorPrompt = document.createElement('div');
+      cursorPrompt.className = 'cursor-prompt';
+      cursorPrompt.textContent = 'Click';
+      document.body.appendChild(cursorPrompt);
+
+      let promptShown = false;
+      const showPromptOnce = () => {
+        if (promptShown) return; promptShown = true;
+        clickPrompt.classList.add('visible');
+        setTimeout(() => clickPrompt.classList.remove('visible'), 4000);
+      };
+
+      let cursorTimer = null;
+      const showCursorPrompt = (x, y) => {
+        gsap.set(cursorPrompt, { x, y });
+        cursorPrompt.classList.add('visible');
+        if (cursorTimer) clearTimeout(cursorTimer);
+        cursorTimer = setTimeout(() => cursorPrompt.classList.remove('visible'), 900);
+      };
+
+      const isCoarse = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
+
+      if (isCoarse) {
+        // On touch devices, show the click prompt when the contact section scrolls into view
+        const io = new IntersectionObserver((entries, obs) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              showPromptOnce();
+              obs.disconnect();
+            }
+          });
+        }, { threshold: 0.12 });
+        io.observe(contact);
+      } else {
+        // Fine pointer devices: show prompt on hover and show a small cursor tooltip
+        contact.addEventListener('pointerenter', (e) => { showPromptOnce(); showCursorPrompt(e.clientX, e.clientY); });
+        contact.addEventListener('pointermove', (e) => { if (cursorPrompt.classList.contains('visible')) gsap.set(cursorPrompt, { x: e.clientX, y: e.clientY }); });
+      }
+
+      // Hide prompts on first click so they don't get in the way
+      const hideAllPrompts = () => { clickPrompt.classList.remove('visible'); cursorPrompt.classList.remove('visible'); };
+      contact.addEventListener('pointerup', () => { hideAllPrompts(); });
+      
+      // Multiple position update attempts with proper timing
+      // Wait for DOM to fully render before calculating positions
+      requestAnimationFrame(() => {
+        updateCellPositions();
+        setTimeout(updateCellPositions, 50);
+        setTimeout(updateCellPositions, 150);
+        setTimeout(updateCellPositions, 300);
+      });
+      
+      window.addEventListener('load', () => {
+        updateCellPositions();
+        setTimeout(updateCellPositions, 100);
+        setTimeout(updateCellPositions, 250);
+      });
+      
+      // refresh positions when ScrollTrigger refreshes (covers smoothers and other layout changes)
+      if (window.ScrollTrigger && typeof ScrollTrigger.addEventListener === 'function') {
+        ScrollTrigger.addEventListener('refresh', updateCellPositions);
+      } else if (window.ScrollTrigger && ScrollTrigger.refresh) {
+        // fallback: call once after a short delay in case ScrollTrigger isn't ready yet
+        setTimeout(() => { try { ScrollTrigger.refresh(); } catch (e) {} }, 250);
+      }
+    };
+
+    init();
   };
 
   // Wait for all ScrollTrigger instances to be created and settled before initializing physics grid
+  // Also wait for potential layout shifts from ScrollSmoother
   setTimeout(() => {
     if (window.ScrollTrigger) {
       ScrollTrigger.refresh();
     }
-    initPhysicsGrid();
-  }, 300);
+    // Additional delay to ensure layout is stable
+    setTimeout(() => {
+      initPhysicsGrid();
+    }, 100);
+  }, 400);
 });
 
