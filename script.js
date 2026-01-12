@@ -1,4 +1,4 @@
-gsap.registerPlugin(ScrollTrigger, ScrollSmoother, MotionPathPlugin, Physics2DPlugin);
+gsap.registerPlugin(ScrollTrigger, ScrollSmoother, DrawSVGPlugin, MotionPathPlugin, Physics2DPlugin);
 
 document.addEventListener('DOMContentLoaded', () => {
   let smoother = null;
@@ -26,7 +26,12 @@ document.addEventListener('DOMContentLoaded', () => {
         trigger: horizontalContainer,
         pin: true,
         scrub: 1,
-        snap: 1 / (horizontalSections.length - 1),
+        snap: {
+          snapTo: 1 / (horizontalSections.length - 1),
+          duration: { min: 0.2, max: 0.6 },
+          delay: 0.1,
+          ease: 'power1.inOut'
+        },
         end: () => '+=' + (horizontalSectionsWrap.offsetWidth - window.innerWidth)
       }
     });
@@ -35,6 +40,32 @@ document.addEventListener('DOMContentLoaded', () => {
     if (projectsHeader) {
       ScrollTrigger.create({ trigger: horizontalContainer, start: 'top top', end: () => '+=' + (horizontalSectionsWrap.offsetWidth - window.innerWidth), pin: '#projects-header', pinSpacing: false });
     }
+  }
+
+  // SVG Motion Path Animation for About Section
+  const svgStage = $('#svg-stage');
+  const theLine = $('.theLine');
+  const ball01 = $('.ball01');
+  
+  if (svgStage && theLine && ball01) {
+    gsap.timeline({
+      defaults: { duration: 1, ease: 'none' },
+      scrollTrigger: {
+        trigger: '#svg-stage',
+        scrub: true,
+        start: 'top center',
+        end: 'bottom center'
+      }
+    })
+    .to('.ball01', { duration: 0.01, autoAlpha: 1 })
+    .from('.theLine', { drawSVG: 0 }, 0)
+    .to('.ball01', {
+      motionPath: {
+        path: '.theLine',
+        align: '.theLine',
+        alignOrigin: [0.5, 0.5]
+      }
+    }, 0);
   }
 
   horizontalSections.forEach(section => {
@@ -63,15 +94,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (btn && video) btn.addEventListener('click', () => { load(); btn.style.display = 'none'; video.play().catch(() => {}); });
   });
 
-  const TECH_ACTIVE_DURATION = 1400;
-  $$('.tech-tag').forEach(tag => {
-    if (!tag.hasAttribute('role')) tag.setAttribute('role', 'button');
-    if (!tag.hasAttribute('tabindex')) tag.setAttribute('tabindex', '0');
-    tag.setAttribute('aria-pressed', 'false');
-    const activate = () => { if (tag._t) clearTimeout(tag._t); tag.classList.add('active'); tag.setAttribute('aria-pressed', 'true'); tag._t = setTimeout(() => { tag.classList.remove('active'); tag.setAttribute('aria-pressed', 'false'); tag._t = null; }, TECH_ACTIVE_DURATION); };
-    tag.addEventListener('click', activate); tag.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activate(); } });
-  });
-
   $$('.tech-card').forEach(card => {
     const inner = card.querySelector('.tech-card-inner');
     if (!inner) return;
@@ -98,7 +120,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const isFlipped = gsap.getProperty(inner, 'rotationY') !== 0;
       gsap.to(inner, {
         rotationY: isFlipped ? 0 : 180,
-        duration: 0.3,
+        duration: 1,
         ease: 'back.out(1.2)'
       });
     });
@@ -109,7 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const isFlipped = gsap.getProperty(inner, 'rotationY') !== 0;
         gsap.to(inner, {
           rotationY: isFlipped ? 0 : 180,
-          duration: 0.6,
+          duration: 1,
           ease: 'back.out(1.2)'
         });
       }
@@ -196,7 +218,7 @@ document.addEventListener('DOMContentLoaded', () => {
     gsap.ticker.add(tick);
 
     const onMouseMove = (e) => { cursorWrap.style.display = ''; mouseX = e.clientX; mouseY = e.clientY; };
-    const hoverSelector = ['a', 'button', 'input', 'textarea', '.nav-btn', '.tech-tag', '.tech-card', '.repo-btn', '.demo-btn', '.menu-toggle'].join(',');
+    const hoverSelector = ['a', 'button', 'input', 'textarea', '.nav-btn', '.tech-card', '.repo-btn', '.demo-btn', '.menu-toggle'].join(',');
     const onOver = (e) => { if (e.target.closest && e.target.closest(hoverSelector)) cursorWrap.classList.add('hover'); };
     const onOut = (e) => { if (e.target.closest && e.target.closest(hoverSelector)) cursorWrap.classList.remove('hover'); };
     const onMouseDown = (e) => {
@@ -346,7 +368,7 @@ const init = () => {
   contactObserver.observe(contact);
   if (contact) {
     contact.addEventListener('pointerup', (e) => {
-      const interactive = e.target.closest && e.target.closest('a, button, input, textarea, select, label, .nav-btn, .tech-tag, .tech-card, .repo-btn, .demo-btn');
+      const interactive = e.target.closest && e.target.closest('a, button, input, textarea, select, label, .nav-btn, .tech-card, .repo-btn, .demo-btn');
       if (interactive) return;
 
       const px = e.clientX;
