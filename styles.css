@@ -256,6 +256,55 @@ nav ul a:hover{
   transform-origin: 50% 50%; /* ensures proper rotation center */
 }
 
+/* Hero section mobile styles */
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: clamp(8rem, 20vw, 13rem);
+  }
+  
+  #hero-img {
+    padding-top: 150px;
+  }
+  
+  #hero-img img {
+    max-width: clamp(200px, 35vw, 300px);
+  }
+  
+  .spin-container1 {
+    top: 180px;
+    width: clamp(120px, 18vw, 180px);
+  }
+  
+  .spin-container2 {
+    top: 380px;
+    width: clamp(120px, 18vw, 180px);
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-title {
+    font-size: clamp(5rem, 28vw, 8rem);
+  }
+  
+  #hero-img {
+    padding-top: 120px;
+  }
+  
+  #hero-img img {
+    max-width: clamp(220px, 300vw, 180px);
+  }
+  
+  .spin-container1 {
+    top: 140px;
+    width: clamp(100px, 20vw, 140px);
+  }
+  
+  .spin-container2 {
+    top: 300px;
+    width: clamp(80px, 20vw, 140px);
+  }
+}
+
 /* Custom cursor styles */
 /* Only apply on fine pointers (mouse); keep native cursor on touch devices */
 @media (pointer: fine) {
@@ -333,7 +382,7 @@ nav ul a:hover{
 }
 
 /* Focus-visible improvements for keyboard users */
-a:focus-visible, button:focus-visible, .tech-tag:focus-visible, .tech-card:focus-visible, .menu-toggle:focus-visible {
+a:focus-visible, button:focus-visible, .tech-card:focus-visible, .menu-toggle:focus-visible {
   outline: 3px solid #9AEBA3;
   outline-offset: 3px;
   border-radius: 6px;
@@ -355,6 +404,7 @@ a:focus-visible, button:focus-visible, .tech-tag:focus-visible, .tech-card:focus
   overflow: hidden;
   padding: 2rem 0;
   background: linear-gradient(90deg, rgba(0,0,0,0.6), rgba(10,10,10,0.6));
+  z-index: 20;
 }
 
 .banner-line {
@@ -396,6 +446,58 @@ a:focus-visible, button:focus-visible, .tech-tag:focus-visible, .tech-card:focus
 /* Make lines wide so they can scroll smoothly */
 .banner-line .item, .banner-line .logo-item { min-width: 10rem; text-align: center; }
 
+/* Running banner mobile styles */
+@media (max-width: 768px) {
+  .running-banner {
+    padding: 1.5rem 0;
+  }
+  
+  .banner-line .item,
+  .banner-line .logo-item {
+    --banner-item-width: 8rem;
+    font-size: 2.5rem;
+    padding: 0.2rem 0.4rem;
+  }
+  
+  .banner-line .logo-item {
+    font-size: 3rem;
+  }
+  
+  .banner-line.line1 { 
+    padding: 0.75rem 0; 
+  }
+  
+  .banner-line.line2 { 
+    padding: 0.4rem 0; 
+  }
+}
+
+@media (max-width: 480px) {
+  .running-banner {
+    padding: 1rem 0;
+  }
+  
+  .banner-line .item,
+  .banner-line .logo-item {
+    --banner-item-width: 6rem;
+    font-size: 2rem;
+    padding: 0.15rem 0.3rem;
+    min-width: 6rem;
+  }
+  
+  .banner-line .logo-item {
+    font-size: 2.5rem;
+  }
+  
+  .banner-line.line1 { 
+    padding: 0.5rem 0; 
+  }
+  
+  .banner-line.line2 { 
+    padding: 0.3rem 0; 
+  }
+}
+
 /* About me style -----------------------------------------------------------------------*/
 #About {
   display: flex;
@@ -406,6 +508,7 @@ a:focus-visible, button:focus-visible, .tech-tag:focus-visible, .tech-card:focus
   padding: 8rem 15%;
   box-sizing: border-box;
   flex-wrap: wrap;
+  position: relative; /* For absolute SVG positioning */
 }
 
 .about-left {
@@ -413,6 +516,8 @@ a:focus-visible, button:focus-visible, .tech-tag:focus-visible, .tech-card:focus
   min-width: 260px;
   margin: 0;
   padding: 1rem 0;
+  position: relative;
+  z-index: 1; /* Above SVG background */
 }
 
 .about-left h1 { 
@@ -438,6 +543,7 @@ a:focus-visible, button:focus-visible, .tech-tag:focus-visible, .tech-card:focus
   font-weight:600; 
   margin-bottom:1rem; 
   font-family: 'Montserrat', sans-serif;
+  color: #9AEBA3;
 }
 
 .about-left p {
@@ -511,6 +617,7 @@ a:focus-visible, button:focus-visible, .tech-tag:focus-visible, .tech-card:focus
   padding: 1rem 0;
   position: relative; /* containing block for absolute background box */
   box-sizing: border-box;
+  z-index: 1; /* Above SVG background */
 }
 
 .about-photo {
@@ -525,6 +632,30 @@ a:focus-visible, button:focus-visible, .tech-tag:focus-visible, .tech-card:focus
   object-fit: cover;
 }
 
+/* SVG Motion Path Styles */
+#svg-stage {
+  position: absolute;
+  top: -25%; /* Move up by adjusting negative top value */
+  left: -35%; /* Extend beyond the left edge */
+  width: 100%; /* Wider to compensate for left shift */
+  height: 100%;
+  max-width: none; /* Remove max-width to allow full width */
+  overflow: visible;
+  pointer-events: none;
+  z-index: 0; /* Behind all content */
+}
+
+.theLine {
+  stroke: #000000; /* slate-950 equivalent */
+  stroke-width: 30px;
+  stroke-linecap: round;
+}
+
+.ball {
+  fill: #000000; /* Match your theme color */
+  opacity: 0; /* Start invisible, GSAP will animate autoAlpha */
+}
+
 /* background-box removed */
 
 /* Horizontal scrolling styles ---------------------------------------------------------*/
@@ -536,12 +667,12 @@ a:focus-visible, button:focus-visible, .tech-tag:focus-visible, .tech-card:focus
 
 .horizontal-sections {
     display: flex;
-    width: 400%; /* Adjust based on number of sections */
+    width: 500%; /* Adjust based on number of sections */
     height: 100%;
 }
 
 .horizontal-section {
-    width: 25%; /* 100% / number of sections */
+    width: 20%; /* 100% / number of sections */
     min-width: 100vw;
     height: 100%;
     display: flex;
@@ -737,57 +868,65 @@ a:focus-visible, button:focus-visible, .tech-tag:focus-visible, .tech-card:focus
 }
 
 /* Remove old tech-tag styles */
-.tech-tag {
-  display: inline-flex;
-  align-items: center;
-  gap: .5rem;
-  background: rgba(255,255,255,0.02);
-  color: #cfead3;
-  border: 1px solid rgba(255,255,255,0.04);
-  padding: .45rem .85rem;
-  border-radius: 999px;
-  cursor: pointer;
-  font-size: .95rem;
-  transition: background 160ms ease, color 160ms ease; /* simplified transitions */
-  position: relative;
-}
-.tech-tag::before {
-  /* keep the subtle dot for visual interest */
-  content: '';
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: rgba(154,235,163,0.95);
-  display: inline-block;
-  transform: translateY(-.5px);
-  margin-right: .45rem;
-}
-.tech-tag:hover {
-  /* gentle hover highlight only */
-  background: rgba(154,235,163,0.06);
-}
-.tech-tag:focus {
-  outline: 3px solid rgba(154,235,163,0.12);
-  outline-offset: 4px;
-}
-.tech-tag.active {
-  background: linear-gradient(90deg, #9AEBA3, #7FE79A);
-  color: #081018;
-}
+
 
 @media (max-width: 900px) {
-  #About { flex-direction: column; align-items: flex-start; padding: 2.5rem 4%; }
-  .about-right { order: -1; width: 100%; flex-basis: 100%; margin-bottom: 1rem; min-height: auto; }
-  .about-left { flex-basis: 100%; }
+  #About { 
+    flex-direction: column; 
+    align-items: flex-start; 
+    padding: 2.5rem 4%; 
+  }
+  .about-right { 
+    order: -1; 
+    width: 100%; 
+    flex-basis: 100%; 
+    margin-bottom: 1rem; 
+    min-height: auto; 
+  }
+  .about-left { 
+    flex-basis: 100%; 
+  }
+  .about-left h1 {
+    font-size: clamp(3rem, 10vw, 5rem);
+  }
+  .about-left .about-bold {
+    font-size: 1.3rem;
+  }
+  .about-left p {
+    font-size: 1.1rem;
+  }
   /* tighten the max-width on medium screens */
-  .about-photo { max-width: clamp(180px, 45vw, 360px); }
+  .about-photo { 
+    max-width: clamp(180px, 45vw, 360px); 
+  }
   /* decorative box removed */
 }
 
 @media (max-width: 520px) {
-  #About { padding: 2rem 1rem; }
+  #About { 
+    padding: 2rem 4%; 
+  }
+  .about-left h1 {
+    font-size: clamp(2.8rem, 15vw, 3.5rem);
+  }
+  .about-left .about-bold {
+    font-size: 1rem;
+  }
+  .about-left p {
+    font-size: 0.8rem;
+    line-height: 1.5;
+  }
+  .about-actions {
+    flex-wrap: wrap;
+  }
+  .contact-btn,
+  .resume-btn {
+    padding: 0.5rem 1rem;
+  }
   /* ensure the photo remains proportionate on small phones */
-  .about-photo { max-width: clamp(140px, 60vw, 320px); }
+  .about-photo { 
+    max-width: clamp(140px, 60vw, 320px); 
+  }
 }
 
 .demo-btn { 
@@ -844,10 +983,104 @@ a:focus-visible, button:focus-visible, .tech-tag:focus-visible, .tech-card:focus
 }
 
 @media (max-width: 900px) {
-  .project-card { flex-direction: column; width: 95%; height: auto;}
-  .project-tech { width: 100%; flex-basis: auto; border-left: none; padding-left: 0; border-top: 1px solid rgba(255,255,255,0.04); padding-top: .75rem }
+  .project-card { 
+    flex-direction: column; 
+    width: 95%; 
+    height: 100%;
+    padding: 2rem 2rem;
+  }
+  .project-video-tech-container {
+    flex-direction: column;
+    gap: 0.1rem;
+  }
+  .project-video {
+    max-width: 100%;
+  }
+  .project-tech { 
+    width: 100%; 
+    max-width: 100%;
+    flex-basis: auto; 
+    border-left: none; 
+    padding-left: 0; 
+    border-top: 1px solid rgba(255,255,255,0.04); 
+    padding-top: 1rem;
+  }
+  .tech-list {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  .tech-card {
+    min-width: 110px;
+    max-width: 150px;
+  }
   .project-number { font-size: 1.6rem }
+  .project-title { font-size: 1.4rem; }
   .project-left { flex: none; }
+  .project-desc { font-size: 0.9rem; }
+}
+
+@media (max-width: 640px) {
+  .project-card { 
+    padding: 2rem 1.25rem;
+  }
+  .project-number { font-size: 1.4rem; }
+  .project-title { font-size: 1.25rem; }
+  .project-desc { font-size: 0.85rem; line-height: 1.5; }
+  .project-actions .btn { 
+    padding: 0.55rem 1.1rem; 
+    font-size: 0.9rem;
+  }
+  .tech-card {
+    min-width: 100px;
+    max-width: 130px;
+    height: 40px;
+  }
+  .tech-card-front,
+  .tech-card-back {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .project-card { 
+    padding: 1rem 1rem;
+    gap: 0.5rem;
+  }
+  .project-left {
+    gap: 1rem;
+  }
+  .project-number { font-size: 1.2rem; }
+  .project-title { font-size: 1.1rem; }
+  .project-desc { font-size: 0.5rem; }
+  .project-actions { 
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+    flex-wrap: wrap;
+  }
+  .project-actions .btn { 
+    flex: 1;
+    min-width: 120px;
+    max-width: 180px;
+    text-align: center;
+    font-size: 0.6rem;
+  }
+  .tech-list {
+    gap: 0.1rem;
+  }
+  .tech-card {
+    min-width: 50px;
+    max-width: 90px;
+    height: 32px;
+  }
+  .tech-card-front,
+  .tech-card-back {
+    font-size: 0.5em;
+    padding: 0 0.5rem;
+  }
 }
 
 .horizontal-section h2 {
@@ -902,66 +1135,123 @@ a:focus-visible, button:focus-visible, .tech-tag:focus-visible, .tech-card:focus
 .contact-card a { color: var(--second-background); text-decoration: underline; }
 
 @media (max-width: 900px) {
-  .contact-inner { flex-direction: column; align-items: flex-start; padding: 2rem 4%; }
-  .contact-right { width: auto; height: auto; margin-top: 1.5rem }
-  .contact-card { width: 100%; }
-}
-
-/* Make contact card and decorative grid adapt on smaller screens */
-@media (max-width: 900px) {
-  .physics-grid { top: auto; bottom: 0; height: 40vh; }
-  .grid { grid-template-columns: repeat(auto-fit, minmax(30px, 1fr)); gap: 10px; }
-  .cell::before { width: clamp(5px, 1.6vw, 12px); height: clamp(5px, 1.6vw, 12px); }
-  .contact-card { padding: 2rem; border-radius: 14px; }
-  .contact-left h1 { font-size: clamp(2.2rem, 8vw, 4rem); }
-}
-
-@media (max-width: 520px) {
-  .physics-grid { top: auto; bottom: 0; height: 36vh; }
-  .grid { grid-template-columns: repeat(auto-fit, minmax(24px, 1fr)); gap: 8px; }
-  .cell::before { width: 8px; height: 8px; }
-  .contact-card { padding: 1.25rem; border-radius: 12px; }
-  .contact-left h1 { font-size: clamp(1.8rem, 12vw, 3rem); }
-  .contact-inner { padding: 1rem 3%; }
-}
-
-/* Center contact heading and card on narrow screens */
-@media (max-width: 900px) {
-  /* make the contact section more compact on smaller screens */
-  .contact { min-height: auto; padding: 2rem 0; }
-  .contact-inner { align-items: center; text-align: center; }
-  .contact-left { width: 100%; display: block; }
-  .contact-left h1 { margin-bottom: 0.6rem; }
-  .contact-right { width: 100%; display: flex; justify-content: center; margin-top: 0.8rem; }
-  /* reduce card padding so the card doesn't feel oversized */
-  .contact-card { width: min(520px, 95%); padding: 1.2rem; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
-}
-
-@media (max-width: 520px) {
-  .contact { min-height: auto; padding: 1.25rem 0; }
-  .contact-inner { justify-content: center; padding: 0.9rem 3%; }
-  .contact-left { text-align: center; }
-  .contact-right { margin-top: 0.6rem; }
-  .contact-card { width: 100%; max-width: 360px; padding: 0.9rem; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
-}
-
-@media (max-width: 420px) {
-  /* keep the card compact on very small phones */
-  .contact { min-height: auto; padding: 0.8rem 0; }
-  .contact-card { padding: 0.7rem; max-width: 320px; width: 100%; }
-  .contact-inner { gap: 0.75rem; }
-}
-
-/* Reduce contact card vertical footprint on very small screens */
-@media (max-width: 420px) {
-  .contact-card {
-    padding: 0.9rem;
-    max-height: 10vh; 
-    overflow: auto;   
-    box-shadow: 0 12px 30px rgba(0,0,0,0.22);
+  .contact-inner { 
+    flex-direction: column; 
+    align-items: center; 
+    padding: 2rem 4%; 
+    text-align: center;
   }
-  .contact-card p { font-size: 0.95rem; margin-bottom: 0.6rem; }
-  .contact-left h1 { font-size: clamp(1.4rem, 10vw, 2.2rem); }
+  .contact-left { 
+    width: 100%; 
+    display: block; 
+  }
+  .contact-left h1 { 
+    font-size: clamp(2.5rem, 8vw, 4rem); 
+    margin-bottom: 1rem;
+  }
+  .contact-right { 
+    width: 100%; 
+    display: flex; 
+    justify-content: center; 
+    margin-top: 1rem;
+  }
+  .contact-card { 
+    width: min(520px, 95%); 
+    padding: 2rem; 
+    border-radius: 14px;
+  }
+  .contact-card p {
+    font-size: 1rem;
+  }
+  .physics-grid { 
+    top: auto; 
+    bottom: 0; 
+    height: 40vh; 
+  }
+  .grid { 
+    grid-template-columns: repeat(auto-fit, minmax(30px, 1fr)); 
+    gap: 10px; 
+  }
+  .cell::before { 
+    width: clamp(5px, 1.6vw, 12px); 
+    height: clamp(5px, 1.6vw, 12px); 
+  }
+}
+
+@media (max-width: 520px) {
+  .contact { 
+    min-height: auto; 
+    padding: 1.5rem 0; 
+  }
+  .contact-inner { 
+    justify-content: center; 
+    padding: 1rem 4%; 
+    text-align: center;
+  }
+  .contact-left h1 { 
+    font-size: clamp(2rem, 12vw, 3rem); 
+    margin-bottom: 0.75rem;
+  }
+  .contact-right { 
+    margin-top: 1rem; 
+  }
+  .contact-card { 
+    width: 100%; 
+    max-width: 400px; 
+    padding: 1.5rem; 
+    border-radius: 12px;
+  }
+  .contact-card p {
+    font-size: 0.95rem;
+    margin-bottom: 0.75rem;
+  }
+  .physics-grid { 
+    top: auto; 
+    bottom: 0; 
+    height: 35vh; 
+  }
+  .grid { 
+    grid-template-columns: repeat(auto-fit, minmax(24px, 1fr)); 
+    gap: 8px; 
+  }
+  .cell::before { 
+    width: 8px; 
+    height: 8px; 
+  }
+}
+
+@media (max-width: 420px) {
+  .contact { 
+    min-height: auto; 
+    padding: 1rem 0; 
+  }
+  .contact-inner { 
+    height: auto;
+    gap: 0.75rem; 
+    padding: 0.75rem 3%;
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .contact-left h1 { 
+    font-size: clamp(2rem, 20vw, 4rem); 
+  }
+
+  .contact-card { 
+    padding: 1.25rem; 
+    max-width: 340px; 
+    width: 100%;
+    height: 40%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .contact-card p { 
+    font-size: 0.9rem; 
+    margin-bottom: 0.65rem;
+    text-align: center;
+  }
 }
 
 /* Footer styles */
@@ -988,6 +1278,79 @@ a:focus-visible, button:focus-visible, .tech-tag:focus-visible, .tech-card:focus
 @media (max-width: 640px) {
   .about-photo {
     display: none;
+  }
+  .site-footer {
+    padding: 2.5rem 6%;
+  }
+  .footer-inner {
+    gap: 3rem;
+  }
+  .footer-right h4 {
+    font-size: 1rem;
+  }
+  .footer-right p {
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+  .social-link i {
+    font-size: 1.75rem;
+  }
+}
+
+@media (max-width: 520px) {
+  .site-footer {
+    padding: 2rem 5%;
+  }
+  .footer-inner {
+    gap: 2rem;
+  }
+  .footer-left {
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+  }
+  .footer-item {
+    font-size: 0.95rem;
+  }
+  .footer-item i {
+    font-size: 1rem;
+  }
+  .footer-right {
+    width: 100%;
+  }
+  .footer-right h4 {
+    font-size: 0.95rem;
+  }
+  .footer-right p {
+    font-size: 0.9rem;
+  }
+  .footer-socials {
+    gap: 0.75rem;
+  }
+  .social-link i {
+    font-size: 1.6rem;
+  }
+}
+
+@media (max-width: 420px) {
+  .site-footer {
+    padding: 1.5rem 10%;
+  }
+  .footer-inner {
+    gap: 1.5rem;
+  }
+  .footer-item {
+    font-size: 0.85rem;
+  }
+  .footer-right h4 {
+    font-size: 0.9rem;
+  }
+  .footer-right p {
+    font-size: 0.85rem;
+    line-height: 1.5;
+  }
+  .social-link i {
+    font-size: 1.5rem;
   }
 }
 
