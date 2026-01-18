@@ -777,6 +777,13 @@ a:focus-visible, button:focus-visible, .tech-card:focus-visible, .menu-toggle:fo
   display: block;
 }
 
+.project-video img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
 /* Play overlay on lazy videos */
 .project-video { position: relative; }
 .play-overlay {
