@@ -135,10 +135,12 @@ nav ul a:hover{
   color: var(--second-background);
   opacity: 0.8;
   transition: 0.2s ease-in-out;
+  font-size: 1.35rem;
+  font-weight: 300;
 }
 
 .logo{
-  font-size: 2em;
+  font-size: 2.4em;
   color: #9AEBA3;
   transition: 0.2s ease-in-out;
 }
@@ -152,6 +154,7 @@ nav ul a:hover{
   background: #9AEBA3;
   border: none;
   padding: 0.6em 1.1em;
+  font-size: 1.15rem;
   border-radius: 999px;
   cursor: pointer;
   transition: transform 0.18s ease, box-shadow 0.18s ease, opacity 0.18s;
@@ -528,14 +531,17 @@ a:focus-visible, button:focus-visible, .tech-card:focus-visible, .menu-toggle:fo
   line-height: 0.9;
   color: #081018;
   -webkit-text-stroke: 0;
-  text-shadow: none;
+  text-shadow: 1px 0 0 var(--second-background), -1px 0 0 var(--second-background), 0 1px 0 var(--second-background), 0 -1px 0 var(--second-background);
   font-weight: 400;
+  position: relative;
+  z-index: 2;
 }
 
 .about-left span {
   /* keep the green fill but add a thin dark stroke */
   color: #9AEBA3;
   -webkit-text-stroke: 2.5px #000000;
+  text-shadow: 1px 0 0 var(--second-background), -1px 0 0 var(--second-background), 0 1px 0 var(--second-background), 0 -1px 0 var(--second-background);
 }
 
 .about-left .about-bold { 
@@ -543,7 +549,8 @@ a:focus-visible, button:focus-visible, .tech-card:focus-visible, .menu-toggle:fo
   font-weight:600; 
   margin-bottom:1rem; 
   font-family: 'Montserrat', sans-serif;
-  color: #9AEBA3;
+  color: #000000;
+  text-shadow: 1px 0 0 var(--second-background), -1px 0 0 var(--second-background), 0 1px 0 var(--second-background), 0 -1px 0 var(--second-background);
 }
 
 .about-left p {
@@ -552,11 +559,12 @@ a:focus-visible, button:focus-visible, .tech-card:focus-visible, .menu-toggle:fo
   width: 100%;
   font-size: 1.3rem;
   line-height: 1.4;
-  color: #000000;
+  color: #111;
   font-family: 'Montserrat', sans-serif;
   margin: 1.5rem 0 2.5rem 0;
   text-align: justify;
   text-align-last: left;
+  text-shadow: 1px 0 0 var(--second-background), -1px 0 0 var(--second-background), 0 1px 0 var(--second-background), 0 -1px 0 var(--second-background);
 }
 
 .about-actions { 
@@ -614,7 +622,7 @@ a:focus-visible, button:focus-visible, .tech-card:focus-visible, .menu-toggle:fo
 .about-right {
   /* container that sizes to the image so the decorative box can stack beneath */
   width: 100%;
-  max-width: 420px;
+  max-width: 360px;
   margin: 0 auto;
   padding: 1rem 0;
   position: relative; /* containing block for absolute background box */
@@ -625,7 +633,7 @@ a:focus-visible, button:focus-visible, .tech-card:focus-visible, .menu-toggle:fo
 .about-photo {
   width: 100%;
   /* constrain the image so it doesn't dominate smaller screens */
-  max-width: clamp(220px, 35vw, 420px);
+  max-width: clamp(170px, 30vw, 360px);
   height: auto;
   display: flex;
   border-radius: 10px;
@@ -656,6 +664,98 @@ a:focus-visible, button:focus-visible, .tech-card:focus-visible, .menu-toggle:fo
 .ball {
   fill: #000000; /* Match your theme color */
   opacity: 0; /* Start invisible, GSAP will animate autoAlpha */
+}
+
+/* Experience block inside About --------------------------------------------- */
+:root {
+  --exp-gap: 1.5rem;
+  --exp-min: 320px;
+}
+
+.experience-block {
+  width: 100%;
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+  position: relative;
+}
+
+/* Make the title use the site's title font but ensure it's black here */
+.experience-block .projects-title {
+  color: #081018; /* explicit black-ish color used elsewhere */
+  font-family: 'Modak', cursive;
+}
+
+.experience-inner { max-width: 1200px; margin: 0 auto; }
+.experience-left { max-width: 100%; }
+
+/* Grid layout so adding more experiences is automatic and maintainable */
+.experience-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(var(--exp-min), 1fr));
+  gap: var(--exp-gap);
+  margin-top: 1.25rem;
+  align-items: stretch;
+}
+
+.exp-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  height: 100%;
+}
+
+.exp-duration {
+  display: inline-flex;
+  align-self: flex-start;
+  padding: 0.45rem 0.8rem;
+  border-radius: 999px;
+  background: #081018;
+  color: #F6EFDD;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+}
+
+.experience-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 1.5rem;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  color: #081018;
+  height: 100%;
+  min-height: 240px;
+}
+
+.exp-title {
+  font-family: 'Modak', cursive;
+  font-weight: 500;
+  color: #081018;
+  font-size: 1.55rem;
+  margin: 0 0 0.5rem 0;
+  line-height: 1.2;
+}
+.exp-company { font-weight: 600; color: #081018; margin: 0 0 0.25rem 0; font-size: 0.95rem; }
+.exp-location { color: #666666; font-weight: 400; font-size: 0.9rem; margin: 0 0 0.75rem 0; font-style: italic; }
+.exp-duration { color: #9AEBA3; font-size: 0.85rem; margin: 0 0 0; font-weight: 500; }
+.exp-desc { margin: 0; color: #081018; line-height: 1.5; font-size: 0.95rem; }
+
+/* Responsive: stack to single column on narrower viewports */
+@media (max-width: 900px) {
+  .experience-list { grid-template-columns: 1fr; }
+  .experience-card { padding: 1.25rem; }
+}
+
+@media (max-width: 520px) {
+  .experience-card { padding: 1rem; min-height: 0; }
+  .exp-duration { font-size: 0.75rem; padding: 0.35rem 0.65rem; }
+  .exp-title { font-size: 1.25rem; }
+  .exp-company { font-size: 0.9rem; }
+  .exp-desc { font-size: 0.9rem; line-height: 1.4; }
 }
 
 /* background-box removed */
@@ -884,16 +984,15 @@ a:focus-visible, button:focus-visible, .tech-card:focus-visible, .menu-toggle:fo
     flex-direction: column; 
     align-items: flex-start; 
     padding: 2.5rem 4%; 
+    gap: 2rem;
   }
-  .about-right { 
-    order: -1; 
-    width: 100%; 
-    flex-basis: 100%; 
-    margin-bottom: 1rem; 
-    min-height: auto; 
+  #About .about-right,
+  #About .about-photo { 
+    display: none !important;
   }
   .about-left { 
     flex-basis: 100%; 
+    width: 100%;
   }
   .about-left h1 {
     font-size: clamp(3rem, 10vw, 5rem);
@@ -904,16 +1003,14 @@ a:focus-visible, button:focus-visible, .tech-card:focus-visible, .menu-toggle:fo
   .about-left p {
     font-size: 1.1rem;
   }
-  /* tighten the max-width on medium screens */
-  .about-photo { 
-    max-width: clamp(180px, 45vw, 360px); 
-  }
   /* decorative box removed */
 }
 
 @media (max-width: 520px) {
   #About { 
     padding: 2rem 4%; 
+    gap: 1.25rem;
+    align-items: center;
   }
   .about-left h1 {
     font-size: clamp(2.8rem, 15vw, 3.5rem);
@@ -932,10 +1029,6 @@ a:focus-visible, button:focus-visible, .tech-card:focus-visible, .menu-toggle:fo
   .resume-btn {
     width: 8rem;
     padding: 0.5rem 1rem;
-  }
-  /* ensure the photo remains proportionate on small phones */
-  .about-photo { 
-    max-width: clamp(140px, 60vw, 320px); 
   }
 }
 
@@ -1115,7 +1208,7 @@ a:focus-visible, button:focus-visible, .tech-card:focus-visible, .menu-toggle:fo
   margin: 0;
   color: var(--second-background);
 }
-.projects-subtitle { opacity: 0.9; margin-top: 0.4rem; color: #cfead3; }
+.projects-subtitle { opacity: 0.9; margin-top: 0.4rem; color: #7FE79A; }
 
 /* Contact section styles --------------------------------------------------------------------------- */
 .contact {
