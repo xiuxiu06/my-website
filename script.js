@@ -16,9 +16,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const horizontalSections = $$('.horizontal-section');
   const horizontalContainer = $('.horizontal-container');
   const horizontalSectionsWrap = $('.horizontal-sections');
+  const isDesktopWide = window.matchMedia && window.matchMedia('(min-width: 900px)').matches;
 
   let horizontalScrollTween = null;
-  if (horizontalSections.length && horizontalContainer && horizontalSectionsWrap) {
+  if (isDesktopWide && horizontalSections.length && horizontalContainer && horizontalSectionsWrap) {
     horizontalScrollTween = gsap.to(horizontalSections, {
       xPercent: -100 * (horizontalSections.length - 1),
       ease: 'none',
@@ -47,7 +48,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const theLine = $('.theLine');
   const ball01 = $('.ball01');
   
-  if (svgStage && theLine && ball01) {
+  // Only run SVG motion path on wide (desktop) screens; hide/skip on mobile
+  if (isDesktopWide && svgStage && theLine && ball01) {
     gsap.timeline({
       defaults: { duration: 1, ease: 'none' },
       scrollTrigger: {
@@ -70,7 +72,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   horizontalSections.forEach(section => {
     const box = section.querySelector('.box');
-    if (box) gsap.from(box, { scale: 0, rotation: 180, scrollTrigger: { trigger: section, containerAnimation: horizontalScrollTween, start: 'left 80%', end: 'left 20%', scrub: true } });
+    if (box) {
+      if (horizontalScrollTween) {
+        gsap.from(box, { scale: 0, rotation: 180, scrollTrigger: { trigger: section, containerAnimation: horizontalScrollTween, start: 'left 80%', end: 'left 20%', scrub: true } });
+      } else {
+        gsap.from(box, { scale: 0, rotation: 180, scrollTrigger: { trigger: section, start: 'top 80%', end: 'top 20%', scrub: true } });
+      }
+    }
 
     const projectCard = section.querySelector('.project-card');
     if (projectCard) {
@@ -82,7 +90,12 @@ document.addEventListener('DOMContentLoaded', () => {
       const playVideo = (sec) => { const v = sec.querySelector('video'); const overlay = sec.querySelector('.play-overlay'); if (!v) return; ensureVideoLoaded(v); if (overlay) overlay.style.display = 'none'; v.play().catch(() => {}); };
       const pauseVideo = (sec) => { const v = sec.querySelector('video'); if (v) try { v.pause(); } catch (e) {} };
 
-      gsap.fromTo(projectCard, { y: 40, opacity: 0, scale: 0.98 }, { y: 0, opacity: 1, scale: 1, duration: 0.6, ease: 'power2.out', scrollTrigger: { trigger: section, containerAnimation: horizontalScrollTween, start: 'left center', end: 'right center', scrub: 0.6, toggleActions: 'play reverse play reverse', onEnter: () => playVideo(section), onEnterBack: () => playVideo(section), onLeave: () => pauseVideo(section), onLeaveBack: () => pauseVideo(section) } });
+      if (horizontalScrollTween) {
+        gsap.fromTo(projectCard, { y: 40, opacity: 0, scale: 0.98 }, { y: 0, opacity: 1, scale: 1, duration: 0.6, ease: 'power2.out', scrollTrigger: { trigger: section, containerAnimation: horizontalScrollTween, start: 'left center', end: 'right center', scrub: 0.6, toggleActions: 'play reverse play reverse', onEnter: () => playVideo(section), onEnterBack: () => playVideo(section), onLeave: () => pauseVideo(section), onLeaveBack: () => pauseVideo(section) } });
+      } else {
+        // Mobile / stacked fallback: simple reveal without containerAnimation and without auto video playback
+        gsap.fromTo(projectCard, { y: 40, opacity: 0, scale: 0.98 }, { y: 0, opacity: 1, scale: 1, duration: 0.6, ease: 'power2.out', scrollTrigger: { trigger: projectCard, start: 'top 80%', end: 'top 20%', scrub: false, toggleActions: 'play none none none' } });
+      }
     }
   });
 

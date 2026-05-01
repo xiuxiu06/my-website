@@ -820,12 +820,13 @@ a:focus-visible, button:focus-visible, .tech-card:focus-visible, .menu-toggle:fo
 
 .horizontal-sections {
     display: flex;
-    width: 500%; /* Adjust based on number of sections */
+  width: max-content;
     height: 100%;
 }
 
 .horizontal-section {
-    width: 20%; /* 100% / number of sections */
+  flex: 0 0 100vw;
+  width: 100vw;
     min-width: 100vw;
     height: 100%;
     display: flex;
@@ -1205,7 +1206,7 @@ a:focus-visible, button:focus-visible, .tech-card:focus-visible, .menu-toggle:fo
   }
   .project-number { font-size: 1.2rem; }
   .project-title { font-size: 1.1rem; }
-  .project-desc { font-size: 0.5rem; }
+  .project-desc { font-size: 0.85rem; }
   .project-actions { 
     display: flex;
     flex-direction: row;
@@ -1624,6 +1625,22 @@ path {
   transition: opacity 160ms ease, transform 160ms ease;
 }
 .cursor-prompt.visible { opacity: 1; }
+
+/* Mobile overrides: disable horizontal projects scroller and hide SVG motion line */
+@media (max-width: 900px) {
+  /* Make horizontal projects stack vertically on mobile */
+  .horizontal-container { overflow: visible; }
+  .horizontal-sections { display: block; width: 100%; transform: none !important; }
+  .horizontal-section { width: 100% !important; min-height: auto; padding: 2rem 5%; box-sizing: border-box; }
+  .horizontal-section .project-card { margin: 0 auto; width: 100%; box-shadow: none; }
+
+  /* Ensure project videos/images behave responsively in stacked flow */
+  .project-video { position: relative; width: 100%; max-width: 100%; }
+  .project-video img, .project-video video { width: 100%; height: auto; display: block; }
+
+  /* Hide the SVG motion path and decorative ball on mobile to save rendering */
+  #svg-stage, .theLine, .ball { display: none !important; }
+}
 
 
 
