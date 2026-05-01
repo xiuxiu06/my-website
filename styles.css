@@ -704,6 +704,14 @@ a:focus-visible, button:focus-visible, .tech-card:focus-visible, .menu-toggle:fo
   height: 100%;
 }
 
+.exp-wrapper {
+  transition: transform 0.22s ease;
+}
+
+.exp-wrapper:hover {
+  transform: translateY(-4px);
+}
+
 .exp-duration {
   display: inline-flex;
   align-self: flex-start;
@@ -729,6 +737,37 @@ a:focus-visible, button:focus-visible, .tech-card:focus-visible, .menu-toggle:fo
   color: #081018;
   height: 100%;
   min-height: 240px;
+  border: 1px solid rgba(8, 16, 24, 0.06);
+  transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease, background-color 0.22s ease;
+  will-change: transform;
+}
+
+.exp-wrapper:hover .experience-card,
+.exp-wrapper:focus-within .experience-card {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 30px rgba(0,0,0,0.12);
+  border-color: rgba(154,235,163,0.45);
+  background: linear-gradient(180deg, #ffffff 0%, #fbfff8 100%);
+}
+
+.exp-wrapper:hover .exp-duration,
+.exp-wrapper:focus-within .exp-duration {
+  background: #9AEBA3;
+  color: #081018;
+}
+
+.exp-wrapper:hover .exp-title,
+.exp-wrapper:focus-within .exp-title {
+  color: #1a1a1a;
+  transform: translateX(2px);
+}
+
+.exp-title,
+.exp-duration,
+.exp-company,
+.exp-location,
+.exp-desc {
+  transition: color 0.22s ease, transform 0.22s ease, background-color 0.22s ease, border-color 0.22s ease;
 }
 
 .exp-title {
@@ -756,6 +795,18 @@ a:focus-visible, button:focus-visible, .tech-card:focus-visible, .menu-toggle:fo
   .exp-title { font-size: 1.25rem; }
   .exp-company { font-size: 0.9rem; }
   .exp-desc { font-size: 0.9rem; line-height: 1.4; }
+}
+
+@media (pointer: coarse), (hover: none) {
+  .exp-wrapper:hover,
+  .exp-wrapper:hover .experience-card,
+  .exp-wrapper:hover .exp-title,
+  .exp-wrapper:hover .exp-duration {
+    transform: none;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+    background: inherit;
+    color: inherit;
+  }
 }
 
 /* background-box removed */
