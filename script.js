@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
       scrollTrigger: {
         trigger: '#svg-stage',
         scrub: true,
-        start: 'top center',
+        start: 'top 20%',
         end: 'bottom center'
       }
     })
@@ -165,16 +165,16 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const findIdInsensitive = (id) => { if (!id) return null; const e = document.getElementById(id); if (e) return e; const lower = id.toLowerCase(); return $$('[id]').find(el => el.id && el.id.toLowerCase() === lower) || null; };
-    const scrollTo = (el) => { if (!el) return; const hasSmoother = !!smoother; const current = hasSmoother ? smoother.scrollTop() : (window.pageYOffset || document.documentElement.scrollTop || 0); const r = el.getBoundingClientRect(); const elTopDoc = r.top + current; const elCenter = elTopDoc + r.height / 2; const viewportCenter = (window.innerHeight || document.documentElement.clientHeight) / 2; const navH = $('nav') ? $('nav').offsetHeight : 0; const target = Math.max(0, elCenter - viewportCenter - navH / 2); if (hasSmoother) smoother.scrollTo(target, true, 'auto'); else window.scrollTo({ top: target, behavior: 'smooth' }); };
+    const scrollTo = (el, alignTop = false) => { if (!el) return; const hasSmoother = !!smoother; const current = hasSmoother ? smoother.scrollTop() : (window.pageYOffset || document.documentElement.scrollTop || 0); const r = el.getBoundingClientRect(); const elTopDoc = r.top + current; const navH = $('nav') ? $('nav').offsetHeight : 0; const target = alignTop ? Math.max(0, elTopDoc - navH) : Math.max(0, elTopDoc + r.height / 2 - ((window.innerHeight || document.documentElement.clientHeight) / 2) - navH / 2); if (hasSmoother) smoother.scrollTo(target, true, 'auto'); else window.scrollTo({ top: target, behavior: 'smooth' }); };
 
-    links.forEach(a => a.addEventListener('click', e => { const href = a.getAttribute('href'); if (!href || !href.startsWith('#')) return; e.preventDefault(); const id = href.slice(1).trim(); const target = findIdInsensitive(id); if (!target) return; if (navEl.classList.contains('menu-open')) { navEl.classList.remove('menu-open'); if (menuBtn) menuBtn.setAttribute('aria-expanded', 'false'); } try { history.pushState(null, '', '#' + id); } catch (err) {} scrollTo(target); }));
+    links.forEach(a => a.addEventListener('click', e => { const href = a.getAttribute('href'); if (!href || !href.startsWith('#')) return; e.preventDefault(); const id = href.slice(1).trim(); const target = findIdInsensitive(id); if (!target) return; if (navEl.classList.contains('menu-open')) { navEl.classList.remove('menu-open'); if (menuBtn) menuBtn.setAttribute('aria-expanded', 'false'); } try { history.pushState(null, '', '#' + id); } catch (err) {} scrollTo(target, id.toLowerCase() === 'about'); }));
 
     const navContactBtn = $('nav .nav-btn');
     if (navContactBtn) navContactBtn.addEventListener('click', (e) => { e.preventDefault(); const id = 'contact'; const target = findIdInsensitive(id); if (!target) return; if (navEl.classList.contains('menu-open')) { navEl.classList.remove('menu-open'); if (menuBtn) menuBtn.setAttribute('aria-expanded', 'false'); } try { history.pushState(null, '', '#' + id); } catch (err) {} scrollTo(target); });
 
     const allAnchors = Array.from(document.querySelectorAll('a[href^="#"]'));
     const pageAnchors = allAnchors.filter(a => !a.closest('nav .links'));
-    pageAnchors.forEach(a => a.addEventListener('click', (e) => { const href = a.getAttribute('href'); if (!href || !href.startsWith('#')) return; e.preventDefault(); const id = href.slice(1).trim(); const target = findIdInsensitive(id); if (!target) return; if (navEl.classList.contains('menu-open')) { navEl.classList.remove('menu-open'); if (menuBtn) menuBtn.setAttribute('aria-expanded', 'false'); } try { history.pushState(null, '', '#' + id); } catch (err) {} scrollTo(target); }));
+    pageAnchors.forEach(a => a.addEventListener('click', (e) => { const href = a.getAttribute('href'); if (!href || !href.startsWith('#')) return; e.preventDefault(); const id = href.slice(1).trim(); const target = findIdInsensitive(id); if (!target) return; if (navEl.classList.contains('menu-open')) { navEl.classList.remove('menu-open'); if (menuBtn) menuBtn.setAttribute('aria-expanded', 'false'); } try { history.pushState(null, '', '#' + id); } catch (err) {} scrollTo(target, id.toLowerCase() === 'about'); }));
   })();
 
   (function hideNavOnScroll() { const nav = $('nav'); if (!nav) return; let last = (smoother && smoother.scrollTop) ? smoother.scrollTop() : (window.pageYOffset || document.documentElement.scrollTop || 0); let hidden = false; const TH = 3; gsap.ticker.add(() => { const current = (smoother && smoother.scrollTop) ? smoother.scrollTop() : (window.pageYOffset || document.documentElement.scrollTop || 0); const d = current - last; if (Math.abs(d) < 0.5) return; if (d > TH && !hidden) { nav.classList.add('nav-hidden'); hidden = true; } else if (d < -TH && hidden) { nav.classList.remove('nav-hidden'); hidden = false; } last = current; }); })();
