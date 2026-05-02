@@ -1285,9 +1285,14 @@ a:focus-visible, button:focus-visible, .tech-card:focus-visible, .menu-toggle:fo
 }
 .contact-left h1 { font-family: 'Modak', cursive; font-weight: 400; font-size: clamp(3.2rem, 9vw, 6rem); line-height: 0.92; margin: 0; color: #081018; }
 .contact-right { flex: 0 0 540px; display: flex; justify-content: center; }
-.contact-card { background: #000; color: var(--second-background); padding: 3rem; border-radius: 20px; width: min(540px, 100%);height: auto; box-shadow: 0 18px 40px rgba(0,0,0,0.25); }
-.contact-card p { margin: 0 0 1rem 0; font-size: 1.05rem; }
-.contact-card a { color: var(--second-background); text-decoration: underline; }
+.contact-card { background: linear-gradient(180deg, rgba(0,0,0,0.96), rgba(10,10,10,0.98)); color: var(--second-background); padding: 2rem; border-radius: 24px; width: min(540px, 100%); height: auto; box-shadow: 0 18px 40px rgba(0,0,0,0.25); border: 1px solid rgba(154,235,163,0.14); }
+.contact-card-label { margin: 0 0 1rem 0; font-size: 0.95rem; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(246,239,221,0.7); }
+.contact-links { display: grid; gap: 0.9rem; }
+.contact-link-card { display: flex; flex-direction: column; gap: 0.35rem; padding: 1rem 1.1rem; border-radius: 18px; background: rgba(246,239,221,0.06); border: 1px solid rgba(246,239,221,0.09); color: var(--second-background); text-decoration: none; transition: transform 180ms ease, border-color 180ms ease, background-color 180ms ease, box-shadow 180ms ease; }
+.contact-link-card:hover { transform: translateY(-2px); background: rgba(154,235,163,0.1); border-color: rgba(154,235,163,0.28); box-shadow: 0 12px 24px rgba(0,0,0,0.18); }
+.contact-link-card:focus-visible { outline: 3px solid #9AEBA3; outline-offset: 3px; }
+.contact-link-title { font-family: 'Modak', cursive; font-size: 1.7rem; line-height: 1; color: #9AEBA3; }
+.contact-link-value { font-size: 1rem; color: rgba(246,239,221,0.95); word-break: break-word; }
 
 @media (max-width: 900px) {
   .contact-inner { 
@@ -1322,8 +1327,14 @@ a:focus-visible, button:focus-visible, .tech-card:focus-visible, .menu-toggle:fo
     flex-direction: column;
     justify-content: center;
   }
-  .contact-card p {
-    font-size: 1rem;
+  .contact-card-label {
+    text-align: center;
+  }
+  .contact-link-title {
+    font-size: 1.5rem;
+  }
+  .contact-link-value {
+    font-size: 0.95rem;
   }
 }
 
@@ -1339,7 +1350,6 @@ a:focus-visible, button:focus-visible, .tech-card:focus-visible, .menu-toggle:fo
     display: flex;
     flex-direction: column;
     justify-content: center;
-
   }
   .contact-left h1 { 
     font-size: clamp(2rem, 20vw, 4rem); 
@@ -1358,9 +1368,22 @@ a:focus-visible, button:focus-visible, .tech-card:focus-visible, .menu-toggle:fo
     flex-direction: column;
     justify-content: center;
   }
-  .contact-card p {
-    font-size: 0.95rem;
-    margin-bottom: 0.75rem;
+  .contact-card-label {
+    font-size: 0.85rem;
+    text-align: center;
+  }
+  .contact-links {
+    gap: 0.75rem;
+  }
+  .contact-link-card {
+    padding: 0.9rem 1rem;
+    border-radius: 14px;
+  }
+  .contact-link-title {
+    font-size: 1.35rem;
+  }
+  .contact-link-value {
+    font-size: 0.88rem;
   }
 }
 
@@ -1391,10 +1414,22 @@ a:focus-visible, button:focus-visible, .tech-card:focus-visible, .menu-toggle:fo
     flex-direction: column;
     justify-content: center;
   }
-  .contact-card p { 
-    font-size: 0.9rem; 
-    margin-bottom: 0.65rem;
+  .contact-card-label { 
+    font-size: 0.8rem; 
     text-align: center;
+  }
+  .contact-links {
+    gap: 0.65rem;
+  }
+  .contact-link-card {
+    padding: 0.8rem 0.9rem;
+    border-radius: 12px;
+  }
+  .contact-link-title {
+    font-size: 1.2rem;
+  }
+  .contact-link-value {
+    font-size: 0.82rem;
   }
 }
 
