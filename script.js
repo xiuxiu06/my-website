@@ -13,22 +13,22 @@ document.addEventListener('DOMContentLoaded', () => {
     gsap.from('.box', { duration: 1, y: 100, opacity: 0, stagger: 0.3 });
   }
 
-  const horizontalSections = $$('.horizontal-section');
+  const projectSections = $$('.horizontal-section');
   const horizontalContainer = $('.horizontal-container');
   const horizontalSectionsWrap = $('.horizontal-sections');
-  const isDesktopWide = window.matchMedia && window.matchMedia('(min-width: 900px)').matches;
+  const isDesktopWide = window.matchMedia && window.matchMedia('(min-width: 901px)').matches;
 
   let horizontalScrollTween = null;
-  if (isDesktopWide && horizontalSections.length && horizontalContainer && horizontalSectionsWrap) {
-    horizontalScrollTween = gsap.to(horizontalSections, {
-      xPercent: -100 * (horizontalSections.length - 1),
+  if (isDesktopWide && projectSections.length && horizontalContainer && horizontalSectionsWrap) {
+    horizontalScrollTween = gsap.to(projectSections, {
+      xPercent: -100 * (projectSections.length - 1),
       ease: 'none',
       scrollTrigger: {
         trigger: horizontalContainer,
         pin: true,
         scrub: 1,
         snap: {
-          snapTo: 1 / (horizontalSections.length - 1),
+          snapTo: 1 / (projectSections.length - 1),
           duration: { min: 0.2, max: 0.6 },
           delay: 0.1,
           ease: 'power1.inOut'
@@ -39,7 +39,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const projectsHeader = $('#projects-header');
     if (projectsHeader) {
-      ScrollTrigger.create({ trigger: horizontalContainer, start: 'top top', end: () => '+=' + (horizontalSectionsWrap.offsetWidth - window.innerWidth), pin: '#projects-header', pinSpacing: false });
+      ScrollTrigger.create({
+        trigger: horizontalContainer,
+        start: 'top top',
+        end: () => '+=' + (horizontalSectionsWrap.offsetWidth - window.innerWidth),
+        pin: '#projects-header',
+        pinSpacing: false
+      });
     }
   }
 
@@ -70,7 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 0);
   }
 
-  horizontalSections.forEach(section => {
+  projectSections.forEach(section => {
     const box = section.querySelector('.box');
     if (box) {
       if (horizontalScrollTween) {
@@ -93,8 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (horizontalScrollTween) {
         gsap.fromTo(projectCard, { y: 40, opacity: 0, scale: 0.98 }, { y: 0, opacity: 1, scale: 1, duration: 0.6, ease: 'power2.out', scrollTrigger: { trigger: section, containerAnimation: horizontalScrollTween, start: 'left center', end: 'right center', scrub: 0.6, toggleActions: 'play reverse play reverse', onEnter: () => playVideo(section), onEnterBack: () => playVideo(section), onLeave: () => pauseVideo(section), onLeaveBack: () => pauseVideo(section) } });
       } else {
-        // Mobile / stacked fallback: simple reveal without containerAnimation and without auto video playback
-        gsap.fromTo(projectCard, { y: 40, opacity: 0, scale: 0.98 }, { y: 0, opacity: 1, scale: 1, duration: 0.6, ease: 'power2.out', scrollTrigger: { trigger: projectCard, start: 'top 80%', end: 'top 20%', scrub: false, toggleActions: 'play none none none' } });
+        gsap.fromTo(projectCard, { y: 40, opacity: 0, scale: 0.98 }, { y: 0, opacity: 1, scale: 1, duration: 0.6, ease: 'power2.out', scrollTrigger: { trigger: projectCard, start: 'top 82%', toggleActions: 'play none none none' } });
       }
     }
   });
