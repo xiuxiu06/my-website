@@ -9,10 +9,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const $ = (s) => document.querySelector(s);
   const $$ = (s) => Array.from(document.querySelectorAll(s));
 
-  if (document.querySelector('.box')) {
-    gsap.from('.box', { duration: 1, y: 100, opacity: 0, stagger: 0.3 });
-  }
-
   const projectSections = $$('.horizontal-section');
   const horizontalContainer = $('.horizontal-container');
   const horizontalSectionsWrap = $('.horizontal-sections');
@@ -77,15 +73,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   projectSections.forEach(section => {
-    const box = section.querySelector('.box');
-    if (box) {
-      if (horizontalScrollTween) {
-        gsap.from(box, { scale: 0, rotation: 180, scrollTrigger: { trigger: section, containerAnimation: horizontalScrollTween, start: 'left 80%', end: 'left 20%', scrub: true } });
-      } else {
-        gsap.from(box, { scale: 0, rotation: 180, scrollTrigger: { trigger: section, start: 'top 80%', end: 'top 20%', scrub: true } });
-      }
-    }
-
     const projectCard = section.querySelector('.project-card');
     if (projectCard) {
       const ensureVideoLoaded = (video) => {
@@ -271,18 +258,6 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('beforeunload', teardown);
   })();
 
-  // SVG motion path demo (if present)
-  if (document.querySelector('#rect') && document.querySelector('#path')) {
-    gsap.to('#rect', {
-      duration: 5,
-      repeat: 12,
-      repeatDelay: 3,
-      yoyo: true,
-      ease: 'power1.inOut',
-      motionPath: { path: '#path', align: '#path', autoRotate: true, alignOrigin: [0.5, 0.5] }
-    });
-  }
-
   // Physics grid initialization - wait for ScrollTrigger to complete setup
   const initPhysicsGrid = () => {
     const gridContainer = document.querySelector('.grid');
@@ -335,7 +310,6 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    const rows = []; // Not used in new implementation but kept for compatibility
     let cellsArray = Array.from(cells);
 
     let clicked = false;
@@ -473,10 +447,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 50);
       };
       window.addEventListener('scroll', onScroll, { passive: true });
-      if (smoother) {
-        // If using ScrollSmoother, also hook into its scroll events
-        smoother.scrollTrigger?.addEventListener?.('refresh', updateCellPositions);
-      }
       if (contact) {
         contact.addEventListener('pointerup', (e) => {
           const interactive = e.target.closest && e.target.closest('a, button, input, textarea, select, label, .nav-btn, .tech-card, .repo-btn, .demo-btn');

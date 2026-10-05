@@ -43,18 +43,6 @@ nav:not(.nav-hidden) {
 
 
 
-.box {
-    width: 200px;
-    height: 200px;
-    background-color: #67c2ff;
-    margin: 20px auto;
-    border-radius: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-weight: bold;
-}
-
 /* Navigation styles */
 nav{
     font-family: "modak", cursive;
