@@ -12,7 +12,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const projectSections = $$('.horizontal-section');
   const horizontalContainer = $('.horizontal-container');
   const horizontalSectionsWrap = $('.horizontal-sections');
-  const isDesktopWide = window.matchMedia && window.matchMedia('(min-width: 901px)').matches;
+  const desktopQuery = window.matchMedia('(min-width: 901px)');
+  const isDesktopWide = desktopQuery.matches;
+  // The desktop and mobile scroll layouts are built once, so reload when the
+  // viewport crosses the breakpoint (e.g. a tablet rotating).
+  desktopQuery.addEventListener('change', () => location.reload());
 
   let horizontalScrollTween = null;
   if (isDesktopWide && projectSections.length && horizontalContainer && horizontalSectionsWrap) {
