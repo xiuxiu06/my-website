@@ -76,14 +76,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 0);
   }
 
+  const ensureVideoLoaded = (video) => {
+    if (!video) return;
+    const src = video.querySelector('source[data-src]');
+    if (src && !src.src) { src.src = src.getAttribute('data-src'); video.load(); }
+  };
+
   projectSections.forEach(section => {
     const projectCard = section.querySelector('.project-card');
     if (projectCard) {
-      const ensureVideoLoaded = (video) => {
-        if (!video) return;
-        const src = video.querySelector('source[data-src]');
-        if (src && !src.src) { src.src = src.getAttribute('data-src'); video.load(); }
-      };
       const playVideo = (sec) => { const v = sec.querySelector('video'); const overlay = sec.querySelector('.play-overlay'); if (!v) return; ensureVideoLoaded(v); if (overlay) overlay.style.display = 'none'; v.play().catch(() => {}); };
       const pauseVideo = (sec) => { const v = sec.querySelector('video'); if (v) try { v.pause(); } catch (e) {} };
 
@@ -97,10 +98,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   $$('.project-video').forEach(pv => {
     const video = pv.querySelector('video');
-    const src = video ? video.querySelector('source[data-src]') : null;
     const btn = pv.querySelector('.play-overlay');
-    const load = () => { if (src && !src.src) { src.src = src.getAttribute('data-src'); video.load(); } };
-    if (btn && video) btn.addEventListener('click', () => { load(); btn.style.display = 'none'; video.play().catch(() => {}); });
+    if (btn && video) btn.addEventListener('click', () => { ensureVideoLoaded(video); btn.style.display = 'none'; video.play().catch(() => {}); });
   });
 
   $$('.tech-card').forEach(card => {
