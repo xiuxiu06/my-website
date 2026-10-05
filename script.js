@@ -139,50 +139,48 @@ document.addEventListener('DOMContentLoaded', () => {
   (function navBehavior() {
     const menuBtn = $('#menu');
     const navEl = $('nav');
-    const links = $$('nav .links a');
+    const isMenuOpen = () => !!navEl && navEl.classList.contains('menu-open');
+    const setMenuOpen = (open) => {
+      if (!navEl) return;
+      navEl.classList.toggle('menu-open', open);
+      document.body.classList.toggle('menu-open', open);
+      if (!menuBtn) return;
+      const icon = menuBtn.querySelector('i');
+      if (icon) { icon.classList.toggle('bx-menu-right', !open); icon.classList.toggle('bx-x', open); }
+      menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      menuBtn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    };
+
     if (menuBtn && navEl) {
-      menuBtn.setAttribute('role', 'button');
-      if (!menuBtn.hasAttribute('aria-expanded')) menuBtn.setAttribute('aria-expanded', 'false');
-      const updateMenuIcon = (open) => {
-        const icon = menuBtn.querySelector('i');
-        if (icon) { icon.classList.toggle('bx-menu-right', !open); icon.classList.toggle('bx-x', open); }
-        menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
-        menuBtn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
-      };
-      const closeMenu = (restoreFocus = false) => {
-        navEl.classList.remove('menu-open');
-        document.body.classList.remove('menu-open');
-        updateMenuIcon(false);
-        if (restoreFocus) menuBtn.focus();
-      };
-      menuBtn.addEventListener('click', () => { const open = navEl.classList.toggle('menu-open'); updateMenuIcon(open); document.body.classList.toggle('menu-open', open); if (open) { const first = navEl.querySelector('.links a'); if (first) first.focus(); } else menuBtn.focus(); });
-      document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && navEl.classList.contains('menu-open')) closeMenu(true); });
-      document.addEventListener('click', (e) => { if (!navEl.classList.contains('menu-open')) return; if (e.target.closest('nav')) return; closeMenu(); });
+      menuBtn.addEventListener('click', () => {
+        const open = !isMenuOpen();
+        setMenuOpen(open);
+        if (open) { const first = navEl.querySelector('.links a'); if (first) first.focus(); } else menuBtn.focus();
+      });
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && isMenuOpen()) { setMenuOpen(false); menuBtn.focus(); } });
+      document.addEventListener('click', (e) => { if (isMenuOpen() && !e.target.closest('nav')) setMenuOpen(false); });
     }
 
     const findIdInsensitive = (id) => { if (!id) return null; const e = document.getElementById(id); if (e) return e; const lower = id.toLowerCase(); return $$('[id]').find(el => el.id && el.id.toLowerCase() === lower) || null; };
     const scrollTo = (el, alignTop = false) => { if (!el) return; const hasSmoother = !!smoother; const current = hasSmoother ? smoother.scrollTop() : (window.pageYOffset || document.documentElement.scrollTop || 0); const r = el.getBoundingClientRect(); const elTopDoc = r.top + current; const navH = $('nav') ? $('nav').offsetHeight : 0; const target = alignTop ? Math.max(0, elTopDoc - navH) : Math.max(0, elTopDoc + r.height / 2 - ((window.innerHeight || document.documentElement.clientHeight) / 2) - navH / 2); if (hasSmoother) smoother.scrollTo(target, true, 'auto'); else window.scrollTo({ top: target, behavior: 'smooth' }); };
 
-    const closeMobileMenu = () => {
-      if (!navEl || !navEl.classList.contains('menu-open')) return;
-      navEl.classList.remove('menu-open');
-      document.body.classList.remove('menu-open');
-      if (menuBtn) {
-        const icon = menuBtn.querySelector('i');
-        if (icon) { icon.classList.add('bx-menu-right'); icon.classList.remove('bx-x'); }
-        menuBtn.setAttribute('aria-expanded', 'false');
-        menuBtn.setAttribute('aria-label', 'Open menu');
-      }
+    const navigateTo = (id, alignTop = false) => {
+      const target = findIdInsensitive(id);
+      if (!target) return;
+      setMenuOpen(false);
+      try { history.pushState(null, '', '#' + id); } catch (err) {}
+      scrollTo(target, alignTop);
     };
 
-    links.forEach(a => a.addEventListener('click', e => { const href = a.getAttribute('href'); if (!href || !href.startsWith('#')) return; e.preventDefault(); const id = href.slice(1).trim(); const target = findIdInsensitive(id); if (!target) return; closeMobileMenu(); try { history.pushState(null, '', '#' + id); } catch (err) {} scrollTo(target, id.toLowerCase() === 'about'); }));
+    // One handler for every in-page link, nav links included
+    $$('a[href^="#"]').forEach(a => a.addEventListener('click', (e) => {
+      e.preventDefault();
+      const id = a.getAttribute('href').slice(1).trim();
+      navigateTo(id, id.toLowerCase() === 'about');
+    }));
 
     const navContactBtn = $('nav .nav-btn');
-    if (navContactBtn) navContactBtn.addEventListener('click', (e) => { e.preventDefault(); const id = 'contact'; const target = findIdInsensitive(id); if (!target) return; closeMobileMenu(); try { history.pushState(null, '', '#' + id); } catch (err) {} scrollTo(target); });
-
-    const allAnchors = Array.from(document.querySelectorAll('a[href^="#"]'));
-    const pageAnchors = allAnchors.filter(a => !a.closest('nav .links'));
-    pageAnchors.forEach(a => a.addEventListener('click', (e) => { const href = a.getAttribute('href'); if (!href || !href.startsWith('#')) return; e.preventDefault(); const id = href.slice(1).trim(); const target = findIdInsensitive(id); if (!target) return; closeMobileMenu(); try { history.pushState(null, '', '#' + id); } catch (err) {} scrollTo(target, id.toLowerCase() === 'about'); }));
+    if (navContactBtn) navContactBtn.addEventListener('click', (e) => { e.preventDefault(); navigateTo('contact'); });
   })();
 
   (function hideNavOnScroll() { const nav = $('nav'); if (!nav) return; let last = (smoother && smoother.scrollTop) ? smoother.scrollTop() : (window.pageYOffset || document.documentElement.scrollTop || 0); let hidden = false; const TH = 3; gsap.ticker.add(() => { const current = (smoother && smoother.scrollTop) ? smoother.scrollTop() : (window.pageYOffset || document.documentElement.scrollTop || 0); const d = current - last; if (Math.abs(d) < 0.5) return; if (d > TH && !hidden) { nav.classList.add('nav-hidden'); hidden = true; } else if (d < -TH && hidden) { nav.classList.remove('nav-hidden'); hidden = false; } last = current; }); })();
