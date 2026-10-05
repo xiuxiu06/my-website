@@ -444,13 +444,9 @@ document.addEventListener('DOMContentLoaded', () => {
           if (newCells && newCells.length > 0) {
             cellsArray = Array.from(newCells);
             updateCellPositions();
-            // Reattach click handlers to new cells
-            cellsArray.forEach((cell, i) => cell.addEventListener('pointerup', (e) => handleCellClick(e, i)));
           }
         }, 150);
       });
-
-      cellsArray.forEach((cell, i) => cell.addEventListener('pointerup', (e) => handleCellClick(e, i)));
 
       // Use IntersectionObserver to calculate positions when contact section is visible
       const contactObserver = new IntersectionObserver((entries) => {
