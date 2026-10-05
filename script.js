@@ -116,42 +116,24 @@ document.addEventListener('DOMContentLoaded', () => {
     const inner = card.querySelector('.tech-card-inner');
     if (!inner) return;
     
-    card.addEventListener('mouseenter', () => {
-      gsap.to(inner, {
-        rotationY: 180,
-        duration: 0.6,
-        ease: 'power2.out'
-      });
-    });
-    
-    card.addEventListener('mouseleave', () => {
-      gsap.to(inner, {
-        rotationY: 0,
-        duration: 0.3,
-        ease: 'power2.out'
-      });
-    });
-    
+    const flip = (toBack, duration = 1, ease = 'back.out(1.2)') => gsap.to(inner, { rotationY: toBack ? 180 : 0, duration, ease });
+    const toggle = () => flip(gsap.getProperty(inner, 'rotationY') === 0);
+
+    // Hover-capable devices flip on hover, touch devices flip on tap. Doing both
+    // made a click on desktop flip the hovered card straight back.
+    if (window.matchMedia('(hover: hover)').matches) {
+      card.addEventListener('mouseenter', () => flip(true, 0.6, 'power2.out'));
+      card.addEventListener('mouseleave', () => flip(false, 0.3, 'power2.out'));
+    } else {
+      card.addEventListener('click', toggle);
+    }
+
     card.setAttribute('role', 'button');
     card.setAttribute('tabindex', '0');
-    card.addEventListener('click', () => {
-      const isFlipped = gsap.getProperty(inner, 'rotationY') !== 0;
-      gsap.to(inner, {
-        rotationY: isFlipped ? 0 : 180,
-        duration: 1,
-        ease: 'back.out(1.2)'
-      });
-    });
-    
     card.addEventListener('keydown', e => {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
-        const isFlipped = gsap.getProperty(inner, 'rotationY') !== 0;
-        gsap.to(inner, {
-          rotationY: isFlipped ? 0 : 180,
-          duration: 1,
-          ease: 'back.out(1.2)'
-        });
+        toggle();
       }
     });
   });
