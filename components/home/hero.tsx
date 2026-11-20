@@ -10,9 +10,9 @@ import stickerCoding from "@/public/images/sticker-love-coding.png";
 import stickerCreating from "@/public/images/sticker-love-creating.png";
 import portrait from "@/public/images/tam.png";
 
-// Decorative path from the old About section.
+// Wave with a loop (same idea as the old About line), drawn in its own band under the hero.
 const LINE_PATH =
-  "M34.5037 34.5034C296.004 209.003 376.004 43.5033 604.004 68.0034C832.004 92.5035 1326 317.503 1389.5 190.503C1453 63.5035 1210.18 9.93811 1130.5 85.0034C1016.77 192.16 1055.27 436.333 1447 444.503C2113.16 458.398 1584.05 955.496 2128.5 662.903";
+  "M20 150C220 40 380 230 600 150C820 70 980 40 1140 120C1260 180 1330 80 1260 50C1190 20 1150 140 1260 170C1380 205 1480 150 1580 110";
 
 export function Hero() {
   const root = useRef<HTMLElement>(null);
@@ -33,6 +33,13 @@ export function Hero() {
           .from("[data-hero-photo]", { clipPath: "inset(100% 0% 0% 0%)", duration: 1.1, ease: "expo.inOut" }, 0.2)
           .from("[data-hero-fade]", { y: 24, autoAlpha: 0, duration: 0.7, stagger: 0.1 }, 0.6);
 
+        // Photo drifts up slightly slower than the page.
+        gsap.to("[data-hero-parallax]", {
+          yPercent: -10,
+          ease: "none",
+          scrollTrigger: { trigger: root.current, start: "top top", end: "bottom top", scrub: true },
+        });
+
         // Stickers spin as you scroll past the hero.
         gsap.utils.toArray<HTMLElement>("[data-spin]").forEach((el) => {
           gsap.to(el, {
@@ -47,15 +54,14 @@ export function Hero() {
         gsap
           .timeline({
             defaults: { ease: "none" },
-            scrollTrigger: { trigger: "[data-line-stage]", start: "top 70%", end: "bottom 20%", scrub: true },
+            // Starts with the page's first scroll, so it is always empty on load, whatever the screen height.
+            scrollTrigger: { trigger: root.current, start: "top top", end: "bottom 40%", scrub: 0.6 },
           })
           .to("[data-line-ball]", { autoAlpha: 1, duration: 0.01 })
           .from("[data-line]", { drawSVG: 0, duration: 1 }, 0)
-          .to(
-            "[data-line-ball]",
-            { duration: 1, motionPath: { path: "[data-line]", align: "[data-line]", alignOrigin: [0.5, 0.5] } },
-            0,
-          );
+          // Ball and path share the SVG's coordinates, so follow the path directly (no `align`,
+          // which measures on screen and drifts while ScrollSmoother is moving the page).
+          .to("[data-line-ball]", { duration: 1, motionPath: { path: "[data-line]" } }, 0);
       });
     },
     { scope: root },
@@ -70,7 +76,7 @@ export function Hero() {
         <Image src={stickerCreating} alt="" />
       </div>
 
-      <div className="relative z-[1] mx-auto flex max-w-[1200px] flex-wrap items-center gap-14 px-4 pt-16 pb-24 sm:px-6 lg:pt-20 lg:pb-28">
+      <div className="relative z-[1] mx-auto flex max-w-[1200px] flex-wrap items-center gap-14 px-4 pt-16 pb-24 sm:px-6 min-[901px]:pb-6 lg:pt-20">
         <div className="flex min-w-0 flex-[999_1_520px] flex-col gap-6">
           <p
             data-reveal
@@ -113,7 +119,7 @@ export function Hero() {
           </div>
         </div>
 
-        <div className="flex min-w-0 flex-[1_1_320px] justify-center" data-speed="0.92">
+        <div className="flex min-w-0 flex-[1_1_320px] justify-center" data-hero-parallax>
           <div
             data-reveal
             data-hero-photo
@@ -131,10 +137,13 @@ export function Hero() {
         </div>
       </div>
 
-      <div data-line-stage className="pointer-events-none absolute inset-x-0 bottom-0 hidden h-[60%] lg:block" aria-hidden="true">
-        <svg viewBox="-50 0 1600 500" className="size-full overflow-visible" preserveAspectRatio="xMidYMax slice">
-          <path data-line d={LINE_PATH} fill="none" stroke="var(--color-line)" strokeWidth="30" strokeLinecap="round" />
-          <circle data-line-ball r="20" cx="0" cy="0" fill="var(--color-mint)" opacity="0" />
+      {/* Own band below the content, so the line never runs through the text or the photo. */}
+      <div data-line-stage className="pointer-events-none hidden pb-12 min-[901px]:block" aria-hidden="true">
+        <svg viewBox="0 0 1600 240" className="h-auto w-full overflow-visible">
+          {/* Faint track so the band isn't empty before you scroll */}
+          <path d={LINE_PATH} fill="none" stroke="var(--color-line)" strokeWidth="24" strokeLinecap="round" />
+          <path data-line d={LINE_PATH} fill="none" stroke="var(--color-line-strong)" strokeWidth="24" strokeLinecap="round" />
+          <circle data-line-ball r="18" cx="0" cy="0" fill="var(--color-mint)" opacity="0" />
         </svg>
       </div>
     </section>

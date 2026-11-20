@@ -5,7 +5,7 @@ import { useEffect, useRef } from "react";
 import { MOTION, ScrollSmoother, ScrollTrigger, gsap, useGSAP } from "@/lib/gsap";
 
 /**
- * ScrollSmoother wrapper (smooth scrolling + data-speed parallax).
+ * ScrollSmoother wrapper (smooth scrolling). Parallax lives in each section's own ScrollTriggers.
  * Fixed elements (header, cursor) must live outside this component.
  */
 export function SmoothScroll({ children }: { children: React.ReactNode }) {
@@ -18,7 +18,8 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
         wrapper: wrapper.current!,
         content: wrapper.current!.firstElementChild as HTMLElement,
         smooth: 1.4,
-        effects: true,
+        // No data-speed auto-scan: it edits page elements before React hydrates them.
+        effects: false,
       });
       ScrollTrigger.refresh();
       return () => smoother.kill();
