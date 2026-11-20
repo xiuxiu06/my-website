@@ -39,4 +39,17 @@
     background: var(--color-mint);
     color: #000;
   }
+
+  /* Native cursor is hidden only once the custom cursor is running */
+  .has-custom-cursor,
+  .has-custom-cursor * {
+    cursor: none !important;
+  }
+
+  /* Elements GSAP reveals on load start hidden, but only when motion is allowed */
+  @media (prefers-reduced-motion: no-preference) {
+    [data-reveal] {
+      visibility: hidden;
+    }
+  }
 }

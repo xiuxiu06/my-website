@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 import { JetBrains_Mono, Modak, Montserrat } from "next/font/google";
+import { Suspense } from "react";
+import { CustomCursor } from "@/components/custom-cursor";
 import { SiteFooter } from "@/components/site-footer";
-import { SiteHeader } from "@/components/site-header";
+import { HEADER_HEIGHT, SiteHeader } from "@/components/site-header";
+import { ScrollReset, SmoothScroll } from "@/components/smooth-scroll";
 import { site } from "@/lib/site";
 import "./globals.css";
 
@@ -36,10 +39,18 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       className={`${montserrat.variable} ${modak.variable} ${jetbrainsMono.variable} antialiased`}
     >
-      <body className="flex min-h-dvh flex-col font-sans">
+      <body className="font-sans">
         <SiteHeader />
-        <main className="flex-1">{children}</main>
-        <SiteFooter />
+        <SmoothScroll>
+          <div aria-hidden="true" className={HEADER_HEIGHT} />
+          <main className="min-h-[60dvh]">{children}</main>
+          <SiteFooter />
+        </SmoothScroll>
+        {/* usePathname needs a Suspense boundary with cacheComponents */}
+        <Suspense fallback={null}>
+          <ScrollReset />
+        </Suspense>
+        <CustomCursor />
       </body>
     </html>
   );
