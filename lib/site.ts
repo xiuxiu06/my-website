@@ -4,6 +4,8 @@ export const site = {
   description:
     "Computer Science student building software and AI, with a designer's eye.",
   resume: "/resume/Le_Tam_Resume_2026.pdf",
+  email: "le3t6@mail.uc.edu",
+  location: "Cincinnati, Ohio",
   nav: [
     { href: "/projects", label: "Projects" },
     { href: "/experience", label: "Experience" },
