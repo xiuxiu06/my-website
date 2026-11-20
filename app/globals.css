@@ -1,0 +1,42 @@
+@import "tailwindcss";
+
+/* Design tokens (from the v2 mockup) */
+@theme {
+  --color-ink: #070b08;
+  --color-surface: #0e1410;
+  --color-line: #1d261f;
+  --color-line-strong: #2f3a32;
+  --color-mint: #9aeba3;
+  --color-mint-soft: #c6f5cb;
+  --color-cream: #f6efdd;
+  --color-sand: #d8d2c3;
+  --color-muted: #b9b3a5;
+  --color-dim: #8f8a7e;
+}
+
+@theme inline {
+  --font-sans: var(--font-montserrat), system-ui, sans-serif;
+  --font-display: var(--font-modak), cursive;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
+}
+
+@layer base {
+  html {
+    color-scheme: dark;
+  }
+
+  body {
+    background: var(--color-ink);
+    color: var(--color-cream);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-mint);
+    outline-offset: 3px;
+  }
+
+  ::selection {
+    background: var(--color-mint);
+    color: #000;
+  }
+}
