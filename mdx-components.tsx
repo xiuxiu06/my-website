@@ -1,5 +1,5 @@
 import type { MDXComponents } from "mdx/types";
-import { Steps, TLDR } from "@/components/mdx";
+import { Figure, Overview, Steps } from "@/components/mdx";
 
 // Long-form styles for case studies and notes: Montserrat headings (Modak is for big titles only).
 const components: MDXComponents = {
@@ -21,7 +21,8 @@ const components: MDXComponents = {
     <pre className="my-6 overflow-x-auto rounded-2xl border border-line bg-surface p-5 font-mono text-[15px] leading-relaxed [&_code]:bg-transparent [&_code]:p-0" {...props} />
   ),
   hr: () => <hr className="my-12 border-line" />,
-  TLDR,
+  Overview,
+  Figure,
   Steps,
 };
 
