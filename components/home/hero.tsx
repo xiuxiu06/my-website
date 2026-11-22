@@ -3,9 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useRef } from "react";
-import { experience, roleStatus } from "@/lib/content";
 import { DESKTOP_MOTION, MOTION, SplitText, gsap, useGSAP } from "@/lib/gsap";
-import { useToday } from "@/lib/use-today";
 import stickerCoding from "@/public/images/sticker-love-coding.png";
 import stickerCreating from "@/public/images/sticker-love-creating.png";
 import portrait from "@/public/images/tam.png";
@@ -16,22 +14,32 @@ const LINE_PATH =
 
 export function Hero() {
   const root = useRef<HTMLElement>(null);
-  const status = useStatusLine();
 
   useGSAP(
     () => {
       const mm = gsap.matchMedia();
 
       mm.add(MOTION, () => {
-        const split = SplitText.create("[data-hero-title]", { type: "words,chars", mask: "words" });
+        // Masks get the class "hero-word-mask"; globals.css pads them so Modak's tall
+        // glyphs aren't clipped by the tight line-height.
+        const split = SplitText.create("[data-hero-title]", {
+          type: "words,chars",
+          mask: "words",
+          wordsClass: "hero-word",
+        });
         gsap.set("[data-reveal]", { autoAlpha: 1 });
 
         gsap
           .timeline({ defaults: { ease: "power3.out" } })
-          .from("[data-hero-status]", { y: 20, autoAlpha: 0, duration: 0.6 })
-          .from(split.chars, { yPercent: 110, duration: 0.8, stagger: 0.035 }, 0.1)
-          .from("[data-hero-photo]", { clipPath: "inset(100% 0% 0% 0%)", duration: 1.1, ease: "expo.inOut" }, 0.2)
-          .from("[data-hero-fade]", { y: 24, autoAlpha: 0, duration: 0.7, stagger: 0.1 }, 0.6);
+          .from(split.chars, {
+            yPercent: 110,
+            duration: 0.8,
+            stagger: 0.035,
+            // Back to plain text once revealed, so nothing can clip it afterwards.
+            onComplete: () => split.revert(),
+          })
+          .from("[data-hero-photo]", { clipPath: "inset(100% 0% 0% 0%)", duration: 1.1, ease: "expo.inOut" }, 0.1)
+          .from("[data-hero-fade]", { y: 24, autoAlpha: 0, duration: 0.7, stagger: 0.1 }, 0.5);
 
         // Photo drifts up slightly slower than the page.
         gsap.to("[data-hero-parallax]", {
@@ -78,18 +86,6 @@ export function Hero() {
 
       <div className="relative z-[1] mx-auto flex max-w-[1200px] flex-wrap items-center gap-14 px-4 pt-16 pb-24 sm:px-6 min-[901px]:pb-6 lg:pt-20">
         <div className="flex min-w-0 flex-[999_1_520px] flex-col gap-6">
-          <p
-            data-reveal
-            data-hero-status
-            className="flex items-center gap-2.5 self-start rounded-full border border-line bg-surface px-4 py-2.5 text-sm font-semibold"
-          >
-            <span className="relative flex size-2.5 shrink-0" aria-hidden="true">
-              <span className="absolute inline-flex size-full animate-ping rounded-full bg-mint opacity-60 motion-reduce:animate-none" />
-              <span className="relative inline-flex size-2.5 rounded-full bg-mint" />
-            </span>
-            <span>{status ?? " "}</span>
-          </p>
-
           <h1
             id="hero-title"
             data-reveal
@@ -149,23 +145,4 @@ export function Hero() {
       </div>
     </section>
   );
-}
-
-/** "Incoming: …" before the next role starts, "Currently: …" while it runs. */
-function useStatusLine() {
-  const today = useToday();
-  if (!today) return null;
-
-  const upcoming = experience
-    .filter((r) => roleStatus(r, today) === "upcoming")
-    .sort((a, b) => a.start.localeCompare(b.start))[0];
-  if (upcoming) {
-    const month = new Date(upcoming.start).toLocaleDateString("en-US", { month: "short", year: "numeric", timeZone: "UTC" });
-    return `Incoming: ${upcoming.shortRole ?? upcoming.role} @ ${upcoming.org}, ${month}`;
-  }
-
-  const current = experience
-    .filter((r) => roleStatus(r, today) === "current")
-    .sort((a, b) => b.start.localeCompare(a.start))[0];
-  return current ? `Currently: ${current.shortRole ?? current.role} @ ${current.org}` : null;
 }

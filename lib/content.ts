@@ -121,8 +121,6 @@ export const projects: Project[] = [
 
 export type Role = {
   role: string;
-  /** Shorter title for tight spots like the hero status line. */
-  shortRole?: string;
   org: string;
   place: string;
   /** ISO dates. No end = ongoing. */
@@ -135,7 +133,6 @@ export type Role = {
 export const experience: Role[] = [
   {
     role: "Research & Development Co-op",
-    shortRole: "R&D Co-op",
     org: "Hy-Tek Intralogistics",
     place: "Erlanger, KY",
     start: "2027-01-11",
