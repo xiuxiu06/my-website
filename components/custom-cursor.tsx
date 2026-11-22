@@ -3,52 +3,50 @@
 import { useRef, useState } from "react";
 import { gsap, useGSAP } from "@/lib/gsap";
 
-const HOVERABLE = "a, button, input, textarea, [data-cursor]";
+const HOVERABLE = "a, button, input, textarea, select, [data-cursor]";
 
-/** Dot + trailing ring cursor. Mouse only; touch devices keep the native cursor. */
+/**
+ * Paper-plane cursor (same motif as the hero flight path). Its nose sits exactly on the
+ * pointer and it points up-left like a normal arrow, so clicking stays precise. No lag.
+ * Over links it turns mint and dips; over [data-cursor] elements it becomes a label pill.
+ * Mouse only: touch devices keep the native cursor.
+ */
 export function CustomCursor() {
   const root = useRef<HTMLDivElement>(null);
-  const ripples = useRef<HTMLDivElement>(null);
   const [label, setLabel] = useState("");
-  const [state, setState] = useState<"idle" | "hover" | "active">("idle");
+  const [hover, setHover] = useState(false);
+  const [pressed, setPressed] = useState(false);
+  const [onLight, setOnLight] = useState(false);
 
   useGSAP(() => {
     const mm = gsap.matchMedia();
     mm.add("(pointer: fine)", () => {
       document.documentElement.classList.add("has-custom-cursor");
-      const parts = gsap.utils.toArray<HTMLElement>("[data-cursor-part]", root.current);
-      gsap.set(parts, { xPercent: -50, yPercent: -50 });
-      const xTo = parts.map((el) => gsap.quickTo(el, "x", { duration: 0.25, ease: "power3" }));
-      const yTo = parts.map((el) => gsap.quickTo(el, "y", { duration: 0.25, ease: "power3" }));
+      const setX = gsap.quickSetter(root.current, "x", "px");
+      const setY = gsap.quickSetter(root.current, "y", "px");
 
       const onMove = (e: PointerEvent) => {
         gsap.set(root.current, { autoAlpha: 1 });
-        xTo.forEach((fn) => fn(e.clientX));
-        yTo.forEach((fn) => fn(e.clientY));
+        setX(e.clientX);
+        setY(e.clientY);
       };
       const onOver = (e: PointerEvent) => {
-        const el = (e.target as HTMLElement).closest<HTMLElement>(HOVERABLE);
-        setState(el ? "hover" : "idle");
+        const target = e.target as HTMLElement;
+        const el = target.closest<HTMLElement>(HOVERABLE);
+        setHover(!!el);
         setLabel(el?.dataset.cursor ?? "");
+        setOnLight(isOnLightBackground(target));
       };
-      const onDown = (e: PointerEvent) => {
-        setState("active");
-        const r = document.createElement("div");
-        r.className = "pointer-events-none absolute left-0 top-0 size-3 rounded-full bg-mint/20";
-        ripples.current?.appendChild(r);
-        gsap.fromTo(
-          r,
-          { xPercent: -50, yPercent: -50, x: e.clientX, y: e.clientY, scale: 0.2, opacity: 0.9 },
-          { scale: 3, opacity: 0, duration: 0.55, ease: "power2.out", onComplete: () => r.remove() },
-        );
-      };
-      const onUp = () => setState("hover");
-      const onKey = (e: KeyboardEvent) => e.key === "Tab" && gsap.set(root.current, { autoAlpha: 0 });
+      const onDown = () => setPressed(true);
+      const onUp = () => setPressed(false);
+      const onLeave = () => gsap.set(root.current, { autoAlpha: 0 });
+      const onKey = (e: KeyboardEvent) => e.key === "Tab" && onLeave();
 
       window.addEventListener("pointermove", onMove);
       document.addEventListener("pointerover", onOver);
       document.addEventListener("pointerdown", onDown);
       document.addEventListener("pointerup", onUp);
+      document.documentElement.addEventListener("pointerleave", onLeave);
       window.addEventListener("keydown", onKey);
       return () => {
         document.documentElement.classList.remove("has-custom-cursor");
@@ -56,33 +54,54 @@ export function CustomCursor() {
         document.removeEventListener("pointerover", onOver);
         document.removeEventListener("pointerdown", onDown);
         document.removeEventListener("pointerup", onUp);
+        document.documentElement.removeEventListener("pointerleave", onLeave);
         window.removeEventListener("keydown", onKey);
       };
     });
   });
 
-  const ringSize = label ? "size-20 bg-mint border-mint" : state === "hover" ? "size-14 border-cream" : "size-9 border-mint";
+  // Dark plane on mint/cream areas, cream (mint when hovering a link) on the dark page.
+  const color = onLight ? "text-ink" : hover ? "text-mint" : "text-cream";
+  const plane = label
+    ? "scale-0" // hidden behind the label pill
+    : `${color} ${hover ? "-rotate-[18deg]" : ""} ${pressed ? "scale-[0.82]" : ""}`;
 
   return (
-    // Blend mode keeps the plain cursor visible on both dark and mint backgrounds.
     <div
       ref={root}
       aria-hidden="true"
-      className={`pointer-events-none invisible fixed inset-0 z-[9999] opacity-0 ${label ? "" : "mix-blend-difference"}`}
+      className="pointer-events-none invisible fixed top-0 left-0 z-[9999] opacity-0"
     >
-      <div
-        data-cursor-part
-        className={`absolute left-0 top-0 flex items-center justify-center rounded-full border-2 transition-[width,height,background-color,border-color] duration-200 ${ringSize}`}
-      >
-        {label && <span className="text-xs font-extrabold uppercase tracking-wider text-black">{label}</span>}
+      {/* Rotates/scales around the nose (top-left corner = the pointer). */}
+      <div className={`origin-top-left transition-[rotate,scale,color] duration-200 ease-out motion-reduce:transition-none ${plane}`}>
+        <svg width="30" height="30" viewBox="0 0 30 30" className="block overflow-visible">
+          {/* Nose at 0,0 pointing up-left, like an arrow cursor */}
+          <g transform="rotate(-135) scale(0.42)">
+            <path d="M0 0 L-64 -26 L-46 -1 Z" fill="currentColor" />
+            <path d="M0 0 L-46 -1 L-58 20 Z" fill="currentColor" opacity="0.7" />
+            <path d="M0 0 L-46 -1 L-36 12 Z" fill={onLight ? "currentColor" : "var(--color-mint)"} opacity={onLight ? 0.45 : 1} />
+          </g>
+        </svg>
       </div>
-      <div
-        data-cursor-part
-        className={`absolute left-0 top-0 size-2 rounded-full transition-transform duration-150 ${
-          label ? "opacity-0" : "bg-cream"
-        } ${state === "active" ? "scale-50 bg-mint" : ""}`}
-      />
-      <div ref={ripples} />
+
+      {label && (
+        <span className="absolute top-3 left-3 flex items-center gap-1 rounded-full bg-mint px-3.5 py-2 text-xs font-extrabold tracking-wider whitespace-nowrap text-black uppercase shadow-lg motion-safe:animate-[cursor-pop_180ms_ease-out]">
+          {label} →
+        </span>
+      )}
     </div>
   );
+}
+
+/** True when the first opaque background behind `el` is light (mint buttons, the footer…). */
+function isOnLightBackground(el: HTMLElement | null) {
+  for (let node = el; node; node = node.parentElement) {
+    const m = getComputedStyle(node).backgroundColor.match(/[\d.]+/g);
+    if (!m) continue;
+    const [r, g, b, a = "1"] = m;
+    if (Number(a) < 0.5) continue;
+    const luminance = (0.2126 * +r + 0.7152 * +g + 0.0722 * +b) / 255;
+    return luminance > 0.6;
+  }
+  return false;
 }

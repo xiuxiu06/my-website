@@ -40,6 +40,13 @@
     color: #000;
   }
 
+  @keyframes cursor-pop {
+    from {
+      scale: 0.6;
+      opacity: 0;
+    }
+  }
+
   /* Native cursor is hidden only once the custom cursor is running */
   .has-custom-cursor,
   .has-custom-cursor * {
