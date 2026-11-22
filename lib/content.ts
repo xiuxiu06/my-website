@@ -37,8 +37,7 @@ export const projects: Project[] = [
     year: "2026",
     kind: "Hackathon",
     outcome: "MLH Best Use of Gemini API, MakeUC 2026",
-    blurb:
-      "Healthcare students interview an AI psychiatric patient by voice, rewind key moments to try a better question, and get a scored debrief grounded in clinical guidelines.",
+    blurb: "Practise clinical interviews with an AI patient by voice, rewind key moments and get a guideline-based debrief.",
     tech: ["Next.js", "Gemini Live", "Supabase", "Auth0", "TypeScript"],
     links: { live: "https://www.medmimic.us", repo: "https://github.com/xiuxiu06/MedMimic" },
     tags: ["AI / ML", "Competition"],
@@ -55,8 +54,7 @@ export const projects: Project[] = [
     year: "2025",
     kind: "Hackathon",
     outcome: "3 awards at MakeUC 2025",
-    blurb:
-      "Chrome extension that suggests affordable, eco-friendly alternatives right from your shopping cart.",
+    blurb: "Chrome extension that suggests affordable, eco-friendly alternatives right from your Amazon cart.",
     tech: ["React", "Node.js", "Gemini API", "Hugging Face", "Zilliz"],
     poster: "/projects/ecocart/poster.jpg",
     links: {
@@ -78,8 +76,7 @@ export const projects: Project[] = [
     year: "2026",
     kind: "Competition",
     outcome: "Top 25% of projects, Innovation Challenge 2026",
-    blurb:
-      "ESP32 hangers that notice which clothes you actually wear, plus an app that plans outfits and nudges forgotten pieces.",
+    blurb: "ESP32 smart hangers that notice which clothes you actually wear, plus an app that plans outfits around them.",
     tech: ["Next.js", "ESP32", "Supabase", "TypeScript"],
     links: { live: "https://wearly.fashion", repo: "https://github.com/xiuxiu06/wearly" },
     tags: ["Hardware", "Competition"],
@@ -96,8 +93,7 @@ export const projects: Project[] = [
     year: "2025",
     kind: "AI / ML",
     outcome: "93% test accuracy on potato leaf images",
-    blurb:
-      "Upload a potato leaf photo and get early blight, late blight or healthy, with a confidence score. A TensorFlow CNN served through FastAPI behind a React app.",
+    blurb: "Upload a potato leaf photo and get early blight, late blight or healthy, with a confidence score.",
     tech: ["TensorFlow", "Keras", "FastAPI", "React", "Material UI", "Quarto"],
     poster: "/projects/potato-ai/poster.jpg",
     video: "/projects/potato-ai/demo.mp4",
@@ -114,8 +110,7 @@ export const projects: Project[] = [
     year: "2025",
     kind: "Web",
     outcome: "Live top-10 trending list built from what users search",
-    blurb:
-      "Movie discovery with debounced search and infinite scroll on the TMDB API. Searches are tracked in Appwrite to rank a live trending list.",
+    blurb: "Movie search with infinite scroll and a live trending list ranked by what people search.",
     tech: ["React", "Tailwind", "TMDB API", "Appwrite", "GSAP", "Vite"],
     poster: "/projects/movie-app/poster.jpg",
     video: "/projects/movie-app/demo.mp4",
@@ -129,8 +124,7 @@ export const projects: Project[] = [
     year: "2025",
     kind: "Hackathon",
     outcome: "Built at RevolutionUC 2025",
-    blurb:
-      "Social media for recipes, named after RevolutionUC's mascot Leo: profiles, a meal feed, likes and saves, recipe posting and a cooking chatbot.",
+    blurb: "Recipe-sharing social app with a cooking chatbot, built at RevolutionUC 2025.",
     tech: ["Python", "Streamlit", "SQLite", "OpenAI API"],
     poster: "/projects/leo-kitchen/poster.jpg",
     video: "/projects/leo-kitchen/demo.mp4",
@@ -144,7 +138,7 @@ export const projects: Project[] = [
     year: "2026",
     kind: "Web",
     outcome: "Designed in Figma, animated with GSAP",
-    blurb: "Smooth scrolling, a pinned horizontal project scroller and a physics contact grid, now on Next.js.",
+    blurb: "This site: smooth scrolling, a paper-plane cursor and a draggable project slider, built with Next.js and GSAP.",
     tech: ["Next.js", "GSAP", "Tailwind"],
     poster: "/projects/portfolio/poster.jpg",
     video: "/projects/portfolio/demo.mp4",

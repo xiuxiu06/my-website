@@ -1,20 +1,15 @@
 <TLDR>
 
-A clinical interview simulator for healthcare students, built in 24 hours at MakeUC 2026 by a team of two and awarded **MLH Best Use of Gemini API**. You interview an AI psychiatric patient by voice, rewind to a critical moment to try a better question, and get a scored debrief grounded in published clinical guidelines. I built the trust engine, the interface, the RAG-powered debrief, login and deployment, and helped my teammate wherever needed.
+A clinical interview simulator for healthcare students, built in 24 hours at MakeUC 2026 and awarded **MLH Best Use of Gemini API**. I built the trust engine, the interface, the RAG debrief, login and deployment.
 
 </TLDR>
 
-## Why we built it
+## Highlights
 
-My teammate studies pre-med, and we both wanted to put AI to work in healthcare. Interviewing a patient about their mental health, and especially asking directly about suicide risk, is a skill you only get better at by practising. MedMimic gives students a patient to practise on who reacts to *how* they ask, and a way to replay the moment a conversation turned.
-
-## What we built
-
-- **Voice or text interviews** with a live AI patient (Gemini Live), with lip-synced avatars.
-- **A trust engine.** Every turn is classified (empathy, reflection, dismissiveness, direct suicide inquiry…). Trust from 0 to 100 controls which facts the patient will reveal and how they sound.
-- **Checkpoints and rewind.** Key moments are saved, so you can replay from one and compare two runs side by side.
-- **A scored debrief** out of 100, with feedback that cites C-SSRS, SAFE-T, PHQ-9 and OARS through retrieval.
-- **Classroom roles.** Students and instructors log in with Auth0; instructors publish cases to the class.
+- Interview an AI psychiatric patient by voice (Gemini Live) or text.
+- A **trust engine** scores every turn and decides what the patient will reveal.
+- **Rewind** to a key moment, ask a better question and compare the two runs.
+- A scored debrief that cites clinical guidelines (C-SSRS, SAFE-T, PHQ-9, OARS) through RAG.
 
 ## How it works
 
@@ -27,6 +22,4 @@ My teammate studies pre-med, and we both wanted to put AI to work in healthcare.
   ]}
 />
 
-The trust score sits between the student and the patient. Each turn is classified first, the score moves, and only then does the patient answer, with what it is allowed to reveal at that level of trust. Sessions and cases are stored in Supabase Postgres with row-level security, linked to Auth0 users, and the app runs on Vercel.
-
-Try it at [medmimic.us](https://www.medmimic.us). The patients are fictional and the tool is for education only, not for clinical decisions.
+Fictional patients, for education only. Try it at [medmimic.us](https://www.medmimic.us).

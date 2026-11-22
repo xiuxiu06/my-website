@@ -1,39 +1,23 @@
 <TLDR>
 
-Smart hangers that notice what you actually wear. Each hanger senses when a garment leaves and comes back, and the app builds up a picture of your real wardrobe with no cataloging. Built by a team of three for Innovation Challenge 2026, where it placed in the **top 25% of projects**. I built most of the web app and the hardware.
+Smart hangers that notice what you actually wear, with no photos or logging needed. Built by a team of three for Innovation Challenge 2026 (top 25% of projects). I built most of the web app and the hardware, my first hardware project taken all the way to a finished product.
 
 </TLDR>
 
-## The problem
+## Highlights
 
-Most of us wear a small part of our closet over and over while the rest waits on the rail. Wardrobe apps try to fix this, but they start by asking you to photograph and log everything, and most people give up after a week.
+- Each hanger knows when a garment leaves and comes back: minutes away means browsed, hours means worn.
+- A small light on every hanger marks today's outfit, forgotten pieces, and the item you searched for.
+- The app plans outfits for the weather and suggests pieces to keep, restyle or let go.
+- Hangers run on an ESP32-C3 with two switches, an LED and a LiPo battery.
 
-## What we built
-
-- **Hangers that track wear.** A few minutes off the rail means you were browsing; hours away means you wore it. A small hub in the closet sends these moments to the app.
-- **A small light on every hanger.** A steady light marks today's outfit, a slow breathe marks pieces that have waited a while, and two quick white blinks answer "where is it?" when you search. No red or green: nothing says your clothes are "bad".
-- **An app that plans with you:** today's outfit for the weather, a week of plans, and a swipe deck of forgotten pieces to keep, style or let go.
-- **A closet camera** that photographs a garment as it's hung back, removes the background and names it, so photos happen without effort.
-
-## The hardware
-
-Each hanger has its own small board, and only the hub talks to the internet.
-
-- **Hanger:** an ESP32-C3 Super Mini reads two switches: a reed switch that closes over a magnetic strip on the rail (is the hanger on the rail?) and a lever micro switch pressed by the garment's weight (is something hanging on it?). A single WS2812B LED shows the light, and a 500 mAh LiPo with a TP4056 charger powers it.
-- **Hub:** an ESP32 DevKit. Hangers talk to it over ESP-NOW; the hub is the only device on Wi-Fi. It posts sensor events to the app's API, polls for light commands about once a second, and acknowledges each one once a hanger has it.
-- **Firmware** is written in Arduino C++, with readings debounced so a jiggle isn't an event.
+## How it works
 
 <Steps
   items={[
-    "Hanger switches change: off the rail, garment gone",
-    "ESP-NOW message to the hub",
-    "Hub posts the event; the app logs browse vs. wear",
-    "App sends a light command back down to the hanger",
+    "Hanger senses the garment leave or return",
+    "ESP-NOW message to the closet hub",
+    "Hub posts it; the app logs browse vs. wear",
+    "App sends a light back to the hanger",
   ]}
 />
-
-The web app is complete, and real hangers talk to the live app. A virtual hub in the app uses exactly the same connection, so the demo closet can run on any mix of real and virtual hangers.
-
-## What I learned
-
-This was my first time building hardware all the way to a finished product. I learned a lot about circuits, from wiring sensors and LEDs to powering a board safely from a battery, and about writing firmware that has to keep working when the radio, the Wi-Fi or the battery doesn't cooperate.
