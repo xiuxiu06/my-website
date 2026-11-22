@@ -44,6 +44,7 @@ export default function ExperiencePage() {
           <p className="font-semibold text-sand">
             {education.degree} · {education.minor}
           </p>
+          <p className="text-[15px] font-semibold text-mint">{education.program}</p>
           <p className="text-[15px] text-muted">
             {education.graduation} · GPA <span className="font-bold text-cream">{education.gpa}</span>
           </p>
@@ -77,6 +78,7 @@ export default function ExperiencePage() {
             {honors.map((h) => (
               <li key={h.title}>
                 {h.title} <span className="font-semibold text-muted">· {h.org}, {h.date}</span>
+                {h.detail && <span className="mt-1 block text-[14px] font-medium text-dim">{h.detail}</span>}
               </li>
             ))}
           </ul>

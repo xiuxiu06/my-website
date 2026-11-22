@@ -206,12 +206,12 @@ export const experience: Role[] = [
   },
   {
     role: "Web Developer",
-    org: "RevolutionUC Hackathon",
+    org: "RevolutionUC Hackathon · Web Team",
     place: "Cincinnati, OH",
     start: "2025-09-01",
     end: "2026-03-31",
     points: [
-      "Developed and maintained the RevolutionUC website with Next.js and TypeScript.",
+      "Rebuilt the RevolutionUC website from the ground up with Next.js and TypeScript, and maintained it through the event.",
       "Built interactive UI components and animations with GSAP.",
       "Created an internal admin dashboard with Next.js and REST APIs to streamline organizer workflows.",
       "Coordinated with five departments to support a hackathon with 800+ registrants and 300+ attendees.",
@@ -246,15 +246,22 @@ export const education = {
   school: "University of Cincinnati",
   degree: "B.S. Computer Science (Honors)",
   minor: "Minor in Information Technology",
+  program: "University Honors Program",
   graduation: "Expected May 2029",
   gpa: "3.92",
   coursework: ["Data Structures", "Database Management", "System Administration", "Probability and Statistics"],
 };
 
-/** Recognition that isn't tied to a single project. */
-export const honors = [
-  { title: "Top Student Active in ACM/IEEE & Annual Hackathon Award", org: "UC Department of Computer Science", date: "Apr 2026" },
-  { title: "Top 5 Finalist, Innovation Challenge (Fall 2025)", org: "UC Center for Entrepreneurship", date: "Nov 2025" },
+/** Recognition that isn't tied to a project on this site. */
+export const honors: { title: string; org: string; date: string; detail?: string }[] = [
+  { title: "2026 Top Students Active in ACM/IEEE Award", org: "UC Department of Computer Science", date: "Apr 2026" },
+  { title: "Annual Hackathon Organization Award", org: "UC Department of Computer Science", date: "Apr 2026" },
+  {
+    title: "5th place, Honors Innovation Challenge",
+    org: "UC Center for Entrepreneurship",
+    date: "Nov 2025",
+    detail: "WGuard: a portable, eco-friendly toilet-cleaning tablet that dissolves with each flush, pitched by a multidisciplinary team.",
+  },
   { title: "Dean's List", org: "University of Cincinnati", date: "Dec 2024 – Present" },
 ];
 
