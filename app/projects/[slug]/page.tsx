@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getProject, projects } from "@/lib/content";
+import { notes } from "@/lib/notes";
 
 // Every project is prerendered; unknown slugs hit notFound() below.
 // (dynamicParams isn't allowed together with cacheComponents.)
@@ -33,6 +34,7 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
   const CaseStudy = await loadCaseStudy(slug);
   const index = projects.indexOf(p);
   const next = projects[(index + 1) % projects.length];
+  const related = notes.filter((n) => n.project === p.slug);
 
   const links = [
     p.links.live && { href: p.links.live, label: "Live site" },
@@ -126,10 +128,26 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
       </div>
 
       <div className="mx-auto max-w-[760px] px-4 pt-18 pb-24 sm:px-6">
-        {CaseStudy ? (
-          <CaseStudy />
-        ) : (
-          <p className="text-lg leading-relaxed text-muted">A longer write-up for this project is on its way.</p>
+        {CaseStudy && <CaseStudy />}
+
+        {/* Project pages stay short; the long story lives in Notes. */}
+        {related.length > 0 && (
+          <div className="mt-12 flex flex-col gap-3">
+            {related.map((n) => (
+              <Link
+                key={n.slug}
+                href={`/notes/${n.slug}`}
+                data-cursor="Read"
+                className="flex flex-wrap items-center justify-between gap-3 rounded-[20px] border border-line bg-surface px-7 py-6 transition-colors hover:border-mint"
+              >
+                <span className="flex flex-col gap-1">
+                  <span className="text-xs font-extrabold tracking-[0.14em] text-dim uppercase">The full story</span>
+                  <span className="text-[19px] font-extrabold">{n.title}</span>
+                </span>
+                <span className="font-bold text-mint">Read the note →</span>
+              </Link>
+            ))}
+          </div>
         )}
       </div>
 
