@@ -1,0 +1,23 @@
+<Overview>
+
+A solo project: a movie discovery app on the TMDB API. Search is debounced, results scroll endlessly, and a trending list ranks movies by what people actually search for, stored in Appwrite.
+
+</Overview>
+
+## Highlights
+
+- Real-time search, debounced by 500 ms so typing doesn't flood the API.
+- Infinite scroll for endless browsing.
+- A live top 10: every search updates a count in Appwrite, and the most searched movies rise.
+- An animated background, a floating hero and a glowing custom cursor, built with GSAP.
+
+## How it works
+
+<Steps
+  items={[
+    "You type a search (debounced 500 ms)",
+    "TMDB API returns matching movies",
+    "Appwrite counts the search",
+    "The trending top 10 updates",
+  ]}
+/>

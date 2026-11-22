@@ -1,0 +1,23 @@
+<Overview>
+
+A solo project: a web app that spots disease on potato leaves from a single photo. A CNN trained on the PlantVillage dataset reaches **93% test accuracy** and is served through FastAPI behind a React interface, with documentation built in Quarto.
+
+</Overview>
+
+## Highlights
+
+- Upload a leaf photo and get early blight, late blight or healthy, with a confidence score.
+- A TensorFlow/Keras CNN trained and evaluated on PlantVillage images.
+- FastAPI serves the model for real-time predictions.
+- A [documentation site](https://xiuxiu06.github.io/potato-disease-app/) covers training, analysis and the API.
+
+## How it works
+
+<Steps
+  items={[
+    "React app uploads the leaf photo",
+    "FastAPI receives the image",
+    "TensorFlow CNN predicts the class",
+    "Label and confidence appear in the app",
+  ]}
+/>

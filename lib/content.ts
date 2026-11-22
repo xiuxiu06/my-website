@@ -104,6 +104,8 @@ export const projects: Project[] = [
       repo: "https://github.com/xiuxiu06/potato-disease-app",
     },
     tags: ["AI / ML", "Side project"],
+    timeline: "Jun 2025",
+    role: "Solo project",
   },
   {
     slug: "movie-app",
@@ -118,6 +120,8 @@ export const projects: Project[] = [
     video: "/projects/movie-app/demo.mp4",
     links: { live: "https://xiuxiu06.github.io/movie-app/", repo: "https://github.com/xiuxiu06/movie-app" },
     tags: ["Side project"],
+    timeline: "2025",
+    role: "Solo project",
   },
   {
     slug: "leo-kitchen",
@@ -132,6 +136,7 @@ export const projects: Project[] = [
     video: "/projects/leo-kitchen/demo.mp4",
     links: { repo: "https://github.com/xiuxiu06/Leo-Kitchen" },
     tags: ["AI / ML", "Competition"],
+    timeline: "RevolutionUC 2025",
   },
   {
     slug: "portfolio",
@@ -146,6 +151,8 @@ export const projects: Project[] = [
     video: "/projects/portfolio/demo.mp4",
     links: { repo: "https://github.com/xiuxiu06/my-website" },
     tags: ["Side project"],
+    timeline: "Since Oct 2025",
+    role: "Solo project",
   },
 ];
 
