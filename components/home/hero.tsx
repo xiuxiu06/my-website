@@ -5,7 +5,6 @@ import Link from "next/link";
 import { useRef } from "react";
 import { DESKTOP_MOTION, MOTION, SplitText, gsap, useGSAP } from "@/lib/gsap";
 import { site } from "@/lib/site";
-import { CircleText } from "@/components/circle-text";
 import portrait from "@/public/images/tam.png";
 
 // Wave with a loop (same idea as the old About line), drawn in its own band under the hero.
@@ -48,15 +47,6 @@ export function Hero() {
           ease: "none",
           scrollTrigger: { trigger: root.current, start: "top top", end: "bottom top", scrub: true },
         });
-
-        // Stickers spin as you scroll past the hero.
-        gsap.utils.toArray<HTMLElement>("[data-spin]").forEach((el) => {
-          gsap.to(el, {
-            rotate: -360,
-            ease: "none",
-            scrollTrigger: { trigger: root.current, start: "top top", end: "bottom top", scrub: true },
-          });
-        });
       });
 
       mm.add(DESKTOP_MOTION, () => {
@@ -66,25 +56,26 @@ export function Hero() {
             // Starts with the page's first scroll, so it is always empty on load, whatever the screen height.
             scrollTrigger: { trigger: root.current, start: "top top", end: "bottom 40%", scrub: 0.6 },
           })
-          .to("[data-line-ball]", { autoAlpha: 1, duration: 0.01 })
-          .from("[data-line]", { drawSVG: 0, duration: 1 }, 0)
-          // Ball and path share the SVG's coordinates, so follow the path directly (no `align`,
+          .to("[data-plane]", { autoAlpha: 1, duration: 0.01 })
+          // The dashed trail is revealed through a mask whose solid stroke is drawn
+          // (drawing the dashed path itself would fight its own dash pattern).
+          .from("[data-trail-reveal]", { drawSVG: 0, duration: 1 }, 0)
+          // Plane and path share the SVG's coordinates, so follow the path directly (no `align`,
           // which measures on screen and drifts while ScrollSmoother is moving the page).
-          .to("[data-line-ball]", { duration: 1, motionPath: { path: "[data-line]" } }, 0);
+          // svgOrigin 0 0 = the plane's own centre, so autoRotate turns it in place.
+          .set("[data-plane]", { svgOrigin: "0 0" }, 0)
+          .to(
+            "[data-plane]",
+            { duration: 1, motionPath: { path: "[data-trail-reveal]", autoRotate: true } },
+            0,
+          );
       });
     },
     { scope: root },
   );
 
   return (
-    // overflow-clip (not hidden): the half-offscreen stickers must never make the section scrollable.
     <section ref={root} aria-labelledby="hero-title" className="relative overflow-clip">
-      <div data-spin className="pointer-events-none absolute top-24 left-0 z-10 hidden w-[clamp(110px,14vw,220px)] -translate-x-1/2 text-cream md:block">
-        <CircleText text="software · AI · design · research ·" repeat={1} />
-      </div>
-      <div data-spin className="pointer-events-none absolute top-[62%] right-0 z-10 w-[clamp(110px,14vw,220px)] translate-x-1/2 text-cream">
-        <CircleText text="code · build · ship · learn · create ·" repeat={1} />
-      </div>
 
       <div className="relative z-[1] mx-auto flex max-w-[1200px] flex-wrap items-center gap-14 px-4 pt-16 pb-24 sm:px-6 min-[901px]:pb-6 lg:pt-20">
         <div className="flex min-w-0 flex-[999_1_520px] flex-col gap-6">
@@ -152,10 +143,32 @@ export function Hero() {
       {/* Own band below the content, so the line never runs through the text or the photo. */}
       <div data-line-stage className="pointer-events-none hidden pb-12 min-[901px]:block" aria-hidden="true">
         <svg viewBox="0 0 1600 240" className="h-auto w-full overflow-visible">
-          {/* Faint track so the band isn't empty before you scroll */}
-          <path d={LINE_PATH} fill="none" stroke="var(--color-line)" strokeWidth="24" strokeLinecap="round" />
-          <path data-line d={LINE_PATH} fill="none" stroke="var(--color-line-strong)" strokeWidth="24" strokeLinecap="round" />
-          <circle data-line-ball r="18" cx="0" cy="0" fill="var(--color-mint)" opacity="0" />
+          <defs>
+            {/* Solid stroke drawn on scroll; it uncovers the dashed trail behind the plane. */}
+            <mask id="hero-trail-mask" maskUnits="userSpaceOnUse" x="-50" y="-100" width="1700" height="440">
+              <path data-trail-reveal d={LINE_PATH} fill="none" stroke="#fff" strokeWidth="16" strokeLinecap="round" />
+            </mask>
+          </defs>
+
+          {/* Faint flight path ahead of the plane */}
+          <path d={LINE_PATH} fill="none" stroke="var(--color-line)" strokeWidth="3" strokeLinecap="round" strokeDasharray="2 12" />
+          {/* Dashed trail left behind */}
+          <path
+            d={LINE_PATH}
+            fill="none"
+            stroke="var(--color-cream)"
+            strokeWidth="5"
+            strokeLinecap="round"
+            strokeDasharray="14 14"
+            mask="url(#hero-trail-mask)"
+          />
+
+          {/* Paper plane, nose along +x and centred on 0,0 so it can turn in place. */}
+          <g data-plane opacity="0">
+            <path d="M34 0 L-30 -26 L-12 -1 Z" fill="var(--color-cream)" />
+            <path d="M34 0 L-12 -1 L-24 20 Z" fill="var(--color-sand)" />
+            <path d="M34 0 L-12 -1 L-2 12 Z" fill="var(--color-mint)" />
+          </g>
         </svg>
       </div>
     </section>
