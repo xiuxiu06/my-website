@@ -80,10 +80,10 @@ export function Hero() {
     // overflow-clip (not hidden): the half-offscreen stickers must never make the section scrollable.
     <section ref={root} aria-labelledby="hero-title" className="relative overflow-clip">
       <div data-spin className="pointer-events-none absolute top-24 left-0 z-10 hidden w-[clamp(110px,14vw,220px)] -translate-x-1/2 text-cream md:block">
-        <CircleText text="I love coding!" />
+        <CircleText text="software · AI · design · research ·" repeat={1} />
       </div>
       <div data-spin className="pointer-events-none absolute top-[62%] right-0 z-10 w-[clamp(110px,14vw,220px)] translate-x-1/2 text-cream">
-        <CircleText text="I love creating!" />
+        <CircleText text="code · build · ship · learn · create ·" repeat={1} />
       </div>
 
       <div className="relative z-[1] mx-auto flex max-w-[1200px] flex-wrap items-center gap-14 px-4 pt-16 pb-24 sm:px-6 min-[901px]:pb-6 lg:pt-20">
