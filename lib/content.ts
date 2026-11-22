@@ -165,6 +165,8 @@ export type Role = {
   end?: string;
   points: string[];
   tech: string[];
+  /** Optional slug of a note that tells this role's story. */
+  note?: string;
 };
 
 export const experience: Role[] = [
@@ -217,6 +219,7 @@ export const experience: Role[] = [
       "Coordinated with five departments to support a hackathon with 800+ registrants and 300+ attendees.",
     ],
     tech: ["Next.js", "TypeScript", "GSAP", "REST APIs"],
+    note: "revolutionuc-organizer",
   },
 ];
 
@@ -254,8 +257,11 @@ export const education = {
 
 /** Recognition that isn't tied to a project on this site. */
 export const honors: { title: string; org: string; date: string; detail?: string }[] = [
-  { title: "2026 Top Students Active in ACM/IEEE Award", org: "UC Department of Computer Science", date: "Apr 2026" },
-  { title: "Annual Hackathon Organization Award", org: "UC Department of Computer Science", date: "Apr 2026" },
+  {
+    title: "2026 Top Students Active in ACM/IEEE & Annual Hackathon Organization Award",
+    org: "UC Department of Computer Science",
+    date: "Apr 2026",
+  },
   {
     title: "5th place, Honors Innovation Challenge",
     org: "UC Center for Entrepreneurship",

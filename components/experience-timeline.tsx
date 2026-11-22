@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useRef, useState } from "react";
 import { type Role, formatRange, orgInitials, roleStatus } from "@/lib/content";
 import { MOTION, ScrollTrigger, gsap, useGSAP } from "@/lib/gsap";
@@ -147,6 +148,15 @@ export function ExperienceTimeline({ roles }: { roles: Role[] }) {
                         </li>
                       ))}
                     </ul>
+                  )}
+                  {r.note && (
+                    <Link
+                      href={`/notes/${r.note}`}
+                      data-cursor="Read"
+                      className="self-start pt-1 font-bold text-mint hover:text-mint-soft"
+                    >
+                      Read the story →
+                    </Link>
                   )}
                 </div>
               </li>
