@@ -1,7 +1,12 @@
 import type { Metadata } from "next";
 import { PageHeader } from "@/components/page-header";
+import { ProjectGrid } from "@/components/project-grid";
+import { projects } from "@/lib/content";
 
-export const metadata: Metadata = { title: "Projects" };
+export const metadata: Metadata = {
+  title: "Projects",
+  description: "Hackathon builds, research tools and side projects by Tam Le.",
+};
 
 export default function ProjectsPage() {
   return (
@@ -11,7 +16,7 @@ export default function ProjectsPage() {
         intro="Hackathon builds, research tools and side projects, each with a short case study."
         ring="code · build · ship · learn · create ·"
       />
-      <p className="text-dim">Coming soon: project grid.</p>
+      <ProjectGrid projects={projects} />
     </div>
   );
 }

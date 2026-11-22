@@ -1,5 +1,8 @@
-// Portfolio content. Step 5 moves long-form case studies to MDX;
-// the card data below stays the single source for lists and the home page.
+// Portfolio content. Card/meta data lives here; the long-form case study for a project
+// is optional and lives in content/projects/<slug>.mdx.
+
+export const PROJECT_FILTERS = ["AI / ML", "Hardware", "Competition", "Side project"] as const;
+export type ProjectFilter = (typeof PROJECT_FILTERS)[number];
 
 export type Project = {
   slug: string;
@@ -14,7 +17,16 @@ export type Project = {
   poster?: string;
   video?: string;
   links: { live?: string; repo?: string; devpost?: string };
+  /** Filter chips on /projects. */
+  tags: ProjectFilter[];
+  awards?: string[];
+  role?: string;
+  timeline?: string;
+  team?: string;
+  /** Shown on the home page. */
   featured?: boolean;
+  /** Double-size tile in the /projects bento grid. */
+  big?: boolean;
 };
 
 export const projects: Project[] = [
@@ -29,6 +41,11 @@ export const projects: Project[] = [
       "Healthcare students interview an AI psychiatric patient by voice, rewind key moments to try a better question, and get a scored debrief grounded in clinical guidelines.",
     tech: ["Next.js", "Gemini Live", "Supabase", "Auth0", "TypeScript"],
     links: { live: "https://www.medmimic.us", repo: "https://github.com/xiuxiu06/MedMimic" },
+    tags: ["AI / ML", "Competition"],
+    awards: ["MLH Best Use of Gemini API — MakeUC 2026"],
+    role: "[Your role]",
+    timeline: "MakeUC 2026 · [x] hrs",
+    team: "[x] people",
     featured: true,
   },
   {
@@ -46,6 +63,12 @@ export const projects: Project[] = [
       devpost: "https://devpost.com/software/makeuc-2025-project",
       repo: "https://github.com/dabudke/makeuc-2025",
     },
+    tags: ["AI / ML", "Competition"],
+    awards: ["Second Place — MakeUC 2025", "Best Green Tech Hack", "MLH Best Use of Gemini API"],
+    role: "[Your role]",
+    timeline: "MakeUC 2025 · [x] hrs",
+    team: "[x] people",
+    big: true,
     featured: true,
   },
   {
@@ -59,6 +82,11 @@ export const projects: Project[] = [
       "ESP32 hangers that notice which clothes you actually wear, plus an app that plans outfits and nudges forgotten pieces.",
     tech: ["Next.js", "ESP32", "Supabase", "TypeScript"],
     links: { live: "https://wearly.fashion", repo: "https://github.com/xiuxiu06/wearly" },
+    tags: ["Hardware", "Competition"],
+    awards: ["Top 25% of projects — Innovation Challenge 2026"],
+    role: "[Your role]",
+    timeline: "Innovation Challenge 2026",
+    team: "[x] people",
     featured: true,
   },
   {
@@ -77,6 +105,7 @@ export const projects: Project[] = [
       live: "https://xiuxiu06.github.io/potato-disease-app/",
       repo: "https://github.com/xiuxiu06/potato-disease-app",
     },
+    tags: ["AI / ML", "Side project"],
   },
   {
     slug: "movie-app",
@@ -90,6 +119,7 @@ export const projects: Project[] = [
     poster: "/projects/movie-app/poster.png",
     video: "/projects/movie-app/demo.mp4",
     links: { live: "https://xiuxiu06.github.io/movie-app/", repo: "https://github.com/xiuxiu06/movie-app" },
+    tags: ["Side project"],
   },
   {
     slug: "leo-kitchen",
@@ -103,6 +133,7 @@ export const projects: Project[] = [
     poster: "/projects/leo-kitchen/poster.png",
     video: "/projects/leo-kitchen/demo.mp4",
     links: { repo: "https://github.com/xiuxiu06/Leo-Kitchen" },
+    tags: ["AI / ML", "Competition"],
   },
   {
     slug: "portfolio",
@@ -116,6 +147,7 @@ export const projects: Project[] = [
     poster: "/projects/portfolio/poster.png",
     video: "/projects/portfolio/demo.mp4",
     links: { repo: "https://github.com/xiuxiu06/my-website" },
+    tags: ["Side project"],
   },
 ];
 
@@ -193,4 +225,8 @@ export function formatRange(r: Role, status: RoleStatus | null) {
   if (status === "upcoming") return `Starts ${start}`;
   if (r.end) return `${start} — ${fmt.format(new Date(r.end))}`;
   return status === "current" ? `${start} — Present` : start;
+}
+
+export function getProject(slug: string) {
+  return projects.find((p) => p.slug === slug);
 }
