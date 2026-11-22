@@ -1,0 +1,35 @@
+<TLDR>
+
+Smart hangers that notice what you actually wear. Each hanger senses when a garment leaves and comes back, and the app builds up a picture of your real wardrobe with no cataloging. Built for Innovation Challenge 2026, where it placed in the **top 25% of projects**. [My part: …]
+
+</TLDR>
+
+## The problem
+
+Most of us wear a small part of our closet over and over while the rest waits on the rail. Wardrobe apps try to fix this, but they start by asking you to photograph and log everything, and most people give up after a week.
+
+## What we built
+
+- **Hangers that track wear.** A few minutes off the rail means you were browsing; hours away means you wore it. A small hub in the closet sends these moments to the app.
+- **Three small lights per hanger.** Blue for today's outfit, a slow yellow breathe for pieces that have waited a while, two white blinks for "here I am" when you search. No red or green: nothing says your clothes are "bad".
+- **An app that plans with you:** today's outfit for the weather, a week of plans, and a swipe deck of forgotten pieces to keep, style or let go.
+- **A closet camera** that photographs a garment as it's hung back, removes the background and names it, so photos happen without effort.
+
+## How it works
+
+<Steps
+  items={[
+    "ESP32 hanger senses a garment leave or return",
+    "Closet hub forwards the event",
+    "Next.js app on Supabase logs browse vs. wear",
+    "Planner and swipe deck light the right hangers",
+  ]}
+/>
+
+The web app is complete, and a first real hanger and hub already talk to the live app. While the rest of the hangers are built, a virtual hub in the app stands in for them over the same connection. [The part you built, and one decision you made along the way.]
+
+## What I learned
+
+> [One sentence about building hardware and software together.]
+
+[Two or three things you'd do differently next time.]

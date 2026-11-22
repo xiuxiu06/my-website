@@ -1,0 +1,38 @@
+<TLDR>
+
+A clinical interview simulator for healthcare students, built at MakeUC 2026 and awarded **MLH Best Use of Gemini API**. You interview an AI psychiatric patient by voice, rewind to a critical moment to try a better question, and get a scored debrief grounded in published clinical guidelines. [My part: …]
+
+</TLDR>
+
+## The problem
+
+[Why practicing clinical interviews, especially suicide risk assessment, is hard for students: few chances to practice, high stakes, little feedback on *which* question changed the outcome.]
+
+## What we built
+
+- **Voice or text interviews** with a live AI patient (Gemini Live), with lip-synced avatars.
+- **A trust engine.** Every turn is classified (empathy, reflection, dismissiveness, direct suicide inquiry…). Trust from 0 to 100 controls which facts the patient will reveal and how they sound.
+- **Checkpoints and rewind.** Key moments are saved, so you can replay from one and compare two runs side by side.
+- **A scored debrief** out of 100, with feedback that cites C-SSRS, SAFE-T, PHQ-9 and OARS through retrieval.
+- **Classroom roles.** Students and instructors log in with Auth0; instructors publish cases to the class.
+
+## How it works
+
+<Steps
+  items={[
+    "Next.js app streams the conversation",
+    "Gemini Live voices the patient",
+    "Gemini Flash classifies each turn and updates trust",
+    "RAG over guideline embeddings writes the debrief",
+  ]}
+/>
+
+Sessions and cases are stored in Supabase Postgres with row-level security, linked to Auth0 users. [One tricky decision your team made, for example keeping the patient consistent while trust changes what it may say.]
+
+## What I learned
+
+> [One sentence you'd tell another hackathon team.]
+
+[Two or three things you'd do differently next time.]
+
+Try it at [medmimic.us](https://www.medmimic.us). The patients are fictional and the tool is for education only, not for clinical decisions.
