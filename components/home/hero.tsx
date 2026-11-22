@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRef } from "react";
 import { DESKTOP_MOTION, MOTION, SplitText, gsap, useGSAP } from "@/lib/gsap";
+import { site } from "@/lib/site";
 import stickerCoding from "@/public/images/sticker-love-coding.png";
 import stickerCreating from "@/public/images/sticker-love-creating.png";
 import portrait from "@/public/images/tam.png";
@@ -31,15 +32,16 @@ export function Hero() {
 
         gsap
           .timeline({ defaults: { ease: "power3.out" } })
+          .from("[data-hero-intro]", { y: 20, autoAlpha: 0, duration: 0.6 })
           .from(split.chars, {
             yPercent: 110,
             duration: 0.8,
             stagger: 0.035,
             // Back to plain text once revealed, so nothing can clip it afterwards.
             onComplete: () => split.revert(),
-          })
-          .from("[data-hero-photo]", { clipPath: "inset(100% 0% 0% 0%)", duration: 1.1, ease: "expo.inOut" }, 0.1)
-          .from("[data-hero-fade]", { y: 24, autoAlpha: 0, duration: 0.7, stagger: 0.1 }, 0.5);
+          }, 0.1)
+          .from("[data-hero-photo]", { clipPath: "inset(100% 0% 0% 0%)", duration: 1.1, ease: "expo.inOut" }, 0.2)
+          .from("[data-hero-fade]", { y: 24, autoAlpha: 0, duration: 0.7, stagger: 0.1 }, 0.6);
 
         // Photo drifts up slightly slower than the page.
         gsap.to("[data-hero-parallax]", {
@@ -86,6 +88,19 @@ export function Hero() {
 
       <div className="relative z-[1] mx-auto flex max-w-[1200px] flex-wrap items-center gap-14 px-4 pt-16 pb-24 sm:px-6 min-[901px]:pb-6 lg:pt-20">
         <div className="flex min-w-0 flex-[999_1_520px] flex-col gap-6">
+          <p
+            data-reveal
+            data-hero-intro
+            className="flex items-center gap-2 self-start rounded-full border border-line bg-surface px-4 py-2.5 text-sm font-semibold"
+          >
+            <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-mint)" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z" />
+              <circle cx="12" cy="9.5" r="2.5" />
+            </svg>
+            {site.intro.school}
+            <span className="hidden sm:inline">· {site.intro.city}</span>
+          </p>
+
           <h1
             id="hero-title"
             data-reveal
