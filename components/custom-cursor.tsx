@@ -77,9 +77,9 @@ export function CustomCursor() {
         <svg width="30" height="30" viewBox="0 0 30 30" className="block overflow-visible">
           {/* Nose at 0,0 pointing up-left, like an arrow cursor */}
           <g transform="rotate(-135) scale(0.42)">
+            {/* Same two tones as the hero plane; all dark on light backgrounds */}
             <path d="M0 0 L-64 -26 L-46 -1 Z" fill="currentColor" />
-            <path d="M0 0 L-46 -1 L-58 20 Z" fill="currentColor" opacity="0.7" />
-            <path d="M0 0 L-46 -1 L-36 12 Z" fill={onLight ? "currentColor" : "var(--color-mint)"} opacity={onLight ? 0.45 : 1} />
+            <path d="M0 0 L-46 -1 L-58 20 Z" fill={onLight ? "currentColor" : "var(--color-mint)"} opacity={onLight ? 0.6 : 1} />
           </g>
         </svg>
       </div>

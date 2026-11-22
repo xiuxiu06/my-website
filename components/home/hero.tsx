@@ -165,9 +165,9 @@ export function Hero() {
 
           {/* Paper plane, nose along +x and centred on 0,0 so it can turn in place. */}
           <g data-plane opacity="0">
+            {/* Two tones: top wing cream, underside mint */}
             <path d="M34 0 L-30 -26 L-12 -1 Z" fill="var(--color-cream)" />
-            <path d="M34 0 L-12 -1 L-24 20 Z" fill="var(--color-sand)" />
-            <path d="M34 0 L-12 -1 L-2 12 Z" fill="var(--color-mint)" />
+            <path d="M34 0 L-12 -1 L-24 20 Z" fill="var(--color-mint)" />
           </g>
         </svg>
       </div>
