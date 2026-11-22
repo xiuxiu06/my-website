@@ -230,3 +230,25 @@ export function formatRange(r: Role, status: RoleStatus | null) {
 export function getProject(slug: string) {
   return projects.find((p) => p.slug === slug);
 }
+
+export const education = {
+  school: "University of Cincinnati",
+  degree: "B.S. Computer Science",
+  graduation: "[Expected graduation]",
+  details: "[Relevant coursework, GPA or honors]",
+};
+
+/** Every award across projects, newest project first (projects are already in that order). */
+export function allAwards() {
+  return projects.flatMap((p) => (p.awards ?? []).map((award) => ({ award, project: p })));
+}
+
+/** Two-letter badge for a role's organisation until real logos exist. */
+export function orgInitials(org: string) {
+  return org
+    .split(/[\s–-]+/)
+    .filter((w) => /^[A-Za-z]/.test(w))
+    .slice(0, 2)
+    .map((w) => w[0].toUpperCase())
+    .join("");
+}
