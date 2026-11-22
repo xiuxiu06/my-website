@@ -40,6 +40,14 @@
     color: #000;
   }
 
+  /* Experience: the pinned year rolls in when it changes */
+  @keyframes year-in {
+    from {
+      translate: 0 60%;
+      opacity: 0;
+    }
+  }
+
   @keyframes cursor-pop {
     from {
       scale: 0.6;
