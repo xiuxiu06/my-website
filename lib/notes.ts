@@ -19,6 +19,17 @@ export type Note = {
 };
 
 export const notes: Note[] = [
+  {
+    slug: "rebuilding-my-portfolio",
+    title: "Rebuilding my portfolio with Next.js and GSAP",
+    date: "2026-11-22",
+    tag: "Web",
+    summary:
+      "Moving a one-file site to Next.js without losing its animations: a hydration mismatch, a clipped font, a drifting ball and 159 MB of silent video.",
+    minutes: 6,
+    cover: "/projects/portfolio/poster.jpg",
+    project: "portfolio",
+  },
   // {
   //   slug: "building-medmimic",
   //   title: "Building MedMimic: rewinding a conversation with an AI patient",

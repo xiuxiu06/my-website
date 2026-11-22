@@ -13,7 +13,10 @@ const components: MDXComponents = {
   blockquote: (props) => (
     <blockquote className="my-8 border-l-4 border-mint pl-6 text-[22px] leading-normal font-semibold text-cream [&_p]:m-0 [&_p]:text-inherit" {...props} />
   ),
-  code: (props) => <code className="rounded bg-surface px-1.5 py-0.5 font-mono text-[0.9em] text-cream" {...props} />,
+  // No ligatures in code: readers should see (and copy) "=>" exactly as typed.
+  code: (props) => (
+    <code className="rounded bg-surface px-1.5 py-0.5 font-mono text-[0.9em] text-cream [font-variant-ligatures:none]" {...props} />
+  ),
   pre: (props) => (
     <pre className="my-6 overflow-x-auto rounded-2xl border border-line bg-surface p-5 font-mono text-[15px] leading-relaxed [&_code]:bg-transparent [&_code]:p-0" {...props} />
   ),
