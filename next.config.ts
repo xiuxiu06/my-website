@@ -1,7 +1,7 @@
+import createMDX from "@next/mdx";
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
   cacheComponents: true,
   partialPrefetching: true,
   turbopack: {
@@ -14,4 +14,10 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+// Case studies and notes are .mdx files imported by their pages (not routes themselves).
+// Turbopack needs plugins referenced by name.
+const withMDX = createMDX({
+  options: { remarkPlugins: ["remark-gfm"] },
+});
+
+export default withMDX(nextConfig);
