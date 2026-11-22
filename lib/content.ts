@@ -58,7 +58,7 @@ export const projects: Project[] = [
     blurb:
       "Chrome extension that suggests affordable, eco-friendly alternatives right from your shopping cart.",
     tech: ["React", "Node.js", "Gemini API", "Hugging Face", "Zilliz"],
-    poster: "/projects/ecocart/poster.png",
+    poster: "/projects/ecocart/poster.jpg",
     links: {
       devpost: "https://devpost.com/software/makeuc-2025-project",
       repo: "https://github.com/dabudke/makeuc-2025",
@@ -99,7 +99,7 @@ export const projects: Project[] = [
     blurb:
       "Real-time potato leaf disease detection with confidence scores, from a TensorFlow model served through FastAPI.",
     tech: ["TensorFlow", "FastAPI", "React", "Material UI"],
-    poster: "/projects/potato-ai/poster.png",
+    poster: "/projects/potato-ai/poster.jpg",
     video: "/projects/potato-ai/demo.mp4",
     links: {
       live: "https://xiuxiu06.github.io/potato-disease-app/",
@@ -116,7 +116,7 @@ export const projects: Project[] = [
     outcome: "[Key result]",
     blurb: "Infinite scrolling, debounced search and trending picks powered by the TMDB API.",
     tech: ["React", "Tailwind", "TMDB API"],
-    poster: "/projects/movie-app/poster.png",
+    poster: "/projects/movie-app/poster.jpg",
     video: "/projects/movie-app/demo.mp4",
     links: { live: "https://xiuxiu06.github.io/movie-app/", repo: "https://github.com/xiuxiu06/movie-app" },
     tags: ["Side project"],
@@ -130,7 +130,7 @@ export const projects: Project[] = [
     outcome: "[Key result]",
     blurb: "Recipe-sharing platform with an AI cooking chatbot, built during a hackathon.",
     tech: ["Streamlit", "OpenAI API", "SQLite"],
-    poster: "/projects/leo-kitchen/poster.png",
+    poster: "/projects/leo-kitchen/poster.jpg",
     video: "/projects/leo-kitchen/demo.mp4",
     links: { repo: "https://github.com/xiuxiu06/Leo-Kitchen" },
     tags: ["AI / ML", "Competition"],
@@ -144,7 +144,7 @@ export const projects: Project[] = [
     outcome: "Designed in Figma, animated with GSAP",
     blurb: "Smooth scrolling, a pinned horizontal project scroller and a physics contact grid, now on Next.js.",
     tech: ["Next.js", "GSAP", "Tailwind"],
-    poster: "/projects/portfolio/poster.png",
+    poster: "/projects/portfolio/poster.jpg",
     video: "/projects/portfolio/demo.mp4",
     links: { repo: "https://github.com/xiuxiu06/my-website" },
     tags: ["Side project"],
