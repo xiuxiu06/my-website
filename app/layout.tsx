@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { JetBrains_Mono, Modak, Montserrat } from "next/font/google";
 import { Suspense } from "react";
 import { CustomCursor } from "@/components/custom-cursor";
@@ -31,6 +31,18 @@ export const metadata: Metadata = {
     template: `%s — ${site.name}`,
   },
   description: site.description,
+  openGraph: {
+    type: "website",
+    siteName: site.name,
+    locale: "en_US",
+    url: site.url,
+  },
+  twitter: { card: "summary_large_image" },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#070b08",
+  colorScheme: "dark",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
@@ -40,10 +52,18 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${montserrat.variable} ${modak.variable} ${jetbrainsMono.variable} antialiased`}
     >
       <body className="font-sans">
+        <a
+          href="#main"
+          className="fixed top-3 left-3 z-[60] -translate-y-24 rounded-full bg-mint px-5 py-3 font-bold text-black focus:translate-y-0"
+        >
+          Skip to content
+        </a>
         <SiteHeader />
         <SmoothScroll>
           <div aria-hidden="true" className={HEADER_HEIGHT} />
-          <main className="min-h-[60dvh]">{children}</main>
+          <main id="main" tabIndex={-1} className="min-h-[60dvh] outline-none">
+            {children}
+          </main>
           <SiteFooter />
         </SmoothScroll>
         {/* usePathname needs a Suspense boundary with cacheComponents */}
