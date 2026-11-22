@@ -43,9 +43,9 @@ export const projects: Project[] = [
     links: { live: "https://www.medmimic.us", repo: "https://github.com/xiuxiu06/MedMimic" },
     tags: ["AI / ML", "Competition"],
     awards: ["MLH Best Use of Gemini API — MakeUC 2026"],
-    role: "[Your role]",
-    timeline: "MakeUC 2026 · [x] hrs",
-    team: "[x] people",
+    role: "Trust engine, UI, RAG debrief, auth and deploy",
+    timeline: "MakeUC 2026 · 24 hrs",
+    team: "2 people",
     featured: true,
   },
   {
@@ -65,9 +65,9 @@ export const projects: Project[] = [
     },
     tags: ["AI / ML", "Competition"],
     awards: ["Second Place — MakeUC 2025", "Best Green Tech Hack", "MLH Best Use of Gemini API"],
-    role: "[Your role]",
-    timeline: "MakeUC 2025 · [x] hrs",
-    team: "[x] people",
+    role: "Chrome extension frontend and product scraper",
+    timeline: "MakeUC 2025 · 24 hrs",
+    team: "4 people",
     big: true,
     featured: true,
   },
@@ -84,21 +84,21 @@ export const projects: Project[] = [
     links: { live: "https://wearly.fashion", repo: "https://github.com/xiuxiu06/wearly" },
     tags: ["Hardware", "Competition"],
     awards: ["Top 25% of projects — Innovation Challenge 2026"],
-    role: "[Your role]",
+    role: "Most of the web app, plus the hardware",
     timeline: "Innovation Challenge 2026",
-    team: "[x] people",
+    team: "3 people",
     featured: true,
   },
   {
     slug: "potato-ai",
     title: "Potato Disease AI Classifier",
     short: "Potato AI",
-    year: "[Year]",
+    year: "2025",
     kind: "AI / ML",
-    outcome: "[Key result]",
+    outcome: "93% test accuracy on potato leaf images",
     blurb:
-      "Real-time potato leaf disease detection with confidence scores, from a TensorFlow model served through FastAPI.",
-    tech: ["TensorFlow", "FastAPI", "React", "Material UI"],
+      "Upload a potato leaf photo and get early blight, late blight or healthy, with a confidence score. A TensorFlow CNN served through FastAPI behind a React app.",
+    tech: ["TensorFlow", "Keras", "FastAPI", "React", "Material UI", "Quarto"],
     poster: "/projects/potato-ai/poster.jpg",
     video: "/projects/potato-ai/demo.mp4",
     links: {
@@ -111,11 +111,12 @@ export const projects: Project[] = [
     slug: "movie-app",
     title: "Movie Discovery App",
     short: "Movies",
-    year: "[Year]",
+    year: "2025",
     kind: "Web",
-    outcome: "[Key result]",
-    blurb: "Infinite scrolling, debounced search and trending picks powered by the TMDB API.",
-    tech: ["React", "Tailwind", "TMDB API"],
+    outcome: "Live top-10 trending list built from what users search",
+    blurb:
+      "Movie discovery with debounced search and infinite scroll on the TMDB API. Searches are tracked in Appwrite to rank a live trending list.",
+    tech: ["React", "Tailwind", "TMDB API", "Appwrite", "GSAP", "Vite"],
     poster: "/projects/movie-app/poster.jpg",
     video: "/projects/movie-app/demo.mp4",
     links: { live: "https://xiuxiu06.github.io/movie-app/", repo: "https://github.com/xiuxiu06/movie-app" },
@@ -125,11 +126,12 @@ export const projects: Project[] = [
     slug: "leo-kitchen",
     title: "Leo Kitchen – Recipe Sharing",
     short: "Leo Kitchen",
-    year: "[Year]",
+    year: "2025",
     kind: "Hackathon",
-    outcome: "[Key result]",
-    blurb: "Recipe-sharing platform with an AI cooking chatbot, built during a hackathon.",
-    tech: ["Streamlit", "OpenAI API", "SQLite"],
+    outcome: "Built at RevolutionUC 2025",
+    blurb:
+      "Social media for recipes, named after RevolutionUC's mascot Leo: profiles, a meal feed, likes and saves, recipe posting and a cooking chatbot.",
+    tech: ["Python", "Streamlit", "SQLite", "OpenAI API"],
     poster: "/projects/leo-kitchen/poster.jpg",
     video: "/projects/leo-kitchen/demo.mp4",
     links: { repo: "https://github.com/xiuxiu06/Leo-Kitchen" },
@@ -178,9 +180,12 @@ export const experience: Role[] = [
     start: "2026-05-01",
     end: "2026-08-31",
     points: [
-      "Developed data quality assurance methods to improve AI model performance in industrial, data-driven systems.",
+      "Built a pipeline that turned 5,500+ manufacturing orders into 3,800+ structured datasets for analysis and training.",
+      "Developed and evaluated graph neural network models for lubricant quality prediction and blend pass/fail classification.",
+      "Built a Streamlit dashboard for process data, quality metrics, adjustment history and model outputs.",
+      "Presented findings and model results to Valvoline engineers and university researchers.",
     ],
-    tech: ["Python"],
+    tech: ["Python", "Graph Neural Networks", "Streamlit", "Data Pipelines"],
   },
   {
     role: "Machine Learning Research Assistant",
@@ -189,11 +194,12 @@ export const experience: Role[] = [
     start: "2026-01-01",
     end: "2026-05-31",
     points: [
-      "Built end-to-end computer vision pipelines in Python and MATLAB for large-scale image analysis.",
-      "Trained CNN-based regression and classification models with PyTorch.",
-      "Integrated vision sensors and embedded hardware for automated behavioral analysis.",
+      "Developed a ResNet-50 computer vision pipeline to predict fluid volume from experimental images.",
+      "Integrated an OpenMV camera, MATLAB and lab hardware for automated image acquisition and processing.",
+      "Improved model performance through preprocessing, training, validation and error analysis.",
+      "Documented workflows and results for reproducibility, and contributed to the research paper.",
     ],
-    tech: ["Python", "MATLAB", "PyTorch", "Computer Vision"],
+    tech: ["Python", "PyTorch", "ResNet-50", "MATLAB", "OpenMV"],
   },
   {
     role: "Web Developer",
@@ -202,10 +208,12 @@ export const experience: Role[] = [
     start: "2025-09-01",
     end: "2026-03-31",
     points: [
-      "Developed the official hackathon website with TypeScript and Next.js.",
-      "Implemented responsive design and integrated RESTful APIs.",
+      "Developed and maintained the RevolutionUC website with Next.js and TypeScript.",
+      "Built interactive UI components and animations with GSAP.",
+      "Created an internal admin dashboard with Next.js and REST APIs to streamline organizer workflows.",
+      "Coordinated with five departments to support a hackathon with 800+ registrants and 300+ attendees.",
     ],
-    tech: ["TypeScript", "Next.js", "REST APIs"],
+    tech: ["Next.js", "TypeScript", "GSAP", "REST APIs"],
   },
 ];
 
@@ -233,10 +241,29 @@ export function getProject(slug: string) {
 
 export const education = {
   school: "University of Cincinnati",
-  degree: "B.S. Computer Science",
-  graduation: "[Expected graduation]",
-  details: "[Relevant coursework, GPA or honors]",
+  degree: "B.S. Computer Science (Honors)",
+  minor: "Minor in Information Technology",
+  graduation: "Expected May 2029",
+  gpa: "3.92",
+  coursework: ["Data Structures", "Database Management", "System Administration", "Probability and Statistics"],
 };
+
+/** Recognition that isn't tied to a single project. */
+export const honors = [
+  { title: "Top Student Active in ACM/IEEE & Annual Hackathon Award", org: "UC Department of Computer Science", date: "Apr 2026" },
+  { title: "Top 5 Finalist, Innovation Challenge (Fall 2025)", org: "UC Center for Entrepreneurship", date: "Nov 2025" },
+  { title: "Dean's List", org: "University of Cincinnati", date: "Dec 2024 – Present" },
+];
+
+export const skills: { group: string; items: string[] }[] = [
+  { group: "Languages", items: ["Python", "SQL", "R", "C/C++", "JavaScript/TypeScript", "HTML/CSS", "MATLAB"] },
+  { group: "Frameworks", items: ["React", "Next.js", "Node.js", "Express.js", "FastAPI"] },
+  { group: "Libraries", items: ["PyTorch", "TensorFlow", "Scikit-learn", "Hugging Face", "Pandas", "NumPy", "GSAP"] },
+  {
+    group: "Tools",
+    items: ["Git/GitHub", "AWS", "Linux", "Docker", "Streamlit", "PostgreSQL", "MongoDB", "REST APIs", "ETL/Data Pipelines"],
+  },
+];
 
 /** Every award across projects, newest project first (projects are already in that order). */
 export function allAwards() {
