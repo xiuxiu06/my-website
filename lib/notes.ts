@@ -20,6 +20,15 @@ export type Note = {
 
 export const notes: Note[] = [
   {
+    slug: "revolutionuc-organizer",
+    title: "From hacker to organizer at RevolutionUC",
+    date: "2026-11-22",
+    tag: "Leadership",
+    summary:
+      "After hacking at RevolutionUC 2025, I joined its Web Team and rebuilt the website: clouds, a plane, new forms, and what organizing taught me about leadership.",
+    minutes: 3,
+  },
+  {
     slug: "wearly-first-hardware",
     title: "Wearly: my first hardware product",
     date: "2026-11-22",
