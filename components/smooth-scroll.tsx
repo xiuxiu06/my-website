@@ -62,9 +62,13 @@ export function ScrollReset() {
 }
 
 function scrollToHash(hash: string) {
-  const target = document.querySelector(hash);
+  const target = document.querySelector<HTMLElement>(hash);
   if (!target) return;
   const smoother = ScrollSmoother.get();
   if (smoother) smoother.scrollTo(target, true, "top top");
   else target.scrollIntoView({ behavior: "smooth" });
+  // Move keyboard focus too (e.g. "Skip to content" → <main tabIndex={-1}>).
+  if (target.tabIndex >= -1 && target.matches("[tabindex], a, button, input, select, textarea")) {
+    target.focus({ preventScroll: true });
+  }
 }

@@ -17,17 +17,23 @@ export function HideOnScroll({ children }: { children: React.ReactNode }) {
     });
     let hidden = false;
 
+    const setHidden = (hide: boolean) => {
+      if (hide === hidden) return;
+      hidden = hide;
+      if (hide) hideTween.play();
+      else hideTween.reverse();
+    };
+
     ScrollTrigger.create({
       start: 0,
       end: "max",
-      onUpdate(self) {
-        const hide = self.direction === 1 && self.scroll() > 120;
-        if (hide === hidden) return;
-        hidden = hide;
-        if (hide) hideTween.play();
-        else hideTween.reverse();
-      },
+      onUpdate: (self) => setHidden(self.direction === 1 && self.scroll() > 120),
     });
+
+    // Tabbing into the nav while it's tucked away brings it back.
+    const onFocusIn = () => setHidden(false);
+    ref.current!.addEventListener("focusin", onFocusIn);
+    return () => ref.current?.removeEventListener("focusin", onFocusIn);
   });
 
   return (

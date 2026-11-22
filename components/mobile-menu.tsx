@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { isActivePath, site } from "@/lib/site";
 
 const links = [{ href: "/", label: "Home" }, ...site.nav];
@@ -10,10 +10,15 @@ const links = [{ href: "/", label: "Home" }, ...site.nav];
 export function MobileMenu() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const toggle = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     if (!open) return;
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== "Escape") return;
+      setOpen(false);
+      toggle.current?.focus(); // back to the ☰ button
+    };
     document.addEventListener("keydown", onKey);
     document.body.style.overflow = "hidden";
     return () => {
@@ -27,6 +32,7 @@ export function MobileMenu() {
   return (
     <div className="md:hidden">
       <button
+        ref={toggle}
         type="button"
         aria-expanded={open}
         aria-controls="mobile-menu"
