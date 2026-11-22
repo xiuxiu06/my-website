@@ -44,8 +44,8 @@ export function ExperienceSummary({ roles }: { roles: Role[] }) {
 
       <ol>
         {roles.map((r) => {
-          // Before hydration we don't know today's date: show dates without a badge.
-          const status = today ? roleStatus(r, today) : "past";
+          // Before hydration we don't know today's date: no badge, neutral dates.
+          const status = today ? roleStatus(r, today) : null;
           return (
             <li key={r.role + r.org} data-row className="relative flex flex-wrap items-center gap-x-8 gap-y-2 py-7">
               <div className="flex min-w-0 flex-[999_1_420px] flex-col gap-1">

@@ -171,6 +171,7 @@ export const experience: Role[] = [
     org: "RevolutionUC Hackathon",
     place: "Cincinnati, OH",
     start: "2025-09-01",
+    end: "2026-03-31",
     points: [
       "Developed the official hackathon website with TypeScript and Next.js.",
       "Implemented responsive design and integrated RESTful APIs.",
@@ -189,8 +190,10 @@ export function roleStatus(r: Role, today: string): RoleStatus {
 
 const fmt = new Intl.DateTimeFormat("en-US", { month: "short", year: "numeric", timeZone: "UTC" });
 
-export function formatRange(r: Role, status: RoleStatus) {
+/** `status` is null while prerendering (today's date isn't known yet). */
+export function formatRange(r: Role, status: RoleStatus | null) {
   const start = fmt.format(new Date(r.start));
   if (status === "upcoming") return `Starts ${start}`;
-  return `${start} — ${r.end ? fmt.format(new Date(r.end)) : "Present"}`;
+  if (r.end) return `${start} — ${fmt.format(new Date(r.end))}`;
+  return status === "current" ? `${start} — Present` : start;
 }

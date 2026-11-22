@@ -123,7 +123,8 @@ export function Hero() {
           <div
             data-reveal
             data-hero-photo
-            className="relative aspect-[4/5] w-full max-w-[420px] overflow-hidden rounded-t-[220px] rounded-b-[32px] bg-surface"
+            // bg-mint matches the photo's own backdrop (#9AEBA3); its top ~15% is transparent.
+            className="relative aspect-[4/5] w-full max-w-[420px] overflow-hidden rounded-t-[220px] rounded-b-[32px] bg-mint"
           >
             <Image
               src={portrait}
