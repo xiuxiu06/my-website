@@ -1,0 +1,56 @@
+<Overview title="In short">
+
+Wearly is a set of smart hangers that notice which clothes you actually wear. My team of three built it for Innovation Challenge 2026, where it placed in the top 25% of projects. I built most of the web app and the hardware, and it was the first time I had taken hardware all the way to a finished product.
+
+</Overview>
+
+Most of us wear a small part of our closet over and over while the rest waits on the rail. Wardrobe apps try to help, but they start by asking you to photograph and log everything, and most people give up within a week. Wearly works the other way around: you just hang your clothes, and the hangers do the noticing.
+
+<Figure
+  src="/projects/wearly/hanger-diagram.jpg"
+  alt="Diagram of a Wearly hanger: a reed switch near the hook senses the magnet strip on the closet rod, a smart box holds the ESP32-C3, battery and charger with blue, yellow and white lights, and a lever switch on the shoulder feels when a garment is on."
+  width={1600}
+  height={960}
+  caption="One hanger: two switches, a light and a small board."
+/>
+
+## Start with the hub, not the hangers
+
+The biggest lesson came before any soldering: build in an order where each step proves something. First the hub alone, an ESP32 that talks to the app's API with a fake hanger typed into its serial monitor. Then one hanger on a breadboard. Then the radio between them. Then the battery. Only then, more hangers.
+
+The rule for every step was the same: change one thing, test it, then move on. When something broke, there was only one suspect.
+
+## Two switches tell the whole story
+
+Each hanger answers two questions.
+
+- **Is it on the rail?** A reed switch inside the curve of the hook closes when it sits over a magnetic strip on the closet rod.
+- **Is something hanging on it?** A lever micro switch on the shoulder is pressed by the garment's weight.
+
+Both are wired to the ESP32-C3 with internal pull-ups, so a closed switch reads LOW. A reading only counts after it has stayed the same for 200 ms, so a jiggle isn't an event. The app does the rest: a garment that is gone for a few minutes was browsed, one that is gone for hours was worn.
+
+One detail matters on the C3: it checks a few of its pins while it boots, and a switch closed on one of them can stop it from starting. The sensors live on pins it doesn't care about.
+
+## Only the hub talks to the internet
+
+Hangers don't join Wi-Fi. They send tiny messages over ESP-NOW to a hub in the closet, and the hub is the only device online. It posts each event to the app, checks for light commands about once a second, and passes them down to the right hanger.
+
+A few rules made it reliable:
+
+- **ESP-NOW has to share the hub's Wi-Fi channel, and a mismatch fails silently.** Each hanger scans for the hub's network at boot and switches to its channel.
+- **Send to the hub's address, not broadcast,** so the radio confirms delivery, and retry a few times if it doesn't.
+- **Never make web requests inside the radio callback.** Incoming events go into a queue, and the main loop posts them.
+- **Only confirm what was delivered.** The hub acknowledges a light command only after the hanger actually received it, so a missed command simply comes back on the next check.
+- **A heartbeat every 60 seconds** lets the hub rebuild its list of hangers after a restart, and a hanger that restarts gets its last light sent back.
+
+## Lights that never say "bad"
+
+Each hanger has one small LED. Blue marks today's outfit, a slow yellow breathe marks pieces that have waited a while, and two quick white blinks answer "where is it?" when you search in the app. There is no red or green on purpose: nothing should tell you your clothes are bad. The LED runs at low brightness to save battery, and most of the time the closet stays dark.
+
+## Powering it safely
+
+Each hanger runs on a 500 mAh LiPo with a USB-C charging board and a slide switch. Batteries were where I had to slow down and read: never connect a full cell to the board's 3.3 V pin, check every connector's polarity with a multimeter before plugging it in, and make sure the charger's current suits the battery. Because the radio is always listening, a charge lasts a few hours, enough for a rehearsal and a demo. Letting hangers sleep between checks is the next step.
+
+## What I learned
+
+Wearly was my first time taking hardware all the way to a finished product. It taught me how circuits actually work, from wiring sensors and LEDs to powering a board safely from a battery, and how different firmware is from web code: it has to keep working when the radio, the Wi-Fi or the battery doesn't cooperate.

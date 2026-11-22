@@ -20,6 +20,39 @@ export type Note = {
 
 export const notes: Note[] = [
   {
+    slug: "wearly-first-hardware",
+    title: "Wearly: my first hardware product",
+    date: "2026-11-22",
+    tag: "Hardware",
+    summary:
+      "Smart hangers on an ESP32: two switches, one light, ESP-NOW to a hub, and what building it taught me about circuits and firmware.",
+    minutes: 4,
+    cover: "/projects/wearly/poster.jpg",
+    project: "wearly",
+  },
+  {
+    slug: "medmimic-trust-engine",
+    title: "MedMimic: a patient who has to trust you first",
+    date: "2026-11-22",
+    tag: "Hackathon",
+    summary:
+      "Turning a psychiatric interview into rules: a trust score, unlockable disclosures, rewind and feedback that cites clinical guidelines.",
+    minutes: 4,
+    cover: "/projects/medmimic/poster.jpg",
+    project: "medmimic",
+  },
+  {
+    slug: "ecocart-reading-the-cart",
+    title: "EcoCart: reading an Amazon cart for an AI",
+    date: "2026-11-22",
+    tag: "Hackathon",
+    summary:
+      "My part of a MakeUC 2025 winner: a Chrome extension that scrapes the cart, fills in missing product details and hands clean data to the AI.",
+    minutes: 3,
+    cover: "/projects/ecocart/poster.jpg",
+    project: "ecocart",
+  },
+  {
     slug: "rebuilding-my-portfolio",
     title: "Rebuilding my portfolio with Next.js and GSAP",
     date: "2026-11-22",
