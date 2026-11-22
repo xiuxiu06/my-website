@@ -5,8 +5,7 @@ import Link from "next/link";
 import { useRef } from "react";
 import { DESKTOP_MOTION, MOTION, SplitText, gsap, useGSAP } from "@/lib/gsap";
 import { site } from "@/lib/site";
-import stickerCoding from "@/public/images/sticker-love-coding.png";
-import stickerCreating from "@/public/images/sticker-love-creating.png";
+import { CircleText } from "@/components/circle-text";
 import portrait from "@/public/images/tam.png";
 
 // Wave with a loop (same idea as the old About line), drawn in its own band under the hero.
@@ -78,12 +77,13 @@ export function Hero() {
   );
 
   return (
-    <section ref={root} aria-labelledby="hero-title" className="relative overflow-hidden">
-      <div data-spin className="pointer-events-none absolute top-24 left-0 z-10 hidden w-[clamp(110px,14vw,220px)] -translate-x-1/2 md:block" aria-hidden="true">
-        <Image src={stickerCoding} alt="" />
+    // overflow-clip (not hidden): the half-offscreen stickers must never make the section scrollable.
+    <section ref={root} aria-labelledby="hero-title" className="relative overflow-clip">
+      <div data-spin className="pointer-events-none absolute top-24 left-0 z-10 hidden w-[clamp(110px,14vw,220px)] -translate-x-1/2 text-cream md:block">
+        <CircleText text="I love coding!" />
       </div>
-      <div data-spin className="pointer-events-none absolute top-[62%] right-0 z-10 w-[clamp(110px,14vw,220px)] translate-x-1/2" aria-hidden="true">
-        <Image src={stickerCreating} alt="" />
+      <div data-spin className="pointer-events-none absolute top-[62%] right-0 z-10 w-[clamp(110px,14vw,220px)] translate-x-1/2 text-cream">
+        <CircleText text="I love creating!" />
       </div>
 
       <div className="relative z-[1] mx-auto flex max-w-[1200px] flex-wrap items-center gap-14 px-4 pt-16 pb-24 sm:px-6 min-[901px]:pb-6 lg:pt-20">
