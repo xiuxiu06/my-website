@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+/* Wide screens with a mouse: the /projects index shows a floating preview there */
+@custom-variant hover-preview (@media (pointer: fine) and (min-width: 48rem));
+
 /* Design tokens (from the v2 mockup) */
 @theme {
   --color-ink: #070b08;

@@ -17,16 +17,14 @@ export type Project = {
   poster?: string;
   video?: string;
   links: { live?: string; repo?: string; devpost?: string };
-  /** Filter chips on /projects. */
+  /** Categories, listed in the /projects index. */
   tags: ProjectFilter[];
   awards?: string[];
   role?: string;
   timeline?: string;
   team?: string;
-  /** Shown on the home page. */
+  /** Shown on the home page and as a large row on /projects. */
   featured?: boolean;
-  /** Double-size tile in the /projects bento grid. */
-  big?: boolean;
 };
 
 export const projects: Project[] = [
@@ -67,7 +65,6 @@ export const projects: Project[] = [
     role: "Chrome extension frontend and product scraper",
     timeline: "MakeUC 2025 · 24 hrs",
     team: "4 people",
-    big: true,
     featured: true,
   },
   {
