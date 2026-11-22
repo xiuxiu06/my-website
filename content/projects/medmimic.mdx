@@ -1,12 +1,12 @@
 <TLDR>
 
-A clinical interview simulator for healthcare students, built at MakeUC 2026 and awarded **MLH Best Use of Gemini API**. You interview an AI psychiatric patient by voice, rewind to a critical moment to try a better question, and get a scored debrief grounded in published clinical guidelines. [My part: …]
+A clinical interview simulator for healthcare students, built in 24 hours at MakeUC 2026 by a team of two and awarded **MLH Best Use of Gemini API**. You interview an AI psychiatric patient by voice, rewind to a critical moment to try a better question, and get a scored debrief grounded in published clinical guidelines. I built the trust engine, the interface, the RAG-powered debrief, login and deployment, and helped my teammate wherever needed.
 
 </TLDR>
 
-## The problem
+## Why we built it
 
-[Why practicing clinical interviews, especially suicide risk assessment, is hard for students: few chances to practice, high stakes, little feedback on *which* question changed the outcome.]
+My teammate studies pre-med, and we both wanted to put AI to work in healthcare. Interviewing a patient about their mental health, and especially asking directly about suicide risk, is a skill you only get better at by practising. MedMimic gives students a patient to practise on who reacts to *how* they ask, and a way to replay the moment a conversation turned.
 
 ## What we built
 
@@ -27,12 +27,6 @@ A clinical interview simulator for healthcare students, built at MakeUC 2026 and
   ]}
 />
 
-Sessions and cases are stored in Supabase Postgres with row-level security, linked to Auth0 users. [One tricky decision your team made, for example keeping the patient consistent while trust changes what it may say.]
-
-## What I learned
-
-> [One sentence you'd tell another hackathon team.]
-
-[Two or three things you'd do differently next time.]
+The trust score sits between the student and the patient. Each turn is classified first, the score moves, and only then does the patient answer, with what it is allowed to reveal at that level of trust. Sessions and cases are stored in Supabase Postgres with row-level security, linked to Auth0 users, and the app runs on Vercel.
 
 Try it at [medmimic.us](https://www.medmimic.us). The patients are fictional and the tool is for education only, not for clinical decisions.

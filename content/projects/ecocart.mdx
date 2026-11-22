@@ -1,34 +1,28 @@
 <TLDR>
 
-A Chrome extension built at MakeUC 2025 that reads your shopping cart and suggests cheaper, more sustainable alternatives without leaving the page. It won **Second Place**, **Best Green Tech Hack** and **MLH Best Use of Gemini API**. [My part: …]
+A Chrome extension built in 24 hours at MakeUC 2025 by a team of four. It reads the items in your Amazon cart and recommends alternatives that are both affordable and more sustainable, without leaving the page. It won **Second Place**, **Best Green Tech Hack** and **MLH Best Use of Gemini API**. I built the extension's frontend and the scraper: I designed the UI and captured product data from shopping sites to feed into the AI, and helped with the backend when needed.
 
 </TLDR>
 
-## The problem
+## The idea
 
-[Why shoppers struggle to find sustainable options at checkout, and why existing tools didn't help.]
+Shopping more sustainably usually means extra research at exactly the moment you're ready to check out. EcoCart brings that research to the cart: it looks at what you're about to buy and puts greener, still affordable options right next to it.
 
 ## What we built
 
-- **Real-time product categorization** of everything in the cart.
-- **Sustainability scoring** for each item.
-- **Personalized alternatives** that are both greener and affordable, found through a vector database.
+- **A cart reader.** The extension captures the products in your cart, the data the rest of the pipeline works from.
+- **Product classification and sustainability scoring** for each item.
+- **Recommendations** from a pipeline that combines product classification, Gemini analysis and vector similarity search.
 
 ## How it works
 
 <Steps
   items={[
-    "React extension reads the cart",
-    "Node.js API receives the products",
-    "Gemini and Hugging Face NLP classify them",
+    "Extension scrapes the products in the cart",
+    "Node.js API receives them",
+    "Hugging Face NLP and Gemini classify and analyse",
     "Zilliz vector search finds alternatives",
   ]}
 />
 
-[Explain the flow, and one tricky technical decision your team made.]
-
-## What I learned
-
-> [One sentence you'd tell another hackathon team.]
-
-[Two or three things you'd do differently next time.]
+My part was the first step and everything the shopper sees: getting clean product data out of real shopping pages, and a panel that shows the alternatives without getting in the way of checkout.
