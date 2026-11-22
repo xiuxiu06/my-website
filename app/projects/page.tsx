@@ -9,6 +9,7 @@ export default function ProjectsPage() {
       <PageHeader
         title="Projects"
         intro="Hackathon builds, research tools and side projects, each with a short case study."
+        ring="code · build · ship · learn · create ·"
       />
       <p className="text-dim">Coming soon: project grid.</p>
     </div>
