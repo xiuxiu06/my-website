@@ -2,8 +2,10 @@
 
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
+import { Draggable } from "gsap/Draggable";
 import { DrawSVGPlugin } from "gsap/DrawSVGPlugin";
 import { Flip } from "gsap/Flip";
+import { InertiaPlugin } from "gsap/InertiaPlugin";
 import { MotionPathPlugin } from "gsap/MotionPathPlugin";
 import { Physics2DPlugin } from "gsap/Physics2DPlugin";
 import { ScrollSmoother } from "gsap/ScrollSmoother";
@@ -15,8 +17,10 @@ gsap.registerPlugin(
   ScrollTrigger,
   ScrollSmoother,
   SplitText,
+  Draggable,
   DrawSVGPlugin,
   Flip,
+  InertiaPlugin,
   MotionPathPlugin,
   Physics2DPlugin,
 );
@@ -25,4 +29,4 @@ gsap.registerPlugin(
 export const MOTION = "(prefers-reduced-motion: no-preference)";
 export const DESKTOP_MOTION = "(min-width: 901px) and (prefers-reduced-motion: no-preference)";
 
-export { Flip, gsap, ScrollSmoother, ScrollTrigger, SplitText, useGSAP };
+export { Draggable, Flip, gsap, ScrollSmoother, ScrollTrigger, SplitText, useGSAP };
