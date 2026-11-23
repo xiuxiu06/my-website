@@ -72,15 +72,6 @@ export const notes: Note[] = [
       "After hacking at RevolutionUC 2025, I joined its Web Team and rebuilt the website: clouds, a plane, new forms, and what organizing taught me about leadership.",
     minutes: 3,
   },
-  // {
-  //   slug: "building-medmimic",
-  //   title: "Building MedMimic: rewinding a conversation with an AI patient",
-  //   date: "2026-12-01",
-  //   tag: "Hackathon",
-  //   summary: "How the trust engine and rewind feature came together at MakeUC 2026.",
-  //   minutes: 6,
-  //   project: "medmimic",
-  // },
 ];
 
 export function getNote(slug: string) {
