@@ -53,6 +53,15 @@ export const notes: Note[] = [
     project: "medmimic",
   },
   {
+    slug: "revolutionuc-organizer",
+    title: "From hacker to organizer at RevolutionUC",
+    date: "2026-05-12",
+    tag: "Leadership",
+    summary:
+      "After hacking at RevolutionUC 2025, I joined its Web Team and rebuilt the website: clouds, a plane, new forms, and what organizing taught me about leadership.",
+    minutes: 3,
+  },
+  {
     slug: "ecocart-reading-the-cart",
     title: "EcoCart: reading an Amazon cart for an AI",
     date: "2025-12-01",
@@ -62,15 +71,6 @@ export const notes: Note[] = [
     minutes: 3,
     cover: "/projects/ecocart/poster.jpg",
     project: "ecocart",
-  },
-  {
-    slug: "revolutionuc-organizer",
-    title: "From hacker to organizer at RevolutionUC",
-    date: "2025-05-01",
-    tag: "Leadership",
-    summary:
-      "After hacking at RevolutionUC 2025, I joined its Web Team and rebuilt the website: clouds, a plane, new forms, and what organizing taught me about leadership.",
-    minutes: 3,
   },
 ];
 
