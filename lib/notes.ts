@@ -20,15 +20,6 @@ export type Note = {
 
 export const notes: Note[] = [
   {
-    slug: "revolutionuc-organizer",
-    title: "From hacker to organizer at RevolutionUC",
-    date: "2026-11-22",
-    tag: "Leadership",
-    summary:
-      "After hacking at RevolutionUC 2025, I joined its Web Team and rebuilt the website: clouds, a plane, new forms, and what organizing taught me about leadership.",
-    minutes: 3,
-  },
-  {
     slug: "wearly-first-hardware",
     title: "Wearly: my first hardware product",
     date: "2026-11-22",
@@ -40,9 +31,18 @@ export const notes: Note[] = [
     project: "wearly",
   },
   {
+    slug: "revolutionuc-organizer",
+    title: "From hacker to organizer at RevolutionUC",
+    date: "2026-11-15",
+    tag: "Leadership",
+    summary:
+      "After hacking at RevolutionUC 2025, I joined its Web Team and rebuilt the website: clouds, a plane, new forms, and what organizing taught me about leadership.",
+    minutes: 3,
+  },
+  {
     slug: "medmimic-trust-engine",
     title: "MedMimic: a patient who has to trust you first",
-    date: "2026-11-22",
+    date: "2026-11-08",
     tag: "Hackathon",
     summary:
       "Turning a psychiatric interview into rules: a trust score, unlockable disclosures, rewind and feedback that cites clinical guidelines.",
@@ -53,7 +53,7 @@ export const notes: Note[] = [
   {
     slug: "ecocart-reading-the-cart",
     title: "EcoCart: reading an Amazon cart for an AI",
-    date: "2026-11-22",
+    date: "2026-11-01",
     tag: "Hackathon",
     summary:
       "My part of a MakeUC 2025 winner: a Chrome extension that scrapes the cart, fills in missing product details and hands clean data to the AI.",
@@ -64,7 +64,7 @@ export const notes: Note[] = [
   {
     slug: "rebuilding-my-portfolio",
     title: "Rebuilding my portfolio with Next.js and GSAP",
-    date: "2026-11-22",
+    date: "2026-10-25",
     tag: "Web",
     summary:
       "Moving a one-file site to Next.js without losing its animations: a hydration mismatch, a clipped font, a drifting ball and 159 MB of silent video.",
