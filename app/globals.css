@@ -1,0 +1,80 @@
+@import "tailwindcss";
+
+/* Wide screens with a mouse: the /projects index shows a floating preview there */
+@custom-variant hover-preview (@media (pointer: fine) and (min-width: 48rem));
+
+/* Design tokens (from the v2 mockup) */
+@theme {
+  --color-ink: #070b08;
+  --color-surface: #0e1410;
+  --color-line: #1d261f;
+  --color-line-strong: #2f3a32;
+  --color-mint: #9aeba3;
+  --color-mint-soft: #c6f5cb;
+  --color-cream: #f6efdd;
+  --color-sand: #d8d2c3;
+  --color-muted: #b9b3a5;
+  --color-dim: #8f8a7e;
+}
+
+@theme inline {
+  --font-sans: var(--font-montserrat), system-ui, sans-serif;
+  --font-display: var(--font-modak), cursive;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
+}
+
+@layer base {
+  html {
+    color-scheme: dark;
+  }
+
+  body {
+    background: var(--color-ink);
+    color: var(--color-cream);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-mint);
+    outline-offset: 3px;
+  }
+
+  ::selection {
+    background: var(--color-mint);
+    color: #000;
+  }
+
+  /* Experience: the pinned year rolls in when it changes */
+  @keyframes year-in {
+    from {
+      translate: 0 60%;
+      opacity: 0;
+    }
+  }
+
+  @keyframes cursor-pop {
+    from {
+      scale: 0.6;
+      opacity: 0;
+    }
+  }
+
+  /* Native cursor is hidden only once the custom cursor is running */
+  .has-custom-cursor,
+  .has-custom-cursor * {
+    cursor: none !important;
+  }
+
+  /* SplitText word masks in the hero: extra room above/below so Modak's tall glyphs
+     aren't clipped by the tight line-height; negative margin keeps the layout unchanged. */
+  .hero-word-mask {
+    padding-block: 0.2em;
+    margin-block: -0.2em;
+  }
+
+  /* Elements GSAP reveals on load start hidden, but only when motion is allowed */
+  @media (prefers-reduced-motion: no-preference) {
+    [data-reveal] {
+      visibility: hidden;
+    }
+  }
+}

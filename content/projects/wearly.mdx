@@ -1,0 +1,31 @@
+<Overview>
+
+Smart hangers that notice what you actually wear, with no photos or logging needed. Built by a team of three for Innovation Challenge 2026 (top 25% of projects). I built most of the web app and the hardware, my first hardware project taken all the way to a finished product.
+
+</Overview>
+
+## Highlights
+
+- Each hanger knows when a garment leaves and comes back: minutes away means browsed, hours means worn.
+- A small light on every hanger marks today's outfit (blue), forgotten pieces (yellow), and the item you searched for (white).
+- The app plans outfits for the weather and suggests pieces to keep, restyle or let go.
+- Hangers run on an ESP32-C3 with two switches, an LED and a LiPo battery.
+
+<Figure
+  src="/projects/wearly/hanger-diagram.jpg"
+  alt="Diagram of a Wearly hanger: a reed switch near the hook senses the magnet strip on the closet rod, a smart box holds the ESP32-C3, battery and charger with blue, yellow and white lights, and a lever switch on the shoulder feels when a garment is on."
+  width={1600}
+  height={960}
+  caption="Inside a Wearly hanger"
+/>
+
+## How it works
+
+<Steps
+  items={[
+    "Hanger senses the garment leave or return",
+    "ESP-NOW message to the closet hub",
+    "Hub posts it; the app logs browse vs. wear",
+    "App sends a light back to the hanger",
+  ]}
+/>

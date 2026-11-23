@@ -1,0 +1,25 @@
+<Overview>
+
+A clinical interview simulator for healthcare students, built in 24 hours at MakeUC 2026 and awarded **MLH Best Use of Gemini API**. I built the trust engine, the interface, the RAG debrief, login and deployment.
+
+</Overview>
+
+## Highlights
+
+- Interview an AI psychiatric patient by voice (Gemini Live) or text.
+- A **trust engine** scores every turn and decides what the patient will reveal.
+- **Rewind** to a key moment, ask a better question and compare the two runs.
+- A scored debrief that cites clinical guidelines (C-SSRS, SAFE-T, PHQ-9, OARS) through RAG.
+
+## How it works
+
+<Steps
+  items={[
+    "Next.js app streams the conversation",
+    "Gemini Live voices the patient",
+    "Gemini Flash classifies each turn and updates trust",
+    "RAG over guideline embeddings writes the debrief",
+  ]}
+/>
+
+Fictional patients, for education only. Try it at [medmimic.us](https://www.medmimic.us).

@@ -1,0 +1,50 @@
+<Overview title="In short">
+
+At MakeUC 2026, a teammate and I built MedMimic in 24 hours: a simulator where healthcare students interview an AI psychiatric patient. The voice comes from Gemini Live, but what the patient is willing to say is decided by a small rules engine I wrote around one number: trust. It won MLH Best Use of Gemini API.
+
+</Overview>
+
+My teammate studies pre-med, and we both wanted to point AI at a real problem in healthcare. Interviewing someone about their mental health, and asking directly about suicide, is a skill you only get better at by practising, and practising on real patients is the one place you can't afford to get it wrong. So we built a patient you can practise on: one who reacts to *how* you ask, and a way to replay the moment a conversation turned.
+
+I built the trust engine, the interface, the retrieval-backed debrief, login and deployment.
+
+## A voice on top of rules
+
+A language model on its own makes a poor standardized patient. Ask nicely or rudely and it tends to tell you everything, or it hides things inconsistently from one run to the next. Neither is useful for training.
+
+So the patient is split in two. Gemini Live gives it a voice and a personality. Underneath, a deterministic engine decides what the patient is *allowed* to reveal on this turn, and how they feel about it. The engine is a pure function: the current state and the student's latest line go in, the next state comes out. That made it easy to test, and it's what made rewind possible later.
+
+## Trust is a number
+
+Every time the student speaks, a classifier tags the line with one to four labels: asked about mood, reflected the patient's words, showed empathy, asked about suicide directly, offered premature reassurance, was dismissive, fired off a checklist of closed questions, and a few more. It runs at temperature 0 and must answer in a fixed JSON schema, so the labels are stable.
+
+Each label carries a trust change defined by the case, and the total for one turn is clamped between −25 and +18, so a single great or terrible line can't swing the whole interview. Trust moves *first*; only then does the engine check what unlocks. That order matters: a student who reflects the patient's feelings and asks about suicide in the same breath should get an honest answer, not a denial.
+
+Each hidden fact, from the job loss behind the insomnia to the plan and the pills at home, has requirements: a minimum trust, the kind of question that opens it, and anything that has to come out first.
+
+```ts
+if (minTrust !== undefined && trust < minTrust) return false;
+if (labels?.length && !labels.some((l) => turnLabels.has(l))) return false;
+if (requiredUnlocked?.length && !requiredUnlocked.every((id) => unlocked.has(id))) return false;
+return true;
+```
+
+The engine keeps unlocking until nothing new qualifies, so one good question can open a chain of related details.
+
+## When the patient says no
+
+Low trust has consequences you can feel. Ask about suicide too early and the patient guardedly denies it. Let trust drop below 35 and they shut down. Still below 45 after six minutes, and they ask to leave. Their emotion is derived from the same state: irritable after a dismissive remark, withdrawn at low trust, tearful once something painful comes out, relieved when they leave with a safety plan.
+
+## Rewind
+
+When a key moment happens (in our demo case, the patient finally admits that everything feels "heavy"), the engine saves a checkpoint: a frozen copy of the state, the messages and the timeline. Restoring it starts a new branch without touching the original, so the student can try a different question and compare the two runs side by side.
+
+## Feedback with sources
+
+When the interview ends, the engine adds what was missed: never asked about suicide directly, never asked about a plan or about support, no safety plan or consult. Each of those flags, and each notable label, maps to a retrieval query. The queries are embedded together, matched against excerpts from C-SSRS, SAFE-T, PHQ-9 and OARS, and the best passages become the citations on each piece of feedback. If the embedding call fails, every flag has known-good passages to fall back on, so feedback never loses its sources.
+
+## Built to survive the demo
+
+Hackathon demos run on free API tiers, at the exact moment everyone else is hitting the same API. So every classifier call tries a list of models in order. A model that returns a rate limit is skipped for 15 minutes, one that errors or times out for two. If every model fails, a plain keyword classifier takes over, so the patient never freezes while a judge is watching.
+
+The patients are fictional and the tool is for education only. You can try it at [medmimic.us](https://www.medmimic.us).
