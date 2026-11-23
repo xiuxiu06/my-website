@@ -20,24 +20,26 @@ export type Note = {
 
 export const notes: Note[] = [
   {
+    slug: "rebuilding-my-portfolio",
+    title: "Rebuilding my portfolio with Next.js and GSAP",
+    date: "2026-11-22",
+    tag: "Web",
+    summary:
+      "Moving a one-file site to Next.js without losing its animations: a hydration mismatch, a clipped font, a drifting ball and 159 MB of silent video.",
+    minutes: 6,
+    cover: "/projects/portfolio/poster.jpg",
+    project: "portfolio",
+  },
+  {
     slug: "wearly-first-hardware",
     title: "Wearly: my first hardware product",
-    date: "2026-11-22",
+    date: "2026-11-19",
     tag: "Hardware",
     summary:
       "Smart hangers on an ESP32: two switches, one light, ESP-NOW to a hub, and what building it taught me about circuits and firmware.",
     minutes: 4,
     cover: "/projects/wearly/poster.jpg",
     project: "wearly",
-  },
-  {
-    slug: "revolutionuc-organizer",
-    title: "From hacker to organizer at RevolutionUC",
-    date: "2026-11-15",
-    tag: "Leadership",
-    summary:
-      "After hacking at RevolutionUC 2025, I joined its Web Team and rebuilt the website: clouds, a plane, new forms, and what organizing taught me about leadership.",
-    minutes: 3,
   },
   {
     slug: "medmimic-trust-engine",
@@ -53,7 +55,7 @@ export const notes: Note[] = [
   {
     slug: "ecocart-reading-the-cart",
     title: "EcoCart: reading an Amazon cart for an AI",
-    date: "2026-11-01",
+    date: "2025-12-01",
     tag: "Hackathon",
     summary:
       "My part of a MakeUC 2025 winner: a Chrome extension that scrapes the cart, fills in missing product details and hands clean data to the AI.",
@@ -62,15 +64,13 @@ export const notes: Note[] = [
     project: "ecocart",
   },
   {
-    slug: "rebuilding-my-portfolio",
-    title: "Rebuilding my portfolio with Next.js and GSAP",
-    date: "2026-10-25",
-    tag: "Web",
+    slug: "revolutionuc-organizer",
+    title: "From hacker to organizer at RevolutionUC",
+    date: "2025-05-01",
+    tag: "Leadership",
     summary:
-      "Moving a one-file site to Next.js without losing its animations: a hydration mismatch, a clipped font, a drifting ball and 159 MB of silent video.",
-    minutes: 6,
-    cover: "/projects/portfolio/poster.jpg",
-    project: "portfolio",
+      "After hacking at RevolutionUC 2025, I joined its Web Team and rebuilt the website: clouds, a plane, new forms, and what organizing taught me about leadership.",
+    minutes: 3,
   },
   // {
   //   slug: "building-medmimic",
