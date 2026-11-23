@@ -5,8 +5,6 @@ import { notFound } from "next/navigation";
 import { ReadingProgress } from "@/components/reading-progress";
 import { getProject } from "@/lib/content";
 import { formatNoteDate, getNote, notes } from "@/lib/notes";
-import { site } from "@/lib/site";
-import portrait from "@/public/images/tam.png";
 
 // Cache Components requires at least one param. Until the first note exists, a placeholder
 // slug keeps the route buildable; it isn't in `notes`, so it renders the 404 page.
@@ -68,19 +66,11 @@ export default async function NotePage({ params }: PageProps<"/notes/[slug]">) {
       <div className="mx-auto max-w-[720px] px-4 pt-12 pb-16 sm:px-6">
         <Body />
 
-        <div className="mt-14 flex items-center gap-4 border-t border-line pt-8">
-          <Image src={portrait} alt="" width={56} height={56} className="size-14 rounded-full bg-mint object-cover object-top" />
-          <div className="flex flex-col text-[15px] leading-normal">
-            <span className="font-extrabold">Written by {site.name}</span>
-            <span className="text-muted">{site.description}</span>
-          </div>
-        </div>
-
         {project && (
           <Link
             href={`/projects/${project.slug}`}
             data-cursor="View"
-            className="mt-8 flex flex-wrap items-center justify-between gap-3 rounded-[20px] border border-line bg-surface px-7 py-6 transition-colors hover:border-mint"
+            className="mt-14 flex flex-wrap items-center justify-between gap-3 rounded-[20px] border border-line bg-surface px-7 py-6 transition-colors hover:border-mint"
           >
             <span className="flex flex-col gap-1">
               <span className="text-xs font-extrabold tracking-[0.14em] text-dim uppercase">Related project</span>
