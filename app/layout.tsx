@@ -1,3 +1,4 @@
+import { Analytics } from "@vercel/analytics/next";
 import type { Metadata, Viewport } from "next";
 import { JetBrains_Mono, Modak, Montserrat } from "next/font/google";
 import { Suspense } from "react";
@@ -69,6 +70,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         {/* usePathname needs a Suspense boundary with cacheComponents */}
         <Suspense fallback={null}>
           <ScrollReset />
+          <Analytics />
         </Suspense>
         <CustomCursor />
       </body>
