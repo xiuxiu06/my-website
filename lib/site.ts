@@ -16,7 +16,6 @@ export const site = {
   socials: [
     { href: "https://github.com/xiuxiu06", label: "GitHub" },
     { href: "https://www.linkedin.com/in/tamle06/", label: "LinkedIn" },
-    { href: "https://www.behance.net/TamLe06", label: "Behance" },
   ],
 } as const;
 
